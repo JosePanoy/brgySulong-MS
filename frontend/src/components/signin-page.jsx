@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import LandingPageNavbar from '../sub-components/landing-page-navbar';
 import '../assets/css/signin-page.css';
@@ -21,6 +21,8 @@ function SignInPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImageConfirmed, setIsImageConfirmed] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [isAgreementChecked, setIsAgreementChecked] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleChange = (e) => {
@@ -59,6 +61,16 @@ function SignInPage() {
     fileInputRef.current.click();
   };
 
+  useEffect(() => {
+    if (formData.password !== formData.confirm_password) {
+      setPasswordError('Passwords do not match');
+    } else {
+      setPasswordError('');
+    }
+  }, [formData.password, formData.confirm_password]);
+
+  const isFormValid = Object.values(formData).every((field) => field !== '') && !passwordError && isAgreementChecked;
+
   return (
     <>
       <LandingPageNavbar />
@@ -69,6 +81,7 @@ function SignInPage() {
             <div className="signin-page-left-column">
               <input type="text" name="first_name" placeholder="First Name" onChange={handleChange} required />
               <input type="text" name="last_name" placeholder="Last Name" onChange={handleChange} required />
+              <input type="text" name="nickname" placeholder="Nickname" onChange={handleChange} required />
               <input type="text" name="address" placeholder="Address" onChange={handleChange} required />
               <input type="text" name="brgy_position" placeholder="Barangay Position" onChange={handleChange} required />
               <div className="signin-page-phone-number">
@@ -84,48 +97,32 @@ function SignInPage() {
             </div>
 
             <div className="signin-page-right-column">
-              <input type="text" name="nickname" placeholder="Nickname" onChange={handleChange} required />
+             
               <div className="signin-page-password-field">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  placeholder="Password"
-                  onChange={handleChange}
-                  required
-                />
-                <span onClick={() => togglePasswordVisibility('password')}>
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
+                <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Password" onChange={handleChange} required />
+                <span onClick={() => togglePasswordVisibility('password')}>{showPassword ? <FaEyeSlash /> : <FaEye />}</span>
               </div>
               <div className="signin-page-password-field">
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  name="confirm_password"
-                  placeholder="Confirm Password"
-                  onChange={handleChange}
-                  required
-                />
-                <span onClick={() => togglePasswordVisibility('confirm_password')}>
-                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
+                <input type={showConfirmPassword ? 'text' : 'password'} name="confirm_password" placeholder="Confirm Password" onChange={handleChange} required />
+                <span onClick={() => togglePasswordVisibility('confirm_password')}>{showConfirmPassword ? <FaEyeSlash /> : <FaEye />}</span>
               </div>
+
+              {passwordError && <p className="error-message">{passwordError}</p>}
 
               <label className="signin-page-file-upload">
                 Upload Profile Picture
-                <input
-                  type="file"
-                  name="profile_picture"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  onChange={handleChange}
-                />
+                <input type="file" name="profile_picture" accept="image/*" ref={fileInputRef} onChange={handleChange} />
               </label>
 
-              {formData.profile_picture && isImageConfirmed && (
-                <div className="signin-page-filename">{formData.profile_picture.name}</div>
-              )}
 
-              <button type="submit">Sign In</button>
+              <div className="signin-page-agreement">
+                <input type="checkbox" onChange={() => setIsAgreementChecked(!isAgreementChecked)} />
+                <span className="agreement-text">
+                    By checking this box, you consent to the storage of your personal information, including details and profile picture, in our database for registration and service purposes. You also acknowledge that your data may be retained as required by law and for platform functionality.
+                </span>
+                </div>
+                <button type="submit" disabled={!isFormValid}>Sign In</button>
+
             </div>
           </div>
         </form>
@@ -133,18 +130,10 @@ function SignInPage() {
         {isModalOpen && (
           <div className="signin-page-image-modal-overlay">
             <div className="signin-page-image-modal">
-              <img
-                src={URL.createObjectURL(formData.profile_picture)}
-                alt="Selected"
-                className="signin-page-modal-image"
-              />
+              <img src={URL.createObjectURL(formData.profile_picture)} alt="Selected" className="signin-page-modal-image" />
               <div className="signin-page-modal-buttons">
-                <button className="signin-page-confirm-btn" onClick={confirmImageSelection}>
-                  Confirm Image
-                </button>
-                <button className="signin-page-reselect-btn" onClick={reselectImage}>
-                  Reselect Image
-                </button>
+                <button className="signin-page-confirm-btn" onClick={confirmImageSelection}>Confirm Image</button>
+                <button className="signin-page-reselect-btn" onClick={reselectImage}>Reselect Image</button>
               </div>
             </div>
           </div>

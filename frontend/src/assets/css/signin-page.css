@@ -197,6 +197,37 @@
     color: #444;
   }
   
+  .signin-page-agreement {
+    display: flex;
+    align-items: center;
+    gap: -5px;  
+    margin-top: 10px;  
+    border: 1px dotted red;
+  }
+  
+  .signin-page-agreement input[type="checkbox"] {
+    transform: scale(0.8);  
+  }
+  
+  .agreement-text {
+    font-size: 0.6rem;
+    font-style: italic;
+    color: #555;
+    margin: 0; 
+    cursor: default;
+  }
+  
+
+  .error-message{
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: red;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    cursor: default;
+
+  }
+  
   @media (max-width: 768px) {
     .signin-page-form-columns {
       flex-direction: column;
