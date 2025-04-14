@@ -81,7 +81,7 @@ function SignInPage() {
             <div className="signin-page-left-column">
               <input type="text" name="first_name" placeholder="First Name" onChange={handleChange} required />
               <input type="text" name="last_name" placeholder="Last Name" onChange={handleChange} required />
-              <input type="text" name="nickname" placeholder="Nickname" onChange={handleChange} required />
+               <input type="text" name="nickname" placeholder="Nickname" onChange={handleChange} required />
               <input type="text" name="address" placeholder="Address" onChange={handleChange} required />
               <input type="text" name="brgy_position" placeholder="Barangay Position" onChange={handleChange} required />
               <div className="signin-page-phone-number">
@@ -114,6 +114,9 @@ function SignInPage() {
                 <input type="file" name="profile_picture" accept="image/*" ref={fileInputRef} onChange={handleChange} />
               </label>
 
+              {formData.profile_picture && isImageConfirmed && (
+                <div className="signin-page-filename">{formData.profile_picture.name}</div>
+              )}
 
               <div className="signin-page-agreement">
                 <input type="checkbox" onChange={() => setIsAgreementChecked(!isAgreementChecked)} />
