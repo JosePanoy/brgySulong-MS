@@ -1,0 +1,42 @@
+.brgy-map-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+.brgy-map-left, .brgy-map-right {
+  flex: 1 1 100%;
+}
+
+.brgy-map-left {
+  text-align: left;
+  padding: 20px;
+  cursor: default;
+  font-size: 1rem;
+}
+
+.brgy-map-right iframe {
+  width: 100%;
+  height: 450px;
+  border: 0;
+  border-radius: 8px;
+}
+
+.map-locked {
+  pointer-events: none; /* Prevent map interactions */
+  user-select: none;
+}
+
+/* Make it responsive */
+@media (min-width: 768px) {
+  .brgy-map-container {
+    flex-direction: row;
+    gap: 40px;
+  }
+
+  .brgy-map-left, .brgy-map-right {
+    flex: 1;
+  }
+}

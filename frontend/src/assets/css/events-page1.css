@@ -1,0 +1,144 @@
+.event-page1-container {
+  padding: 20px;
+}
+
+.event-page1-container h1{
+    font-size: 2rem;
+    cursor: default;
+    font-weight: 600;
+}
+
+.event-page1-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.event-page1-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.event-page1-box {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-page1-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-page1-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-page1-box-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.event-page1-box-category {
+  font-size: 1rem;
+  color: #333;
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.event-page1-box-description {
+  font-size: 1rem;
+  margin: 15px 0;
+  color: #555;
+}
+
+.event-page1-box-details {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.event-page1-box-details p {
+  margin-bottom: 8px;
+}
+
+.event-page1-footer {
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+.event-page1-loading,
+.event-page1-error {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #c5c5c5;
+}
+
+@media (max-width: 768px) {
+  .event-page1-title {
+    font-size: 1.8rem;
+  }
+
+  .event-page1-box {
+    padding: 15px;
+  }
+
+  .event-page1-box-title {
+    font-size: 1.4rem;
+  }
+
+  .event-page1-box-description {
+    font-size: 0.95rem;
+  }
+
+  .event-page1-box-category {
+    font-size: 0.9rem;
+  }
+
+  .event-page1-box-details p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-page1-title {
+    font-size: 1.6rem;
+  }
+
+  .event-page1-box {
+    padding: 10px;
+  }
+
+  .event-page1-box-title {
+    font-size: 1.2rem;
+  }
+
+  .event-page1-box-description {
+    font-size: 0.9rem;
+  }
+
+  .event-page1-box-category {
+    font-size: 0.8rem;
+  }
+
+  .event-page1-box-details p {
+    font-size: 0.8rem;
+  }
+
+  .event-page1-footer p {
+    font-size: 0.8rem;
+  }
+}

@@ -1,11 +1,13 @@
 import React from 'react'
 import LandingPageNavbar from '../sub-components/landing-page-navbar'
+import EventPage1 from './EventPage1'
 
 function EventsPage() {
   return (
     <>
     <LandingPageNavbar />
-    <div>events-page</div>
+
+    <EventPage1 />
     </>
 
   )

@@ -56,7 +56,8 @@ function LandingPageMainCaption() {
         className="landing-page-main-caption__title"
         viewport={{ once: false }}
       >
-        Barangay Sulong Inventory and Management System
+        Sulong <br />
+Municipality of Alimodian
       </motion.h1>
 
       <motion.p

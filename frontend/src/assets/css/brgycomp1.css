@@ -1,0 +1,122 @@
+.brgycomp1-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  margin-top: 50px;
+}
+
+.brgycomp1-heading {
+  text-align: center;
+  margin-bottom: 20px;
+  cursor: default;
+}
+
+.brgycomp1-description {
+  font-size: 0.8rem;
+  text-align: center;
+  margin-bottom: 30px;
+  cursor: default;
+}
+
+.brgycomp1-summary-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.brgycomp1-summary-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.brgycomp1-summary-table th,
+.brgycomp1-summary-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+  cursor: default;
+  font-size: 0.8rem;
+}
+
+.brgycomp1-summary-table th {
+  background-color: #e0e0e0;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+  padding: 10px;
+  border: 1px solid #ddd;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.brgycomp1-summary-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.brgycomp1-summary-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .brgycomp1-heading h1 {
+    font-size: 2rem;
+  }
+
+  .brgycomp1-heading h2 {
+    font-size: 1.3rem;
+  }
+
+  .brgycomp1-heading h3 {
+    font-size: 1rem;
+  }
+
+  .brgycomp1-description {
+    font-size: 0.9rem;
+  }
+
+  .brgycomp1-summary-table {
+    font-size: 0.75rem;
+    min-width: 600px;
+  }
+
+  .brgycomp1-summary-table th,
+  .brgycomp1-summary-table td {
+    padding: 8px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .brgycomp1-heading h1 {
+    font-size: 1.7rem;
+  }
+
+  .brgycomp1-heading h2 {
+    font-size: 1.1rem;
+  }
+
+  .brgycomp1-heading h3 {
+    font-size: 0.9rem;
+  }
+
+  .brgycomp1-description {
+    font-size: 0.8rem;
+  }
+
+  .brgycomp1-summary-wrapper {
+    overflow-x: auto;
+  }
+
+  .brgycomp1-summary-table {
+    font-size: 0.7rem;
+    min-width: 500px;
+  }
+
+  .brgycomp1-summary-table th,
+  .brgycomp1-summary-table td {
+    padding: 6px;
+  }
+}
