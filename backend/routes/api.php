@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BrgyResidentController;
 use App\Http\Controllers\BrgySuperAdminController;
+use App\Http\Controllers\BarangayEventsController;
 
 // BrgySuperAdmin Routes
-Route::prefix('brgysuper')->group(function() {
+Route::prefix('brgysuper')->group(function () {
     Route::get('admins', [BrgySuperAdminController::class, 'index']);
     Route::get('admins/{id}', [BrgySuperAdminController::class, 'show']);
     Route::post('admins', [BrgySuperAdminController::class, 'store']);
@@ -14,10 +15,19 @@ Route::prefix('brgysuper')->group(function() {
 });
 
 // BrgyResident Routes
-Route::prefix('brgyresidents')->group(function() {
+Route::prefix('brgyresidents')->group(function () {
     Route::get('residents', [BrgyResidentController::class, 'index']);
     Route::get('residents/{id}', [BrgyResidentController::class, 'show']);
     Route::post('residents', [BrgyResidentController::class, 'store']);
     Route::put('residents/{id}', [BrgyResidentController::class, 'update']);
     Route::delete('residents/{id}', [BrgyResidentController::class, 'destroy']);
+});
+
+// Brgy Events Routes (Standalone)
+Route::prefix('events')->group(function () {
+    Route::get('/', [BarangayEventsController::class, 'index']);
+    Route::get('{id}', [BarangayEventsController::class, 'show']);
+    Route::post('/', [BarangayEventsController::class, 'store']);
+    Route::put('{id}', [BarangayEventsController::class, 'update']);
+    Route::delete('{id}', [BarangayEventsController::class, 'destroy']);
 });
