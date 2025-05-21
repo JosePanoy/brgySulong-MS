@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import LandingPageNavbar from "../../sub-components/landing-page-navbar";
 import AdminMainNav from "./admin-sub-components/admin-main-nav";
 import "../../assets/css/dashboard/main-dashboard.css";
 
@@ -15,7 +14,6 @@ function MainDashboard() {
 
   return (
     <>
-      <LandingPageNavbar />
       <AdminMainNav />
       <div>Main Dashboard</div>
     </>

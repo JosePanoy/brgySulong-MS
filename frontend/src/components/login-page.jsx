@@ -4,11 +4,15 @@ import LandingPageNavbar from "../sub-components/landing-page-navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../assets/css/login-page.css";
 import { Link } from "react-router-dom";
+import WrongComponent from "../sub-components/wrong-div";
+import CheckComponent from "../sub-components/check-div";
 
 function LoginPage() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [showWrong, setShowWrong] = useState(false);
+  const [showCheck, setShowCheck] = useState(false);
   const navigate = useNavigate();
 
   const handlePhoneChange = (e) => setPhone(e.target.value);
@@ -36,14 +40,26 @@ function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("jwt_token", data.token);
-        navigate("/dashboard");
+        setShowCheck(true);
+        setTimeout(() => {
+          localStorage.setItem("jwt_token", data.token);
+          navigate("/dashboard");
+        }, 4500);
       } else {
-        alert(data.error || "Something went wrong.");
+        setShowWrong(true);
+        setTimeout(() => {
+          setShowWrong(false);
+        }, 4500);
       }
     } catch (error) {
       console.error("Error during login:", error);
       alert("An error occurred while logging in.");
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin(); 
     }
   };
 
@@ -58,6 +74,7 @@ function LoginPage() {
             placeholder="Phone number"
             value={phone}
             onChange={handlePhoneChange}
+            onKeyDown={handleKeyPress} // Trigger login on Enter key
             className="login-page-input"
           />
           <div className="login-page-password-container">
@@ -66,6 +83,7 @@ function LoginPage() {
               placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
+              onKeyDown={handleKeyPress} // Trigger login on Enter key
               className="login-page-input"
             />
             <div
@@ -87,6 +105,8 @@ function LoginPage() {
           </div>
         </div>
       </div>
+      {showWrong && <WrongComponent />}
+      {showCheck && <CheckComponent />}
     </>
   );
 }

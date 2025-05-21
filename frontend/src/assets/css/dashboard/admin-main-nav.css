@@ -87,6 +87,36 @@
 }
 
 
+.admin-main-nav__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.admin-main-nav__modal-content {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.admin-main-nav__modal-buttons {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+
+
 /* Responsive */
 @media (max-width: 768px) {
   .admin-main-nav {
