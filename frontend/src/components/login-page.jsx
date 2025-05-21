@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import LandingPageNavbar from "../sub-components/landing-page-navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../assets/css/login-page.css";
-import { Link } from "react-router-dom";  // <-- Add this line
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   const [phone, setPhone] = useState("");
@@ -42,7 +42,7 @@ function LoginPage() {
         alert(data.error || "Something went wrong.");
       }
     } catch (error) {
-      console.error("Error during login:", error);  // Log the error for debugging
+      console.error("Error during login:", error);
       alert("An error occurred while logging in.");
     }
   };
