@@ -1,29 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LandingPageNavbar from "../sub-components/landing-page-navbar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../assets/css/login-page.css";
+import { Link } from "react-router-dom";  // <-- Add this line
 
 function LoginPage() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handlePhoneChange = (e) => setPhone(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(true);
+    setPasswordVisible(!passwordVisible);
   };
 
-  useEffect(() => {
-    if (passwordVisible) {
-      const timer = setTimeout(() => {
-        setPasswordVisible(false);
-      }, 5000);
-      return () => clearTimeout(timer);
+  const handleLogin = async () => {
+    const payload = {
+      phone_number: phone,
+      password: password,
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("jwt_token", data.token);
+        navigate("/dashboard");
+      } else {
+        alert(data.error || "Something went wrong.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);  // Log the error for debugging
+      alert("An error occurred while logging in.");
     }
-  }, [passwordVisible]);
+  };
 
   return (
     <>
@@ -53,7 +75,9 @@ function LoginPage() {
               {passwordVisible ? <FaEyeSlash /> : <FaEye />}
             </div>
           </div>
-          <button className="login-page-btn">Log In</button>
+          <button className="login-page-btn" onClick={handleLogin}>
+            Log In
+          </button>
           <div className="login-page-forgot-password">
             <a href="/forgot-password">Forgot password?</a>
           </div>

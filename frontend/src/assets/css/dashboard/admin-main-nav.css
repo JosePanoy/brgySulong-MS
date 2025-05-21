@@ -1,0 +1,135 @@
+.admin-main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 5px 16px;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-main-nav__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.admin-main-nav__logo {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.admin-main-nav__menu-icon {
+  color: green;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.admin-main-nav__buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.admin-main-nav__button {
+  background: none;
+  border: 1px solid transparent;
+  color: #333;
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.admin-main-nav__button:hover,
+.admin-main-nav__button:active {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.admin-main-nav__subnav {
+  display: flex;
+  gap: 20px;
+  padding: 5px 16px;
+  margin-top: -5px;
+}
+
+.admin-main-nav__subnav-btn {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s ease;
+}
+
+.admin-main-nav__subnav-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #28a745; /* greenish */
+  transition: width 0.3s ease;
+  border-radius: 12px;
+}
+
+.admin-main-nav__subnav-btn:hover::after {
+  width: 80%;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-main-nav {
+    padding: 8px 12px;
+  }
+
+  .admin-main-nav__button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+    .admin-main-nav__subnav {
+  display: flex;
+  gap: 15px;
+  padding: 5px 16px;
+  margin-top: -10px;
+}
+
+}
+
+@media (max-width: 480px) {
+  .admin-main-nav__menu-icon {
+    color: green;
+    font-size: 17px;
+    cursor: pointer;
+  }
+
+  .admin-main-nav__subnav {
+  display: flex;
+  gap: 15px;
+  padding: 5px 16px;
+  margin-top: -10px;
+}
+
+.admin-main-nav__subnav-btn {
+  background: none;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s ease;
+}
+}

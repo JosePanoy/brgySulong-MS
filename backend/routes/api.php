@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BrgyResidentController;
 use App\Http\Controllers\BrgySuperAdminController;
 use App\Http\Controllers\BarangayEventsController;
+use App\Http\Controllers\AuthController;
 
 // BrgySuperAdmin Routes
 Route::prefix('brgysuper')->group(function () {
@@ -31,3 +32,6 @@ Route::prefix('events')->group(function () {
     Route::put('{id}', [BarangayEventsController::class, 'update']);
     Route::delete('{id}', [BarangayEventsController::class, 'destroy']);
 });
+
+
+Route::post('login', [AuthController::class, 'login']);

@@ -29,6 +29,7 @@ function LandingPageNavbar() {
       <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
         <Link to="/events">Events</Link>
         <Link to="/news">News</Link>
+        <Link to="/dashboard">Dashboard Test Page</Link>
       </div>
     </nav>
   );
