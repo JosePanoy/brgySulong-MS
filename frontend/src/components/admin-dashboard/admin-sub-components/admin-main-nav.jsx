@@ -68,8 +68,6 @@ function AdminMainNav() {
 
       <div className="admin-main-nav__subnav">
         <button className="admin-main-nav__subnav-btn">Dashboard</button>
-        <button className="admin-main-nav__subnav-btn">Reports</button>
-        <button className="admin-main-nav__subnav-btn">Users</button>
         <button className="admin-main-nav__subnav-btn">Settings</button>
         <button className="admin-main-nav__subnav-btn">Help</button>
       </div>
