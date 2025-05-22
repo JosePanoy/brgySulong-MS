@@ -1,0 +1,104 @@
+.admin-slide-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #191c4e;
+  width: 250px;
+  padding: 10px;
+  height: 100vh;
+  position: fixed;
+  top: 80px;
+  left: -250px;
+  z-index: 1000;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.admin-slide-nav.active {
+  left: 0;
+}
+
+.admin-slide-nav-button {
+  background-color: #191c4e;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.admin-slide-nav-button:hover {
+  background-color: #28a745;
+}
+
+.admin-slide-nav-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .admin-slide-nav {
+    width: 220px;
+  }
+
+  .admin-slide-nav-button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .admin-slide-nav-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-slide-nav {
+    width: 190px;
+  }
+
+  .admin-slide-nav-button {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .admin-slide-nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+}
+
+@media (max-width: 390px) {
+  .admin-slide-nav {
+    width: 190px;
+  }
+
+  .admin-slide-nav-button {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .admin-slide-nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+}
+
+/* Hide AdminSlideNav on PC view */
+@media (min-width: 1024px) {
+  .admin-slide-nav {
+    display: none;
+  }
+}

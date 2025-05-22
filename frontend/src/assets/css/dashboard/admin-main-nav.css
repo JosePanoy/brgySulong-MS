@@ -8,7 +8,6 @@
   width: 100%;
   overflow-x: hidden;
   border-bottom: 1px solid hsla(0, 0%, 64%, 0.578);
-  border: 1px dotted red;
 }
 
 .admin-main-nav__left {
@@ -140,7 +139,17 @@
   justify-content: center;
 }
 
+@media (min-width: 769px) {
+  .admin-main-nav__menu-icon {
+    display: none;
+  }
+}
 
+@media (max-width: 768px) {
+  .admin-main-nav__menu-icon {
+    display: block;
+  }
+}
 
 /* Responsive */
 @media (max-width: 768px) {

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminMainNav from "./admin-sub-components/admin-main-nav";
 import "../../assets/css/dashboard/main-dashboard.css";
+import AdminSideNav from "./admin-sub-components/admin-side-nav";
+import AdminSlideNav from "./admin-sub-components/admin-slide-nav";
 
 function MainDashboard() {
  // const [userData, setUserData] = useState(null);
@@ -29,6 +31,7 @@ function MainDashboard() {
   return (
     <>
       <AdminMainNav />
+      <AdminSideNav />
 
     </>
   );
