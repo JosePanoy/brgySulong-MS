@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
+import LogoutButton from "../../../assets/gif/logout.gif";
 import "../../../assets/css/dashboard/admin-main-nav.css";
 import SulongLogo from "../../../assets/img/sulong-logo.png";
 import LogoutDiv from "../../../sub-components/logout-div";
@@ -11,8 +12,7 @@ function AdminMainNav() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [userData, setUserData] = useState(null);
 
-
-    useEffect(() => {
+  useEffect(() => {
     // Retrieve the logged-in user's data from localStorage
     const user = localStorage.getItem("user_data");
     if (user) {
@@ -34,14 +34,21 @@ function AdminMainNav() {
     <>
       <nav className="admin-main-nav">
         <div className="admin-main-nav__left">
-          <img src={SulongLogo} alt="Sulong Logo" className="admin-main-nav__logo" />
+          <img
+            src={SulongLogo}
+            alt="Sulong Logo"
+            className="admin-main-nav__logo"
+          />
           <FaBars className="admin-main-nav__menu-icon" />
-            {userData ? (
+          {userData ? (
             <div className="admin-main-nav__user-info">
-            <span className="online-status"></span>
-              <span className="user-info__brgy-position">{userData.brgy_position} </span>
-              <span className="user-info__brgy-position">{userData.fname} {userData.lname}</span>
-              
+              <span className="online-status"></span>
+              <span className="user-info__brgy-position">
+                {userData.brgy_position}{" "}
+              </span>
+              <span className="user-info__brgy-position">
+                {userData.fname} {userData.lname}
+              </span>
             </div>
           ) : (
             <span>Loading...</span>
@@ -49,9 +56,13 @@ function AdminMainNav() {
         </div>
         <div className="admin-main-nav__buttons">
           <button className="admin-main-nav__button">Fax</button>
-          <button className="admin-main-nav__button" onClick={() => setShowModal(true)}>
-            Log Out
-          </button>
+          <img
+            src={LogoutButton}
+            alt="Logout"
+            className="logout-button-img"
+            onClick={() => setShowModal(true)}
+          />
+
         </div>
       </nav>
 
@@ -69,7 +80,10 @@ function AdminMainNav() {
           <div className="admin-main-nav__modal-content">
             <p>Are you sure you want to log out?</p>
             <div className="admin-main-nav__modal-buttons">
-              <button className="admin-main-nav__button" onClick={() => setShowModal(false)}>
+              <button
+                className="admin-main-nav__button"
+                onClick={() => setShowModal(false)}
+              >
                 Cancel
               </button>
               <button className="admin-main-nav__button" onClick={handleLogout}>

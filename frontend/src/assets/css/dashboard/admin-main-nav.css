@@ -3,10 +3,12 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 5px 16px;
+    padding: 0 10px;       
+  height: 48px;
   width: 100%;
   overflow-x: hidden;
   border-bottom: 1px solid hsla(0, 0%, 64%, 0.578);
+  border: 1px dotted red;
 }
 
 .admin-main-nav__left {
@@ -17,14 +19,14 @@
 }
 
 .admin-main-nav__logo {
-  width: 40px;
-  height: 40px;
+   width: 32px; /* was 40px */
+  height: 32px;
   display: block;
 }
 
 .admin-main-nav__menu-icon {
   color: green;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
 }
 
@@ -60,7 +62,7 @@
   background: none;
   border: 1px solid transparent;
   color: #333;
-  padding: 8px 16px;
+  padding: 5px 15px;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -159,6 +161,14 @@
 }
 
 }
+
+.logout-button-img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  object-fit: contain;
+}
+
 
 @media (max-width: 480px) {
   .admin-main-nav__menu-icon {
