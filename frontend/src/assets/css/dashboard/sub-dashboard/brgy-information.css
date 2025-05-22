@@ -1,0 +1,162 @@
+.brgy-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.brgy-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 20px 10px;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+
+.brgy-info-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(49, 49, 49, 0.309);
+  padding: 10px;
+  font-size: 16px;
+  height: 100%;
+  border-bottom: 1px solid rgba(49, 49, 49, 0.309);
+  position: relative;
+  background: #fff;
+  margin-bottom: 5px;
+}
+
+.brgy-info-box1 {
+  grid-column: span 3;
+}
+
+.brgy-info-box2,
+.brgy-info-box3,
+.brgy-info-box4,
+.brgy-info-box5,
+.brgy-info-box6,
+.brgy-info-box7 {
+  grid-column: span 1;
+}
+
+.box-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.box-content > div {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid rgba(49, 49, 49, 0.309);
+  padding: 5px 0;
+}
+
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 10px 0;
+  border: 2px solid #ccc;
+  object-fit: cover;
+  align-self: center;
+  position: relative;
+  z-index: 1;
+  background-color: white;
+}
+
+.sub-box {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+  border-top: 1px solid rgba(49, 49, 49, 0.309);
+}
+
+.sub-box div {
+  width: 30%;
+  text-align: center;
+  padding: 5px;
+  border-left: 1px solid rgba(49, 49, 49, 0.309);
+}
+
+.sub-box div:first-child {
+  border-left: none;
+}
+
+.top-row {
+  cursor: default;
+}
+
+.brgy-info-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 50%;
+  background-color: #f0f0f0;
+  z-index: 0;
+}
+
+.title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+ .position, .status, .age, .view {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: black;
+  z-index: 3;
+  position: relative;
+  cursor: default;
+}
+
+.official-name{
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: black;
+  z-index: 10;
+  position: relative;
+  cursor: default;
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .brgy-info-container {
+    padding: 0 20px;
+  }
+
+  .brgy-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .brgy-info-box1 {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .brgy-info-container {
+    padding: 0 10px;
+  }
+
+  .brgy-info-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .brgy-info-box1 {
+    grid-column: span 1;
+  }
+}

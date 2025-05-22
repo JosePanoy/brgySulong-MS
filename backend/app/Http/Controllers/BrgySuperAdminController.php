@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 
 class BrgySuperAdminController extends Controller
 {
-    // Display all super admins
+ 
     public function index()
     {
         $admins = BrgySuperAdmin::all();
         return response()->json($admins);
     }
 
-    // Show a specific super admin by ID
+   
     public function show($id)
     {
         $admin = BrgySuperAdmin::find($id);
@@ -26,7 +26,6 @@ class BrgySuperAdminController extends Controller
         return response()->json($admin);
     }
 
-    // Create a new super admin
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -44,7 +43,7 @@ class BrgySuperAdminController extends Controller
         return response()->json($admin, 201);
     }
 
-    // Update an existing super admin by ID
+
     public function update(Request $request, $id)
     {
         $admin = BrgySuperAdmin::find($id);

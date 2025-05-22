@@ -1,0 +1,17 @@
+Barangay Captain
+
+Barangay Councilor
+
+Barangay Secretary
+
+Barangay Treasurer
+
+Barangay Tanod
+
+Barangay Health Worker (BHW)
+
+Barangay Nutrition Scholar (BNS)
+
+Barangay Day Care Worker
+
+Barangay Information Officer
