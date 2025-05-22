@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import LogoutButton from "../../../assets/gif/logout.gif";
 import "../../../assets/css/dashboard/admin-main-nav.css";
@@ -52,13 +52,18 @@ function AdminMainNav() {
     <>
       <nav className="admin-main-nav">
         <div className="admin-main-nav__left">
+        <Link to="/dashboard">
           <img
             src={SulongLogo}
             alt="Sulong Logo"
             className="admin-main-nav__logo"
           />
+        </Link>
           {isMobileOrTablet && (
-            <FaBars className="admin-main-nav__menu-icon" onClick={toggleSlideNav} />
+            <FaBars
+              className="admin-main-nav__menu-icon"
+              onClick={toggleSlideNav}
+            />
           )}
           {userData ? (
             <div className="admin-main-nav__user-info">
@@ -86,9 +91,15 @@ function AdminMainNav() {
       </nav>
 
       <div className="admin-main-nav__subnav">
-        <button className="admin-main-nav__subnav-btn">Dashboard</button>
-        <button className="admin-main-nav__subnav-btn">Settings</button>
-        <button className="admin-main-nav__subnav-btn">Help</button>
+        <Link to="/dashboard" className="admin-main-nav__subnav-btn">
+          Dashboard
+        </Link>
+        <Link to="/settings" className="admin-main-nav__subnav-btn">
+          Settings
+        </Link>
+        <Link to="/help" className="admin-main-nav__subnav-btn">
+          Help
+        </Link>
       </div>
 
       {showModal && (
