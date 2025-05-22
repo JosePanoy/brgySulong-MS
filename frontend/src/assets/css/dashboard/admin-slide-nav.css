@@ -9,7 +9,7 @@
   position: fixed;
   top: 80px;
   left: -250px;
-  z-index: 1000;
+   z-index: 999;
   transition: left 0.3s ease;
   overflow-y: auto;
   border-bottom-right-radius: 12px;
@@ -48,6 +48,7 @@
 @media (max-width: 768px) {
   .admin-slide-nav {
     width: 220px;
+     z-index: 9;
   }
 
   .admin-slide-nav-button {
@@ -82,6 +83,7 @@
 @media (max-width: 390px) {
   .admin-slide-nav {
     width: 190px;
+     z-index: 9;
   }
 
   .admin-slide-nav-button {
@@ -98,6 +100,20 @@
 
 /* Hide AdminSlideNav on PC view */
 @media (min-width: 1024px) {
+  .admin-slide-nav {
+    display: none;
+  }
+}
+
+
+@media (min-width: 1024px) {
+  .admin-slide-nav {
+    display: none;
+  }
+}
+
+
+@media (min-width: 765px) {
   .admin-slide-nav {
     display: none;
   }

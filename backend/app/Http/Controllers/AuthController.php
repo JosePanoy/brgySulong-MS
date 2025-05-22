@@ -27,9 +27,10 @@ class AuthController extends Controller
             return response()->json(['error' => 'Either email or phone_number is required'], 400);
         }
 
-        $user = BrgySuperAdmin::where('email', $request->email)
-            ->orWhere('phone_number', $request->phone_number)
-            ->first();
+            $user = BrgySuperAdmin::where('email', $request->email)
+                ->orWhere('phone_number', $request->phone_number)
+                ->first();
+
 
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);

@@ -8,14 +8,14 @@ import WrongComponent from "../sub-components/wrong-div";
 import CheckComponent from "../sub-components/check-div";
 
 function LoginPage() {
-  const [phone, setPhone] = useState("");
+  const [emailOrPhone, setEmailOrPhone] = useState(""); 
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showWrong, setShowWrong] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
   const navigate = useNavigate();
 
-  const handlePhoneChange = (e) => setPhone(e.target.value);
+  const handleEmailOrPhoneChange = (e) => setEmailOrPhone(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const togglePasswordVisibility = () => {
@@ -23,8 +23,10 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
+    const isEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(emailOrPhone);
     const payload = {
-      phone_number: phone,
+      email: isEmail ? emailOrPhone : undefined,
+      phone_number: !isEmail ? emailOrPhone : undefined,
       password: password,
     };
 
@@ -43,7 +45,7 @@ function LoginPage() {
         setShowCheck(true);
         setTimeout(() => {
           localStorage.setItem("jwt_token", data.token);
-          localStorage.setItem("user_data", JSON.stringify(data.user)); // Storing full user data
+          localStorage.setItem("user_data", JSON.stringify(data.user));
           navigate("/dashboard");
         }, 4500);
       } else {
@@ -60,7 +62,7 @@ function LoginPage() {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleLogin(); // Trigger login when Enter key is pressed
+      handleLogin();
     }
   };
 
@@ -72,10 +74,10 @@ function LoginPage() {
           <h2>Login</h2>
           <input
             type="text"
-            placeholder="Phone number"
-            value={phone}
-            onChange={handlePhoneChange}
-            onKeyDown={handleKeyPress} // Trigger login on Enter key
+            placeholder="Phone number or Email"
+            value={emailOrPhone}
+            onChange={handleEmailOrPhoneChange}
+            onKeyDown={handleKeyPress}
             className="login-page-input"
           />
           <div className="login-page-password-container">
@@ -84,7 +86,7 @@ function LoginPage() {
               placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
-              onKeyDown={handleKeyPress} // Trigger login on Enter key
+              onKeyDown={handleKeyPress}
               className="login-page-input"
             />
             <div
