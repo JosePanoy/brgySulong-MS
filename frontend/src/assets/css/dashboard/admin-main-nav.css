@@ -6,6 +6,7 @@
   padding: 5px 16px;
   width: 100%;
   overflow-x: hidden;
+  border-bottom: 1px solid hsla(0, 0%, 64%, 0.578);
 }
 
 .admin-main-nav__left {
@@ -31,6 +32,28 @@
   display: flex;
   gap: 10px;
   flex-wrap: nowrap;
+}
+
+.admin-main-nav__user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-info__brgy-position {
+  font-weight: bold;
+  color: #333;
+  cursor: default;
+  font-size: 0.7rem;
+}
+
+.online-status {
+  width: 7px;
+  height: 7px;
+  background-color: hsl(134, 61%, 41%);
+  border-radius: 50%; 
+  display: inline-block;
+  margin-left: 8px;
 }
 
 .admin-main-nav__button {
@@ -132,7 +155,7 @@
   display: flex;
   gap: 15px;
   padding: 5px 16px;
-  margin-top: -10px;
+  margin-top: -5px;
 }
 
 }
@@ -148,7 +171,7 @@
   display: flex;
   gap: 15px;
   padding: 5px 16px;
-  margin-top: -10px;
+  margin-top: -5px;
 }
 
 .admin-main-nav__subnav-btn {
@@ -161,5 +184,58 @@
   position: relative;
   padding: 4px 0;
   transition: color 0.3s ease;
+}
+
+
+
+.admin-main-nav__user-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: -10px;
+}
+
+.user-info__brgy-position {
+  font-weight: bold;
+  color: #333;
+  cursor: default;
+  font-size: 0.7rem;
+}
+
+.online-status {
+  width: 7px;
+  height: 7px;
+  background-color: hsl(134, 61%, 41%);
+  border-radius: 50%; 
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.admin-main-nav__button {
+  background: none;
+  border: 1px solid transparent;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 10px;
+  white-space: nowrap;
+  font-weight: 600;
+  
+}
+
+.admin-main-nav__button:hover,
+.admin-main-nav__button:active {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+
+.admin-main-nav__buttons {
+  display: flex;
+  gap: 5px;
+  flex-wrap: nowrap;
+  margin-right: -10px;
 }
 }

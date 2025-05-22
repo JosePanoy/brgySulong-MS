@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import "../../../assets/css/dashboard/admin-main-nav.css";
@@ -9,6 +9,16 @@ function AdminMainNav() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+
+    useEffect(() => {
+    // Retrieve the logged-in user's data from localStorage
+    const user = localStorage.getItem("user_data");
+    if (user) {
+      setUserData(JSON.parse(user)); // Set the user data to state
+    }
+  }, []);
 
   const handleLogout = () => {
     setIsLoggingOut(true);
@@ -26,6 +36,16 @@ function AdminMainNav() {
         <div className="admin-main-nav__left">
           <img src={SulongLogo} alt="Sulong Logo" className="admin-main-nav__logo" />
           <FaBars className="admin-main-nav__menu-icon" />
+            {userData ? (
+            <div className="admin-main-nav__user-info">
+            <span className="online-status"></span>
+              <span className="user-info__brgy-position">{userData.brgy_position} </span>
+              <span className="user-info__brgy-position">{userData.fname} {userData.lname}</span>
+              
+            </div>
+          ) : (
+            <span>Loading...</span>
+          )}
         </div>
         <div className="admin-main-nav__buttons">
           <button className="admin-main-nav__button">Fax</button>

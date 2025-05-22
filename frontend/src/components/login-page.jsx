@@ -43,6 +43,7 @@ function LoginPage() {
         setShowCheck(true);
         setTimeout(() => {
           localStorage.setItem("jwt_token", data.token);
+          localStorage.setItem("user_data", JSON.stringify(data.user)); // Storing full user data
           navigate("/dashboard");
         }, 4500);
       } else {
@@ -59,7 +60,7 @@ function LoginPage() {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleLogin(); 
+      handleLogin(); // Trigger login when Enter key is pressed
     }
   };
 
