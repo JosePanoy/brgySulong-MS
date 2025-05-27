@@ -1,0 +1,141 @@
+.admin-personal-edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 0.5rem;
+}
+
+.admin-personal-edit-modal {
+  background: #fff;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1rem 1.2rem;
+  box-sizing: border-box;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1c1e21;
+  font-size: 0.875rem;
+}
+
+.admin-personal-edit-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #606770;
+}
+
+.admin-personal-edit-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.admin-personal-edit-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+
+}
+
+.admin-personal-edit-buttons {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.admin-personal-edit-btn.save-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 3px 6px -2px rgba(70, 130, 180, 0.6); 
+  transition: box-shadow 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: auto;
+  margin-left: 0.4rem; 
+}
+
+.admin-personal-edit-btn.save-btn:hover {
+  box-shadow: 0 5px 8px -2px rgba(70, 130, 180, 0.9);
+}
+
+.save-btn-icon {
+  width: 25px; 
+  height: 25px;
+  display: block;
+}
+
+.admin-personal-edit-profile-pic {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #1877f2;
+}
+
+.admin-personal-edit-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem 1rem;
+}
+
+.admin-personal-edit-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-personal-edit-row label {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: #606770;
+  font-size: 0.8rem;
+}
+
+.admin-personal-edit-row input,
+.admin-personal-edit-row textarea {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  resize: vertical;
+  background-color: #f5f6f7;
+  color: #333;
+}
+
+.admin-personal-edit-row textarea {
+  min-height: 50px;
+}
+
+@media (max-width: 768px) {
+  .admin-personal-edit-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-personal-edit-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-personal-edit-buttons {
+    gap: 0.3rem;
+  }
+
+  .admin-personal-edit-btn {
+    padding: 0.15rem 0.35rem;
+    font-size: 0.5rem;
+    min-width: 40px;
+  }
+}

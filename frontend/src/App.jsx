@@ -16,6 +16,7 @@ import BrgyFeedback from "./components/admin-dashboard/admin-dash-pages/brgy-fee
 import BrgyAnalytics from "./components/admin-dashboard/admin-dash-pages/brgy-analytics";
 import BrgySettings from "./components/admin-dashboard/admin-dash-pages/brgy-settings";
 import BrgySupport from "./components/admin-dashboard/admin-dash-pages/brgy-support";
+import AdminPersonalPage from "./components/admin-dashboard/admin-sub-pages/admin-personal-page";
 
 function App() {
   return (
@@ -28,17 +29,15 @@ function App() {
       <Route path="/dashboard" element={<MainDashboard />} />
       <Route path="/test" element={<TestPage />} />
 
-
-     <Route path="/brgy-information" element={<BrgyInformation />} />   
-     <Route path="/brgy-news" element={<BrgyNews />} />
-     <Route path="/brgy-residents" element={<BrgyResidents />} />
-     <Route path="/brgy-inventory" element={<BrgyInventory />} />
-     <Route path="/brgy-feedback" element={<BrgyFeedback />} />
-     <Route path="/brgy-analytics" element={<BrgyAnalytics />} />
-     <Route path="/brgy-settings" element={<BrgySettings />} />
-     <Route path="/brgy-support" element={<BrgySupport />} />
-
-
+      <Route path="/brgy-information" element={<BrgyInformation />} />
+      <Route path="/brgy-information/personal/:id" element={<AdminPersonalPage />} />
+      <Route path="/brgy-news" element={<BrgyNews />} />
+      <Route path="/brgy-residents" element={<BrgyResidents />} />
+      <Route path="/brgy-inventory" element={<BrgyInventory />} />
+      <Route path="/brgy-feedback" element={<BrgyFeedback />} />
+      <Route path="/brgy-analytics" element={<BrgyAnalytics />} />
+      <Route path="/brgy-settings" element={<BrgySettings />} />
+      <Route path="/brgy-support" element={<BrgySupport />} />
 
       <Route path="/settings" element={<AdminSettingPage />} />
       <Route path="/help" element={<AdminHelpPage />} />
