@@ -45,36 +45,6 @@
 .admin-personal-edit-header h2 {
   font-size: 1.25rem;
   margin: 0;
-
-}
-
-.admin-personal-edit-buttons {
-  display: flex;
-  gap: 0.4rem;
-}
-
-.admin-personal-edit-btn.save-btn {
-  border: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  box-shadow: 0 3px 6px -2px rgba(70, 130, 180, 0.6); 
-  transition: box-shadow 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: auto;
-  margin-left: 0.4rem; 
-}
-
-.admin-personal-edit-btn.save-btn:hover {
-  box-shadow: 0 5px 8px -2px rgba(70, 130, 180, 0.9);
-}
-
-.save-btn-icon {
-  width: 25px; 
-  height: 25px;
-  display: block;
 }
 
 .admin-personal-edit-profile-pic {
@@ -82,12 +52,29 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #1877f2;
+  border: 1px solid #1877f2;
 }
 
 .admin-personal-edit-form {
+  display: block;
+}
+
+.admin-personal-edit-columns {
+  display: flex;
+  gap: 2rem;
+  padding-left: 2rem;
+  box-sizing: border-box;
+}
+
+.admin-personal-edit-column:first-child {
+  border-right: 1px solid #dedede;
+  padding-right: 2rem;
+  box-sizing: border-box;
+}
+.admin-personal-edit-column {
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 0.6rem 1rem;
 }
 
@@ -104,7 +91,8 @@
 }
 
 .admin-personal-edit-row input,
-.admin-personal-edit-row textarea {
+.admin-personal-edit-row textarea,
+.admin-personal-edit-row select {
   padding: 0.3rem 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -119,75 +107,65 @@
 }
 
 @media (max-width: 768px) {
-  .admin-personal-edit-form {
-    grid-template-columns: repeat(2, 1fr);
+  .admin-personal-edit-columns {
+    flex-direction: column;
+    border-left: none;
+    padding-left: 0;
+  }
+
+    .admin-personal-edit-column:first-child {
+    border-right: none;
+    padding-right: 0;
   }
 }
 
 @media (max-width: 480px) {
-  .admin-personal-edit-form {
-    grid-template-columns: 1fr;
+  .admin-personal-edit-columns {
+    flex-direction: column;
+    border-left: none;
+    padding-left: 0;
   }
-
-  .admin-personal-edit-buttons {
-    gap: 0.3rem;
-  }
-
   .admin-personal-edit-btn {
-    padding: 0.15rem 0.35rem;
-    font-size: 0.5rem;
-    min-width: 40px;
+    padding: 0.15rem 0.25rem;
+  }
+
+    .admin-personal-edit-column:first-child {
+    border-right: none;
+    padding-right: 0;
   }
 }
 
+.admin-personal-edit-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.admin-personal-edit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.admin-personal-edit-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.admin-personal-edit-btn.save-btn img {
+  width: 25px;
+  height: 25px;
+}
+
+.save-btn-icon {
+  width: 22px;
+  height: 22px;
+}
 
 .admin-personal-edit-row > div {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-}
-
-.admin-personal-edit-btn {
-  border: 1px solid #1877f2;
-  background: #fff;
-  color: #1877f2;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.admin-personal-edit-btn:hover:not(:disabled) {
-  background-color: #1877f2;
-  color: #fff;
-}
-
-.admin-personal-edit-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.admin-personal-edit-btn.save-btn {
-  border: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  box-shadow: 0 3px 6px -2px rgba(70, 130, 180, 0.6);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: auto;
-  transition: box-shadow 0.3s ease;
-}
-
-.admin-personal-edit-btn.save-btn:hover {
-  box-shadow: 0 5px 8px -2px rgba(70, 130, 180, 0.9);
-}
-
-.save-btn-icon {
-  width: 25px;
-  height: 25px;
-  display: block;
+  gap: 0.5rem;
 }

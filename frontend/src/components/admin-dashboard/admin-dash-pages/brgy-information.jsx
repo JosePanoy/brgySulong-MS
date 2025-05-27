@@ -131,11 +131,16 @@ function BrgyInformation() {
                   </div>
                   <div className="position">Barangay Captain</div>
                 </div>
-                <img
-                  className="profile-pic"
-                  src={captain.profile_picture || "profile-pic.jpg"}
-                  alt="Captain"
-                />
+<img
+  className="profile-pic"
+  src={
+    captain.profile_picture
+      ? `http://127.0.0.1:8000/storage/${captain.profile_picture}`
+      : "profile-pic.jpg"
+  }
+  alt="Captain"
+/>
+
                 <div className="sub-box">
                   <div className="status">Status:{captain.position_status || "N/A"}</div>
                   <div className="age">Age: {captain.age || "N/A"}</div>
@@ -191,11 +196,16 @@ function BrgyInformation() {
                         : admin.brgy_position.replace("Barangay", "Brgy.")}
                     </div>
                   </div>
-                  <img
-                    className="profile-pic"
-                    src={admin.profile_picture || "profile-pic.jpg"}
-                    alt="Official"
-                  />
+<img
+  className="profile-pic"
+  src={
+    admin.profile_picture
+      ? `http://127.0.0.1:8000/storage/${admin.profile_picture}`
+      : "profile-pic.jpg"
+  }
+  alt="Official"
+/>
+
                   <div className="sub-box">
                     <div className="status">Status: {admin.position_status || "N/A"}</div>
                     <div className="age">Age: {admin.age || "N/A"}</div>

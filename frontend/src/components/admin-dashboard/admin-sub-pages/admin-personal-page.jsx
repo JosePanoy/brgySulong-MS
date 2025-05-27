@@ -19,6 +19,10 @@ function AdminPersonalPage() {
       .catch(() => setOfficer(null));
   }, [id]);
 
+  const refreshOfficerData = (updatedOfficer) => {
+    setOfficer(updatedOfficer);
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -54,10 +58,15 @@ function AdminPersonalPage() {
 
         <div className="profile-header">
           <img
-            src={officer.profile_picture || "profile-pic.jpg"}
+            src={
+              officer.profile_picture
+                ? `http://127.0.0.1:8000/storage/${officer.profile_picture}`
+                : "profile-pic.jpg"
+            }
             alt={`${officer.fname} ${officer.lname}`}
             className="profile-pic-large"
           />
+
           <h2 className="profile-name">
             {officer.fname} {officer.lname}
           </h2>
@@ -79,17 +88,22 @@ function AdminPersonalPage() {
           </div>
           <div className="detail-row">
             <span className="detail-label">Position Status:</span>
-            <span className="detail-value">{officer.position_status || "N/A"}</span>
+            <span className="detail-value">
+              {officer.position_status || "N/A"}
+            </span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Term Duration:</span>
             <span className="detail-value">
-              {formatDate(officer.term_start_date)} – {formatDate(officer.term_end_date)}
+              {formatDate(officer.term_start_date)} –{" "}
+              {formatDate(officer.term_end_date)}
             </span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Appointed By:</span>
-            <span className="detail-value">{officer.appointed_by || "N/A"}</span>
+            <span className="detail-value">
+              {officer.appointed_by || "N/A"}
+            </span>
           </div>
           <div className="detail-row">
             <span className="detail-label">Joined At:</span>
@@ -98,7 +112,13 @@ function AdminPersonalPage() {
         </div>
       </div>
 
-      {editOpen && <AdminPersonalEdit officer={officer} onClose={() => setEditOpen(false)} />}
+      {editOpen && (
+        <AdminPersonalEdit
+          officer={officer}
+          onClose={() => setEditOpen(false)}
+          onUpdate={refreshOfficerData}
+        />
+      )}
     </>
   );
 }
