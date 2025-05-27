@@ -19,10 +19,14 @@ class BrgySuperAdmin extends Model implements JWTSubject
         'position_status',
         'phone_number',
         'email',
-        'profile_picture',
         'address',
         'password',
+        'profile_picture',
+        'term_start_date',
+        'term_end_date',
+        'appointed_by'
     ];
+
 
     public function getJWTIdentifier()
     {
