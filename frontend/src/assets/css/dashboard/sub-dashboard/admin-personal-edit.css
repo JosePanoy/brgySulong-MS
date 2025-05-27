@@ -139,3 +139,55 @@
     min-width: 40px;
   }
 }
+
+
+.admin-personal-edit-row > div {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.admin-personal-edit-btn {
+  border: 1px solid #1877f2;
+  background: #fff;
+  color: #1877f2;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-personal-edit-btn:hover:not(:disabled) {
+  background-color: #1877f2;
+  color: #fff;
+}
+
+.admin-personal-edit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-personal-edit-btn.save-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 3px 6px -2px rgba(70, 130, 180, 0.6);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: auto;
+  transition: box-shadow 0.3s ease;
+}
+
+.admin-personal-edit-btn.save-btn:hover {
+  box-shadow: 0 5px 8px -2px rgba(70, 130, 180, 0.9);
+}
+
+.save-btn-icon {
+  width: 25px;
+  height: 25px;
+  display: block;
+}

@@ -37,3 +37,12 @@ Route::prefix('events')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 
 
+
+
+Route::get('/test-update/{id}', function ($id) {
+    $admin = \App\Models\BrgySuperAdmin::find($id);
+    if (!$admin) return response()->json(['msg' => 'Not found'], 404);
+    $admin->fname = 'TestUpdated';
+    $admin->save();
+    return response()->json($admin);
+});

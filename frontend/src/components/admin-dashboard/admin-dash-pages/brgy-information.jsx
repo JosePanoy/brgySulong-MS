@@ -137,7 +137,7 @@ function BrgyInformation() {
                   alt="Captain"
                 />
                 <div className="sub-box">
-                  <div className="status">Status: N/A</div>
+                  <div className="status">Status:{captain.position_status || "N/A"}</div>
                   <div className="age">Age: {captain.age || "N/A"}</div>
                   <div className="view">
                     <Link to={`/brgy-information/personal/${captain.id}`}>
@@ -197,7 +197,7 @@ function BrgyInformation() {
                     alt="Official"
                   />
                   <div className="sub-box">
-                    <div className="status">Status: N/A</div>
+                    <div className="status">Status: {admin.position_status || "N/A"}</div>
                     <div className="age">Age: {admin.age || "N/A"}</div>
                     <div className="view">
                       <Link to={`/brgy-information/personal/${admin.id}`}>

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../../../assets/css/dashboard/sub-dashboard/admin-personal-edit.css";
-import SaveBTN from "../../../assets/img/save.png"
+import SaveBTN from "../../../assets/img/save.png";
 
 function AdminPersonalEdit({ officer, onClose }) {
-  const [profilePic, setProfilePic] = useState(officer.profile_picture || "profile-pic.jpg");
+  const [formData, setFormData] = useState({ ...officer });
+  const [editingField, setEditingField] = useState(null);
+  const [tempValue, setTempValue] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [profilePic, setProfilePic] = useState(officer.profile_picture || "profile-pic.jpg");
+  const [savingField, setSavingField] = useState(null);
 
   useEffect(() => {
     if (selectedFile) {
@@ -16,10 +21,130 @@ function AdminPersonalEdit({ officer, onClose }) {
     }
   }, [selectedFile, officer.profile_picture]);
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedFile(e.target.files[0]);
+  const startEditing = (field) => {
+    setEditingField(field);
+    setTempValue(formData[field] || "");
+  };
+
+  const cancelEditing = () => {
+    setEditingField(null);
+    setTempValue("");
+  };
+
+  const handleInputChange = (e) => {
+    setTempValue(e.target.value);
+  };
+
+  const saveField = async (field) => {
+    const originalValue = officer[field] || "";
+    if ((tempValue || "").trim() === (originalValue || "").trim()) {
+      cancelEditing();
+      return;
     }
+
+    setSavingField(field);
+
+    try {
+      // Prepare data as JSON
+      let valToSend = tempValue.trim();
+      if (valToSend === "") valToSend = "-";
+
+      const jsonData = { [field]: valToSend };
+
+      await axios.put(`http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`, jsonData, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      setFormData(prev => ({ ...prev, [field]: valToSend === "-" ? "" : valToSend }));
+      cancelEditing();
+      alert("Update successful!");
+    } catch (err) {
+      alert(`Update failed: ${err.response?.data?.message || err.message}`);
+    } finally {
+      setSavingField(null);
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+
+      const data = new FormData();
+      data.append("profile_picture", file);
+
+      setSavingField("profile_picture");
+
+      try {
+        await axios.put(`http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        // We update formData profile_picture to new object URL for instant preview
+        setFormData(prev => ({ ...prev, profile_picture: URL.createObjectURL(file) }));
+        alert("Profile picture updated!");
+      } catch (err) {
+        alert(`Update failed: ${err.response?.data?.message || err.message}`);
+      } finally {
+        setSavingField(null);
+      }
+    }
+  };
+
+  const renderField = (label, fieldName, isTextarea = false) => {
+    const isEditing = editingField === fieldName;
+    return (
+      <div className="admin-personal-edit-row" key={fieldName}>
+        <label>{label}</label>
+        {!isEditing && (
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span>{formData[fieldName] || "-"}</span>
+            <button
+              className="admin-personal-edit-btn"
+              type="button"
+              onClick={() => startEditing(fieldName)}
+              disabled={savingField === fieldName}
+            >
+              Edit
+            </button>
+          </div>
+        )}
+        {isEditing && (
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            {isTextarea ? (
+              <textarea
+                value={tempValue}
+                onChange={handleInputChange}
+                disabled={savingField === fieldName}
+                rows={3}
+              />
+            ) : (
+              <input
+                type={fieldName === "email" ? "email" : "text"}
+                value={tempValue}
+                onChange={handleInputChange}
+                disabled={savingField === fieldName}
+              />
+            )}
+            <button
+              className="admin-personal-edit-btn save-btn"
+              type="button"
+              onClick={() => saveField(fieldName)}
+              disabled={savingField === fieldName}
+            >
+              <img src={SaveBTN} alt="Save" className="save-btn-icon" />
+            </button>
+            <button
+              className="admin-personal-edit-btn"
+              type="button"
+              onClick={cancelEditing}
+              disabled={savingField === fieldName}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -27,74 +152,40 @@ function AdminPersonalEdit({ officer, onClose }) {
       <div className="admin-personal-edit-modal">
         <button className="admin-personal-edit-close" onClick={onClose}>×</button>
 
-<div className="admin-personal-edit-header">
-  <img
-    src={profilePic}
-    alt={`${officer.fname} ${officer.lname}`}
-    className="admin-personal-edit-profile-pic"
-  />
-  <h2>{officer.fname} {officer.lname}</h2>
-  <button
-    className="admin-personal-edit-btn save-btn"
-    aria-label="Save Changes"
-    type="submit"
-  >
-    <img src={SaveBTN} alt="Save" className="save-btn-icon" />
-  </button>
-</div>
+        <div className="admin-personal-edit-header">
+          <img
+            src={profilePic}
+            alt={`${officer.fname} ${officer.lname}`}
+            className="admin-personal-edit-profile-pic"
+          />
+          <h2>{formData.fname} {formData.lname}</h2>
+        </div>
 
-
-        <form className="admin-personal-edit-form">
-
-          <div className="admin-personal-edit-row">
-            <label>First Name</label>
-            <input type="text" value={officer.fname} readOnly />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Last Name</label>
-            <input type="text" value={officer.lname} readOnly />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Barangay Position</label>
-            <input type="text" value={officer.brgy_position} readOnly />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Position Status</label>
-            <input type="text" value={officer.position_status || "N/A"} readOnly />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Phone Number</label>
-            <input type="text" value={officer.phone_number} readOnly />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Email</label>
-            <input type="email" value={officer.email} readOnly />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Address</label>
-            <textarea value={officer.address} readOnly />
-          </div>
+        <form className="admin-personal-edit-form" onSubmit={e => e.preventDefault()}>
+          {renderField("First Name", "fname")}
+          {renderField("Last Name", "lname")}
+          {renderField("Barangay Position", "brgy_position")}
+          {renderField("Position Status", "position_status")}
+          {renderField("Phone Number", "phone_number")}
+          {renderField("Email", "email")}
+          {renderField("Address", "address", true)}
           <div className="admin-personal-edit-row">
             <label>Change Profile Picture</label>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="admin-personal-edit-profile-pic"
+                style={{ width: 80, height: 80 }}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                disabled={savingField === "profile_picture"}
+              />
+            </div>
           </div>
-          <div className="admin-personal-edit-row">
-            <label>Term Duration</label>
-            <input
-              type="text"
-              value={`${officer.term_start_date || "N/A"} – ${officer.term_end_date || "N/A"}`}
-              readOnly
-            />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Appointed By</label>
-            <input type="text" value={officer.appointed_by || "N/A"} readOnly />
-          </div>
-          <div className="admin-personal-edit-row">
-            <label>Joined At</label>
-            <input type="text" value={officer.created_at || "N/A"} readOnly />
-          </div>
-
         </form>
       </div>
     </div>

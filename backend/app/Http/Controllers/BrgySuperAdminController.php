@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\BrgySuperAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class BrgySuperAdminController extends Controller
 {
- 
+
     public function index()
     {
         $admins = BrgySuperAdmin::all();
         return response()->json($admins);
     }
 
-   
+
     public function show($id)
     {
         $admin = BrgySuperAdmin::find($id);
@@ -44,6 +46,8 @@ class BrgySuperAdminController extends Controller
     }
 
 
+
+
     public function update(Request $request, $id)
     {
         $admin = BrgySuperAdmin::find($id);
@@ -56,16 +60,42 @@ class BrgySuperAdminController extends Controller
             'fname' => 'nullable|string',
             'lname' => 'nullable|string',
             'brgy_position' => 'nullable|string',
+            'position_status' => 'nullable|string',
             'phone_number' => 'nullable|string',
             'email' => 'nullable|email|unique:brgysuper_admins,email,' . $id,
-            'profile_picture' => 'nullable|string',
+            'profile_picture' => 'nullable|file|image|max:2048',
             'address' => 'nullable|string',
             'password' => 'nullable|string|min:8',
         ]);
 
-        $admin->update($validated);
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $path = $file->store('profile_pictures', 'public');
+            $validated['profile_picture'] = $path;
+        }
+
+        if (!empty($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $dataToUpdate = array_filter($validated, function ($value) {
+            return $value !== null && $value !== '' && $value !== '-';
+        });
+
+
+        if (empty($dataToUpdate)) {
+            return response()->json(['message' => 'No data to update'], 400);
+        }
+
+        $admin->update($dataToUpdate);
+
         return response()->json($admin);
     }
+
+
+
 
     // Delete a super admin by ID
     public function destroy($id)
