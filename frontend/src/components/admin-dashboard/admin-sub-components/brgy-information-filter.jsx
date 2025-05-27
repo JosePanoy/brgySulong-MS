@@ -1,48 +1,54 @@
-import React from 'react';
-import "../../../assets/css/dashboard/sub-dashboard/brgy-info-filter.css";
+import React from 'react'
+import "../../../assets/css/dashboard/sub-dashboard/brgy-info-filter.css"
 
 function BrgyInfoFilter({ searchTerm, filters, onFilterChange }) {
   const positionOrder = [
-    { full: 'Barangay Captain', short: 'Captain' },
-    { full: 'Barangay Councilor', short: 'Councilor' },
-    { full: 'Barangay Secretary', short: 'Secretary' },
-    { full: 'Barangay Treasurer', short: 'Treasurer' },
-    { full: 'Barangay Tanod', short: 'Tanod' },
-    { full: 'Barangay Health Worker (BHW)', short: 'Health Worker' },
-    { full: 'Barangay Nutrition Scholar (BNS)', short: 'Nutrition Scholar' },
-    { full: 'Barangay Day Care Worker', short: 'Day Care Worker' },
-    { full: 'Barangay Information Officer', short: 'Info Officer' },
-    { full: 'Barangay Chairman', short: 'Chairman' } // added Chairman to filter
-  ];
+    { full: 'Barangay Captain', short: 'captain' },
+    { full: 'Barangay Councilor', short: 'councilor' },
+    { full: 'Barangay Secretary', short: 'secretary' },
+    { full: 'Barangay Treasurer', short: 'treasurer' },
+    { full: 'Barangay Tanod', short: 'tanod' },
+    { full: 'Barangay Health Worker (BHW)', short: 'healthworker' },
+    { full: 'Barangay Nutrition Scholar (BNS)', short: 'nutritionscholar' },
+    { full: 'Barangay Day Care Worker', short: 'daycareworker' },
+    { full: 'Barangay Information Officer', short: 'infoofficer' },
+    { full: 'Barangay Chairman', short: 'chairman' }
+  ]
 
   const handleSearchChange = (event) => {
-    onFilterChange(event.target.value, filters);
-  };
+    onFilterChange(event.target.value, filters)
+  }
 
-  const handleFilterChange = (event) => {
-    const { name, checked } = event.target;
-    const updatedFilters = { ...filters, [name]: checked };
-    onFilterChange(searchTerm, updatedFilters);
-  };
+  const handleDropdownChange = (event) => {
+    const value = event.target.value
+    let updatedFilters = {}
+    positionOrder.forEach(pos => {
+      updatedFilters[pos.short] = false
+    })
+    if (value) {
+      updatedFilters[value] = true
+    }
+    onFilterChange(searchTerm, updatedFilters)
+  }
 
   return (
     <div className="brgy-info-filter-navbar">
-      <div className="brgy-info-filter-positions">
-        {positionOrder.map((position, index) => (
-          <div className="brgy-info-filter-position" key={index}>
-            <input
-              type="checkbox"
-              id={`filter-${position.short.toLowerCase()}`}
-              name={position.short.toLowerCase()}
-              checked={filters[position.short.toLowerCase()]}
-              onChange={handleFilterChange}
-            />
-            <label htmlFor={`filter-${position.short.toLowerCase()}`}>
-              {position.short}
-            </label>
-          </div>
-        ))}
+      <div className="filter-left">
+        <span className="filter-label">Filter By:</span>
+        <select
+          className="filter-dropdown"
+          onChange={handleDropdownChange}
+          value={Object.keys(filters).find(key => filters[key]) || ""}
+        >
+          <option value="">All Positions</option>
+          {positionOrder.map((pos, i) => (
+            <option key={i} value={pos.short}>
+              {pos.full}
+            </option>
+          ))}
+        </select>
       </div>
+
       <input
         className="brgy-info-filter-search"
         type="text"
@@ -51,7 +57,7 @@ function BrgyInfoFilter({ searchTerm, filters, onFilterChange }) {
         placeholder="Search"
       />
     </div>
-  );
+  )
 }
 
-export default BrgyInfoFilter;
+export default BrgyInfoFilter

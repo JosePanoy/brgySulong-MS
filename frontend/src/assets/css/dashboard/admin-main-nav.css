@@ -1,14 +1,19 @@
 .admin-main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: hsl(0, 0%, 96%);
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-    padding: 0 10px;       
+  padding: 0 10px;       
   height: 48px;
   width: 100%;
   overflow-x: hidden;
   border-bottom: 1px solid hsla(0, 0%, 64%, 0.578);
 }
+
 
 .admin-main-nav__left {
   display: flex;
@@ -76,11 +81,16 @@
 }
 
 .admin-main-nav__subnav {
+  position: sticky;
+  top: 48px;
+  z-index: 999;
+  background-color: hsl(0, 0%, 96%);
   display: flex;
   gap: 20px;
   padding: 5px 16px;
   margin-top: -5px;
 }
+
 
 .admin-main-nav__subnav-btn {
   background: none;
