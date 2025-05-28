@@ -175,14 +175,18 @@ const performSaveField = async (field, valToSend) => {
     setConfirmModalVisible(true);
   };
 
-  const handleConfirmSave = () => {
-    if (fieldToSave) {
-      performSaveField(fieldToSave, valueToSave);
-    }
-    setConfirmModalVisible(false);
-    setFieldToSave(null);
-    setValueToSave("");
-  };
+const handleConfirmSave = () => {
+  if (fieldToSave === "profile_picture") {
+    saveProfilePicture();
+  } else if (fieldToSave) {
+    performSaveField(fieldToSave, valueToSave);
+  }
+
+  setConfirmModalVisible(false);
+  setFieldToSave(null);
+  setValueToSave("");
+};
+
 
   const handleCancelSave = () => {
     setConfirmModalVisible(false);
@@ -422,7 +426,12 @@ const performSaveField = async (field, valToSend) => {
                   {selectedFile && (
                     <button
                       type="button"
-                      onClick={saveProfilePicture}
+                      onClick={() => {
+  setFieldToSave("profile_picture");
+  setValueToSave(selectedFile);
+  setConfirmModalVisible(true);
+}}
+
                       disabled={savingField === "profile_picture"}
                     >
                       <img src={SaveBTN} alt="Save" className="save-btn-icon" />
