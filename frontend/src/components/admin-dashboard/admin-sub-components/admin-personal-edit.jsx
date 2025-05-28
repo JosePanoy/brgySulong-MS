@@ -246,6 +246,7 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
             <div className="admin-personal-edit-column">
               {renderField("First Name", "fname")}
               {renderField("Last Name", "lname")}
+              {renderField("Age", "age")}
               {renderField("Barangay Position", "brgy_position")}
               {renderField("Position Status", "position_status")}
               {renderField("Phone Number", "phone_number")}

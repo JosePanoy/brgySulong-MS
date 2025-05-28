@@ -69,7 +69,9 @@ function AdminPersonalPage() {
 
           <h2 className="profile-name">
             {officer.fname} {officer.lname}
+            {officer.age && officer.age !== "n/a" ? ` (${officer.age})` : ""}
           </h2>
+
           <p className="profile-position">{officer.brgy_position}</p>
         </div>
 
@@ -107,7 +109,9 @@ function AdminPersonalPage() {
           </div>
           <div className="detail-row">
             <span className="detail-label">Joined At:</span>
-            <span className="detail-value">{formatDate(officer.created_at)}</span>
+            <span className="detail-value">
+              {formatDate(officer.created_at)}
+            </span>
           </div>
         </div>
       </div>

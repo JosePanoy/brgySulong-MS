@@ -107,6 +107,7 @@
 }
 
 @media (max-width: 768px) {
+
   .admin-personal-edit-columns {
     flex-direction: column;
     border-left: none;
