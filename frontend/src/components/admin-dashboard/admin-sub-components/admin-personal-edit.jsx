@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import imageCompression from "browser-image-compression";
 import "../../../assets/css/dashboard/sub-dashboard/admin-personal-edit.css";
+import AdminEditConfirmModal from "./admin-personal-edit-confirm";
 import EditBTN from "../../../assets/img/edit.png";
 import SaveBTN from "../../../assets/img/save.png";
+import AdminPersonalUpdateMessage from "./admin-personal-update-message";
 
 function AdminPersonalEdit({ officer, onClose, onUpdate }) {
   const [formData, setFormData] = useState({ ...officer });
@@ -12,6 +14,28 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
   const [savingField, setSavingField] = useState(null);
+
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [fieldToSave, setFieldToSave] = useState(null);
+  const [valueToSave, setValueToSave] = useState("");
+
+  const [updateMessageVisible, setUpdateMessageVisible] = useState(false);
+  const [updateStatus, setUpdateStatus] = useState("success");
+
+  const fieldLabels = {
+    fname: "First Name",
+    lname: "Last Name",
+    age: "Age",
+    brgy_position: "Barangay Position",
+    position_status: "Position Status",
+    phone_number: "Phone Number",
+    email: "Email",
+    address: "Address",
+    appointed_by: "Appointed By",
+    term_start_date: "Term Start Date",
+    term_end_date: "Term End Date",
+    profile_picture: "Profile Picture",
+  };
 
   useEffect(() => {
     if (selectedFile) {
@@ -31,10 +55,7 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
 
   const startEditing = (field) => {
     setEditingField(field);
-    if (
-      field === "term_start_date" ||
-      field === "term_end_date"
-    ) {
+    if (field === "term_start_date" || field === "term_end_date") {
       setTempValue(formData[field] ? formData[field].split("T")[0] : "");
     } else {
       setTempValue(formData[field] || "");
@@ -49,8 +70,34 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
   const handleInputChange = (e) => {
     setTempValue(e.target.value);
   };
+const performSaveField = async (field, valToSend) => {
+  setSavingField(field);
+  try {
+    const jsonData = { [field]: valToSend };
+    const response = await axios.put(
+      `http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`,
+      jsonData,
+      { headers: { "Content-Type": "application/json" } }
+    );
+    const updatedOfficer = response.data;
+    setFormData((prev) => ({
+      ...prev,
+      [field]: valToSend === "-" ? "" : valToSend,
+    }));
+    onUpdate(updatedOfficer);
+    cancelEditing();
+    setUpdateStatus("success");
+    setUpdateMessageVisible(true);
+  } catch (err) {
+    console.error(err);
+    setUpdateStatus("error");
+    setUpdateMessageVisible(true);
+  } finally {
+    setSavingField(null);
+  }
+};
 
-  const saveField = async (field) => {
+  const saveField = (field) => {
     let valToSend = tempValue.trim();
     if (field === "term_start_date" || field === "term_end_date") {
       if (valToSend === "") valToSend = null;
@@ -67,27 +114,24 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
       return;
     }
 
-    setSavingField(field);
-    try {
-      const jsonData = { [field]: valToSend };
-      const response = await axios.put(
-        `http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`,
-        jsonData,
-        { headers: { "Content-Type": "application/json" } }
-      );
-      const updatedOfficer = response.data;
-      setFormData((prev) => ({
-        ...prev,
-        [field]: valToSend === "-" ? "" : valToSend,
-      }));
-      onUpdate(updatedOfficer);
-      cancelEditing();
-      alert("Update successful!");
-    } catch (err) {
-      alert(`Update failed: ${err.response?.data?.message || err.message}`);
-    } finally {
-      setSavingField(null);
+    setFieldToSave(field);
+    setValueToSave(valToSend);
+    setConfirmModalVisible(true);
+  };
+
+  const handleConfirmSave = () => {
+    if (fieldToSave) {
+      performSaveField(fieldToSave, valueToSave);
     }
+    setConfirmModalVisible(false);
+    setFieldToSave(null);
+    setValueToSave("");
+  };
+
+  const handleCancelSave = () => {
+    setConfirmModalVisible(false);
+    setFieldToSave(null);
+    setValueToSave("");
   };
 
   const handleFileChange = async (e) => {
@@ -95,7 +139,8 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
       let file = e.target.files[0];
       const validTypes = ["image/jpeg", "image/jpg", "image/png"];
       if (!validTypes.includes(file.type)) {
-        alert("Only JPEG, JPG, and PNG files are allowed.");
+        setUpdateStatus("error");
+        setUpdateMessageVisible(true);
         return;
       }
       const options = {
@@ -107,35 +152,37 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
         const compressedFile = await imageCompression(file, options);
         setSelectedFile(compressedFile);
       } catch {
-        alert("Failed to compress image");
         setSelectedFile(file);
       }
     }
   };
 
-  const saveProfilePicture = async () => {
-    if (!selectedFile) return;
-    const data = new FormData();
-    data.append("profile_picture", selectedFile);
-    data.append("_method", "PUT");
-    setSavingField("profile_picture");
-    try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`,
-        data,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      const updatedOfficer = response.data;
-      setFormData((prev) => ({ ...prev, profile_picture: updatedOfficer.profile_picture }));
-      setSelectedFile(null);
-      onUpdate(updatedOfficer);
-      alert("Profile picture updated!");
-    } catch (err) {
-      alert(`Update failed: ${err.response?.data?.message || err.message}`);
-    } finally {
-      setSavingField(null);
-    }
-  };
+const saveProfilePicture = async () => {
+  if (!selectedFile) return;
+  const data = new FormData();
+  data.append("profile_picture", selectedFile);
+  data.append("_method", "PUT");
+  setSavingField("profile_picture");
+  try {
+    const response = await axios.post(
+      `http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    const updatedOfficer = response.data;
+    setFormData((prev) => ({ ...prev, profile_picture: updatedOfficer.profile_picture }));
+    setSelectedFile(null);
+    onUpdate(updatedOfficer);
+    setUpdateStatus("success");
+    setUpdateMessageVisible(true);
+  } catch (err) {
+    console.error(err);
+    setUpdateStatus("error");
+    setUpdateMessageVisible(true);
+  } finally {
+    setSavingField(null);
+  }
+};
 
   const renderField = (label, fieldName, isTextarea = false, inputType = "text") => {
     const isEditing = editingField === fieldName;
@@ -297,6 +344,21 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
             </div>
           </div>
         </form>
+
+        {confirmModalVisible && (
+          <AdminEditConfirmModal
+            fieldLabel={fieldToSave ? fieldLabels[fieldToSave] || fieldToSave : ""}
+            onConfirm={handleConfirmSave}
+            onCancel={handleCancelSave}
+          />
+        )}
+
+        {updateMessageVisible && (
+          <AdminPersonalUpdateMessage
+            status={updateStatus}
+            onHide={() => setUpdateMessageVisible(false)}
+          />
+        )}
       </div>
     </div>
   );
