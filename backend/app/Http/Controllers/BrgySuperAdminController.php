@@ -34,6 +34,7 @@ class BrgySuperAdminController extends Controller
         $validated = $request->validate([
             'fname' => 'required|string',
             'lname' => 'required|string',
+            'age' => 'required|age',
             'brgy_position' => 'required|string',
             'phone_number' => 'required|string',
             'email' => 'required|email|unique:brgysuper_admins,email',
@@ -57,6 +58,7 @@ public function update(Request $request, $id)
     $validated = $request->validate([
         'fname' => 'nullable|string',
         'lname' => 'nullable|string',
+        'age' => 'nullable|string',
         'brgy_position' => 'nullable|string',
         'position_status' => 'nullable|string',
         'phone_number' => 'nullable|string',
@@ -86,7 +88,7 @@ public function update(Request $request, $id)
     }
 
     $fieldsToUpdate = [
-        'fname', 'lname', 'brgy_position', 'position_status',
+        'fname', 'lname', 'age', 'brgy_position', 'position_status',
         'phone_number', 'email', 'address',
         'term_start_date', 'term_end_date', 'appointed_by'
     ];

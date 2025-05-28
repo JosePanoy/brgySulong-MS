@@ -15,6 +15,7 @@ class BrgySuperAdmin extends Model implements JWTSubject
     protected $fillable = [
         'fname',
         'lname',
+        'age',
         'brgy_position',
         'position_status',
         'phone_number',
