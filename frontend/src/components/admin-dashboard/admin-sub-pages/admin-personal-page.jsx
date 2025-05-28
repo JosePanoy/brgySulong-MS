@@ -7,6 +7,7 @@ import AdminSideNav from "../admin-sub-components/admin-side-nav";
 import AdminSlideNav from "../admin-sub-components/admin-slide-nav";
 import AdminPersonalEdit from "../admin-sub-components/admin-personal-edit";
 
+
 function AdminPersonalPage() {
   const { id } = useParams();
   const [officer, setOfficer] = useState(null);

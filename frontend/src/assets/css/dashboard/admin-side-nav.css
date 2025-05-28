@@ -15,6 +15,7 @@
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
   transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
 .admin-sidenav-item {

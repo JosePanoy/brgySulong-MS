@@ -5,6 +5,7 @@ import "../../../assets/css/dashboard/sub-dashboard/admin-personal-edit.css";
 import AdminEditConfirmModal from "./admin-personal-edit-confirm";
 import EditBTN from "../../../assets/img/edit.png";
 import SaveBTN from "../../../assets/img/save.png";
+import NoticeGIF from "../../../assets/gif/notice.gif"
 import AdminPersonalUpdateMessage from "./admin-personal-update-message";
 
 function AdminPersonalEdit({ officer, onClose, onUpdate }) {
@@ -22,6 +23,8 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
   const [updateMessageVisible, setUpdateMessageVisible] = useState(false);
   const [updateStatus, setUpdateStatus] = useState("success");
 
+  const token = localStorage.getItem("token");
+
   const fieldLabels = {
     fname: "First Name",
     lname: "Last Name",
@@ -37,6 +40,18 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
     profile_picture: "Profile Picture",
   };
 
+useEffect(() => {
+  const userDataString = localStorage.getItem("user_data");
+  if (userDataString) {
+    try {
+      JSON.parse(userDataString);
+    } catch (error) {
+      console.error("Failed to parse user_data from localStorage:", error);
+    }
+  }
+}, []);
+
+
   useEffect(() => {
     if (selectedFile) {
       const objectUrl = URL.createObjectURL(selectedFile);
@@ -46,7 +61,9 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
       if (formData.profile_picture.startsWith("http")) {
         setProfilePic(formData.profile_picture);
       } else {
-        setProfilePic(`http://127.0.0.1:8000/storage/${formData.profile_picture}`);
+        setProfilePic(
+          `http://127.0.0.1:8000/storage/${formData.profile_picture}`
+        );
       }
     } else {
       setProfilePic(null);
@@ -70,15 +87,52 @@ function AdminPersonalEdit({ officer, onClose, onUpdate }) {
   const handleInputChange = (e) => {
     setTempValue(e.target.value);
   };
+
 const performSaveField = async (field, valToSend) => {
   setSavingField(field);
+
   try {
-    const jsonData = { [field]: valToSend };
+    const userDataString = localStorage.getItem("user_data");
+    let lastEditedBy = null;
+
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      const now = new Date();
+
+      const formattedDateTime = now.toLocaleString("en-PH", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      lastEditedBy = {
+        fname: userData.fname,
+        lname: userData.lname,
+        phone_number: userData.phone_number,
+        email: userData.email,
+        edited_at: formattedDateTime,
+      };
+    }
+
+    const jsonData = {
+      [field]: valToSend,
+      last_edited_by: lastEditedBy ? JSON.stringify(lastEditedBy) : null,
+    };
+
     const response = await axios.put(
       `http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`,
       jsonData,
-      { headers: { "Content-Type": "application/json" } }
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
+
     const updatedOfficer = response.data;
     setFormData((prev) => ({
       ...prev,
@@ -88,8 +142,8 @@ const performSaveField = async (field, valToSend) => {
     cancelEditing();
     setUpdateStatus("success");
     setUpdateMessageVisible(true);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Update error:", error.response ? error.response.data : error.message);
     setUpdateStatus("error");
     setUpdateMessageVisible(true);
   } finally {
@@ -97,18 +151,20 @@ const performSaveField = async (field, valToSend) => {
   }
 };
 
+
   const saveField = (field) => {
     let valToSend = tempValue.trim();
     if (field === "term_start_date" || field === "term_end_date") {
       if (valToSend === "") valToSend = null;
     } else {
-      if (valToSend === "") valToSend = "-";
+      if (valToSend === "") valToSend = "";
     }
 
     const originalValue = officer[field] || "";
     if (
-      (valToSend === null && (originalValue === null || originalValue === "")) ||
-      valToSend === (originalValue || "").trim()
+      (valToSend === null &&
+        (originalValue === null || originalValue === "")) ||
+      valToSend === String(originalValue || "").trim()
     ) {
       cancelEditing();
       return;
@@ -157,34 +213,62 @@ const performSaveField = async (field, valToSend) => {
     }
   };
 
-const saveProfilePicture = async () => {
-  if (!selectedFile) return;
-  const data = new FormData();
-  data.append("profile_picture", selectedFile);
-  data.append("_method", "PUT");
-  setSavingField("profile_picture");
-  try {
-    const response = await axios.post(
-      `http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`,
-      data,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-    const updatedOfficer = response.data;
-    setFormData((prev) => ({ ...prev, profile_picture: updatedOfficer.profile_picture }));
-    setSelectedFile(null);
-    onUpdate(updatedOfficer);
-    setUpdateStatus("success");
-    setUpdateMessageVisible(true);
-  } catch (err) {
-    console.error(err);
-    setUpdateStatus("error");
-    setUpdateMessageVisible(true);
-  } finally {
-    setSavingField(null);
-  }
-};
+  const saveProfilePicture = async () => {
+    if (!selectedFile) return;
+    const data = new FormData();
+    data.append("profile_picture", selectedFile);
+    data.append("_method", "PUT");
 
-  const renderField = (label, fieldName, isTextarea = false, inputType = "text") => {
+    const userDataString = localStorage.getItem("user_data");
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      data.append(
+        "last_edited_by",
+        JSON.stringify({
+          id: userData.id,
+          fname: userData.fname,
+          lname: userData.lname,
+          phone_number: userData.phone_number,
+          email: userData.email,
+        })
+      );
+    }
+
+    setSavingField("profile_picture");
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/brgysuper/admins/${officer.id}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const updatedOfficer = response.data;
+      setFormData((prev) => ({
+        ...prev,
+        profile_picture: updatedOfficer.profile_picture,
+      }));
+      setSelectedFile(null);
+      onUpdate(updatedOfficer);
+      setUpdateStatus("success");
+      setUpdateMessageVisible(true);
+    } catch {
+      setUpdateStatus("error");
+      setUpdateMessageVisible(true);
+    } finally {
+      setSavingField(null);
+    }
+  };
+
+  const renderField = (
+    label,
+    fieldName,
+    isTextarea = false,
+    inputType = "text"
+  ) => {
     const isEditing = editingField === fieldName;
     const positionStatusOptions = ["Active", "Resigned", "Deceased"];
     return (
@@ -288,7 +372,10 @@ const saveProfilePicture = async () => {
             {formData.fname} {formData.lname}
           </h2>
         </div>
-        <form className="admin-personal-edit-form" onSubmit={(e) => e.preventDefault()}>
+        <form
+          className="admin-personal-edit-form"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="admin-personal-edit-columns">
             <div className="admin-personal-edit-column">
               {renderField("First Name", "fname")}
@@ -306,7 +393,9 @@ const saveProfilePicture = async () => {
               {renderField("Term End Date", "term_end_date", false, "date")}
               <div className="admin-personal-edit-row">
                 <label>Change Profile Picture</label>
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+                >
                   {profilePic ? (
                     <img
                       src={profilePic}
@@ -347,7 +436,9 @@ const saveProfilePicture = async () => {
 
         {confirmModalVisible && (
           <AdminEditConfirmModal
-            fieldLabel={fieldToSave ? fieldLabels[fieldToSave] || fieldToSave : ""}
+            fieldLabel={
+              fieldToSave ? fieldLabels[fieldToSave] || fieldToSave : ""
+            }
             onConfirm={handleConfirmSave}
             onCancel={handleCancelSave}
           />
