@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BrgySuperAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -47,7 +49,6 @@ class BrgySuperAdminController extends Controller
         return response()->json($admin, 201);
     }
 
-
 public function update(Request $request, $id)
 {
     $admin = BrgySuperAdmin::find($id);
@@ -69,8 +70,10 @@ public function update(Request $request, $id)
         'term_start_date' => 'nullable|date',
         'term_end_date' => 'nullable|date|after_or_equal:term_start_date',
         'appointed_by' => 'nullable|string',
+        'last_edited_by' => 'nullable|string',
     ]);
 
+    // Handle profile picture upload
     if ($request->hasFile('profile_picture')) {
         $file = $request->file('profile_picture');
         $fileName = time() . '_' . $file->getClientOriginalName();
@@ -83,19 +86,37 @@ public function update(Request $request, $id)
         $admin->profile_picture = $filePath;
     }
 
+    // Handle password
     if (!empty($validated['password'])) {
         $admin->password = bcrypt($validated['password']);
     }
 
+    // Handle last_edited_by (parse JSON string from frontend)
+    if (!empty($validated['last_edited_by'])) {
+        $decodedEditor = json_decode($validated['last_edited_by'], true);
+        if (is_array($decodedEditor)) {
+            $admin->last_edited_by = $decodedEditor;
+        }
+    }
+
+    // Update other fields
     $fieldsToUpdate = [
-        'fname', 'lname', 'age', 'brgy_position', 'position_status',
-        'phone_number', 'email', 'address',
-        'term_start_date', 'term_end_date', 'appointed_by'
+        'fname',
+        'lname',
+        'age',
+        'brgy_position',
+        'position_status',
+        'phone_number',
+        'email',
+        'address',
+        'term_start_date',
+        'term_end_date',
+        'appointed_by'
     ];
 
     foreach ($fieldsToUpdate as $field) {
         if (array_key_exists($field, $validated)) {
-            $admin->$field = $validated[$field] ?? null;
+            $admin->$field = $validated[$field];
         }
     }
 
@@ -103,6 +124,7 @@ public function update(Request $request, $id)
 
     return response()->json($admin);
 }
+
 
 
     // Delete a super admin by ID

@@ -25,9 +25,14 @@ class BrgySuperAdmin extends Model implements JWTSubject
         'profile_picture',
         'term_start_date',
         'term_end_date',
-        'appointed_by'
+        'appointed_by',
+        'last_edited_by',  
     ];
 
+    // Add this casts property:
+    protected $casts = [
+        'last_edited_by' => 'array',
+    ];
 
     public function getJWTIdentifier()
     {
