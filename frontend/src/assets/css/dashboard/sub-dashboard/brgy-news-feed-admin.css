@@ -1,0 +1,117 @@
+.brgy-news-feed-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: -20px;
+}
+
+.brgy-news-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+}
+
+.brgy-news-card-header {
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.brgy-news-card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.brgy-news-card-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #777;
+}
+
+.brgy-news-card-body {
+  padding: 15px;
+}
+
+.brgy-news-card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.brgy-news-card-description {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.brgy-news-card-footer {
+  padding: 15px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #777;
+}
+
+.brgy-news-card-status {
+  font-weight: bold;
+}
+
+.brgy-news-card-rsvp {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+
+.brgy-news-card-title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brgy-news-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}
+
+.brgy-news-card-edit-icon {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+
+.brgy-news-card-title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brgy-news-card-edit-icon-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.brgy-news-card-edit-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
