@@ -3,7 +3,6 @@ import "../../../assets/css/dashboard/sub-dashboard/brgy-news-feed-admin.css";
 import EditBTN from "../../../assets/img/edit.png";
 import BrgyNewsFeedEdit from './brgy-news-feed-edit';
 
-
 function BrgyNewsFeedAdmin() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -13,6 +12,15 @@ function BrgyNewsFeedAdmin() {
       .then(response => response.json())
       .then(data => setEvents(data));
   }, []);
+
+  const handleUpdateEvent = (updatedEvent) => {
+    setEvents(prevEvents =>
+      prevEvents.map(event =>
+        event.event_id === updatedEvent.event_id ? updatedEvent : event
+      )
+    );
+    setSelectedEvent(updatedEvent);
+  };
 
   return (
     <div className="brgy-news-feed-admin">
@@ -37,7 +45,11 @@ function BrgyNewsFeedAdmin() {
           <div className="brgy-news-card-body">
             <p className="brgy-news-card-description">{event.description}</p>
             {event.image_url && (
-              <img src={event.image_url} alt={event.title} className="brgy-news-card-image" />
+              <img
+                src={`http://127.0.0.1:8000/${event.image_url}`}
+                alt={event.title}
+                className="brgy-news-card-image"
+              />
             )}
           </div>
           <div className="brgy-news-card-footer">
@@ -51,6 +63,7 @@ function BrgyNewsFeedAdmin() {
         <BrgyNewsFeedEdit
           eventData={selectedEvent}
           onClose={() => setSelectedEvent(null)}
+          onUpdate={handleUpdateEvent}
         />
       )}
     </div>
