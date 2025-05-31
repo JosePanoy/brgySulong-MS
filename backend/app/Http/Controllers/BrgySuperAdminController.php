@@ -73,7 +73,6 @@ public function update(Request $request, $id)
         'last_edited_by' => 'nullable|string',
     ]);
 
-    // Handle profile picture upload
     if ($request->hasFile('profile_picture')) {
         $file = $request->file('profile_picture');
         $fileName = time() . '_' . $file->getClientOriginalName();
@@ -86,12 +85,10 @@ public function update(Request $request, $id)
         $admin->profile_picture = $filePath;
     }
 
-    // Handle password
     if (!empty($validated['password'])) {
         $admin->password = bcrypt($validated['password']);
     }
 
-    // Handle last_edited_by (parse JSON string from frontend)
     if (!empty($validated['last_edited_by'])) {
         $decodedEditor = json_decode($validated['last_edited_by'], true);
         if (is_array($decodedEditor)) {
@@ -99,7 +96,6 @@ public function update(Request $request, $id)
         }
     }
 
-    // Update other fields
     $fieldsToUpdate = [
         'fname',
         'lname',

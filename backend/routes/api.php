@@ -30,7 +30,7 @@ Route::prefix('events')->group(function () {
     Route::get('/', [BarangayEventsController::class, 'index']);
     Route::get('{id}', [BarangayEventsController::class, 'show']);
     Route::post('/', [BarangayEventsController::class, 'store']);
-    Route::put('{id}', [BarangayEventsController::class, 'update']);
+    Route::put('{event_id}', [BarangayEventsController::class, 'update']);
     Route::delete('{id}', [BarangayEventsController::class, 'destroy']);
 });
 
