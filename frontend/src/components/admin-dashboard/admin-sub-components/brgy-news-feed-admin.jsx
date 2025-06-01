@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../../../assets/css/dashboard/sub-dashboard/brgy-news-feed-admin.css";
 import EditBTN from "../../../assets/img/edit.png";
 import BrgyNewsFeedEdit from './brgy-news-feed-edit';
+import BTNtoTop from '../../../sub-components/button-top-top';
 
 function BrgyNewsFeedAdmin() {
   const [events, setEvents] = useState([]);
@@ -23,6 +24,8 @@ function BrgyNewsFeedAdmin() {
   };
 
   return (
+    <>
+    <BTNtoTop />
     <div className="brgy-news-feed-admin">
       {events.map(event => (
         <div key={event.event_id} className="brgy-news-card">
@@ -67,6 +70,7 @@ function BrgyNewsFeedAdmin() {
         />
       )}
     </div>
+    </>
   );
 }
 

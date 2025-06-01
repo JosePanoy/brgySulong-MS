@@ -5,6 +5,7 @@ import AdminSlideNav from "../admin-sub-components/admin-slide-nav";
 import AdminMainNav from "../admin-sub-components/admin-main-nav";
 import "../../../assets/css/dashboard/sub-dashboard/brgy-information.css";
 import BrgyInfoFilter from "../admin-sub-components/brgy-information-filter";
+import BTNtoTop from "../../../sub-components/button-top-top";
 
 function BrgyInformation() {
   const [captain, setCaptain] = useState(null);
@@ -111,6 +112,7 @@ function BrgyInformation() {
       <AdminMainNav />
       <AdminSideNav />
       <AdminSlideNav />
+      <BTNtoTop />
 
       <div className="brgy-info-container">
         <div className="title">Barangay Information Page</div>

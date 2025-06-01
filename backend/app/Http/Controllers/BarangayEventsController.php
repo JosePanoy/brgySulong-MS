@@ -29,33 +29,67 @@ class BarangayEventsController extends Controller
         return response()->json($event, 200);
     }
 
+public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'type' => 'required|in:Event,News',
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'category' => 'nullable|string|max:100',
+        'date_start' => 'nullable|date',
+        'date_end' => [
+            'nullable',
+            'date',
+            function ($attribute, $value, $fail) use ($request) {
+                if ($request->date_start && strtotime($value) < strtotime($request->date_start)) {
+                    $fail('The date end must be a date after or equal to date start.');
+                }
+            },
+        ],
+        'location' => 'nullable|string|max:255',
+        'organizer' => 'nullable|string|max:100',
+        'status' => 'nullable|in:Scheduled,Ongoing,Completed,Cancelled',
+        'image_url' => 'nullable|string|max:255',
+        'priority' => 'nullable|in:High,Medium,Low',
+        'rsvp_required' => 'nullable|boolean',
+        'attendance_limit' => 'nullable|integer|min:1',
+        'contact_person' => 'nullable|string|max:100'
+    ]);
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category' => 'nullable|string|max:100',
-            'date_start' => 'required|date',
-            'date_end' => 'nullable|date|after_or_equal:date_start',
-            'location' => 'nullable|string|max:255',
-            'organizer' => 'nullable|string|max:100',
-            'status' => 'in:Scheduled,Ongoing,Completed,Cancelled',
-            'image_url' => 'nullable|string|max:255',
-            'priority' => 'in:High,Medium,Low',
-            'rsvp_required' => 'boolean',
-            'attendance_limit' => 'nullable|integer|min:1',
-            'contact_person' => 'nullable|string|max:100'
-        ]);
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+    try {
+        $data = $validator->validated();
+
+        $data['status'] = $data['status'] ?? 'Scheduled';
+        $data['priority'] = $data['priority'] ?? 'Medium';
+        $data['rsvp_required'] = isset($data['rsvp_required']) ? (bool)$data['rsvp_required'] : false;
+
+        if ($data['type'] === 'News') {
+            $data['date_start'] = null;
+            $data['date_end'] = null;
+            $data['location'] = null;
+            $data['organizer'] = null;
+            $data['status'] = 'Scheduled';
+            $data['rsvp_required'] = false;
+            $data['attendance_limit'] = null;
+            $data['contact_person'] = null;
         }
 
-        $event = BrgyEvent::create($request->all());
+        $event = BrgyEvent::create($data);
 
         return response()->json($event, 201);
+
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Server error: ' . $e->getMessage()], 500);
     }
+}
+
+
+
+
 
 
 public function update(Request $request, $event_id)

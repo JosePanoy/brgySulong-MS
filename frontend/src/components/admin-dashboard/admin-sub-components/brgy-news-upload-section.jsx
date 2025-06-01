@@ -5,7 +5,7 @@ import "../../../assets/css/dashboard/sub-dashboard/brgy-news-upload-section.css
 
 function BrgyNewsUploadSection() {
   const [userData, setUserData] = useState(null);
-  const [postType, setPostType] = useState("news");
+  const [postType, setPostType] = useState("News");
   const [isImportant, setIsImportant] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
@@ -37,12 +37,112 @@ function BrgyNewsUploadSection() {
     }));
   };
 
-  // Close modal on overlay click
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("brgy-news-upload-modal-overlay")) {
       setShowForm(false);
     }
   };
+
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (
+    postType.toLowerCase() === "event" &&
+    form.date_start &&
+    form.date_end &&
+    form.date_end < form.date_start
+  ) {
+    alert("End Date must be after or equal to Start Date.");
+    return;
+  }
+
+  let payload = {
+    type: postType,
+    title: form.title,
+    description: form.description,
+    category: form.category,
+    priority: form.priority,
+    image_url: null,
+    is_important: isImportant,
+  };
+
+  if (postType.toLowerCase() === "event") {
+    payload = {
+      ...payload,
+      date_start: form.date_start
+        ? form.date_start.toISOString().slice(0, 19).replace("T", " ")
+        : null,
+      date_end: form.date_end
+        ? form.date_end.toISOString().slice(0, 19).replace("T", " ")
+        : null,
+      location: form.location,
+      organizer: form.organizer,
+      status: form.status,
+      rsvp_required: form.rsvp_required,
+      attendance_limit:
+        form.attendance_limit !== "" ? parseInt(form.attendance_limit, 10) : null,
+      contact_person: form.contact_person,
+    };
+  } else {
+    payload.status = "Scheduled";
+    payload.date_start = null;
+    payload.date_end = null;
+    payload.location = null;
+    payload.organizer = null;
+    payload.rsvp_required = false;
+    payload.attendance_limit = null;
+    payload.contact_person = null;
+  }
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const responseText = await response.text();
+
+    if (!response.ok) {
+      let errorData;
+      try {
+        errorData = JSON.parse(responseText);
+        alert("Error: " + JSON.stringify(errorData.errors || errorData));
+      } catch {
+        alert("Error: Received non-JSON response from server.");
+        console.error("Non-JSON API error response:", responseText);
+      }
+      return;
+    }
+
+    alert("Post created successfully!");
+
+    setForm({
+      title: "",
+      description: "",
+      category: "",
+      date_start: null,
+      date_end: null,
+      location: "",
+      organizer: "",
+      status: "Scheduled",
+      rsvp_required: false,
+      attendance_limit: "",
+      contact_person: "",
+      priority: "Medium",
+    });
+    setIsImportant(false);
+    setShowForm(false);
+  } catch (error) {
+    alert("Failed to submit post: " + error.message);
+    console.error("Fetch error:", error);
+  }
+};
+
 
   return (
     <div className="brgy-news-upload-container">
@@ -78,23 +178,23 @@ function BrgyNewsUploadSection() {
               &times;
             </button>
 
-            <div className="brgy-news-upload-box">
+            <form className="brgy-news-upload-box" onSubmit={handleSubmit}>
               <div className="brgy-news-post-type-buttons">
                 <button
                   type="button"
                   className={`brgy-news-post-type-button ${
-                    postType === "news" ? "active" : ""
+                    postType === "News" ? "active" : ""
                   }`}
-                  onClick={() => setPostType("news")}
+                  onClick={() => setPostType("News")}
                 >
                   News
                 </button>
                 <button
                   type="button"
                   className={`brgy-news-post-type-button ${
-                    postType === "event" ? "active" : ""
+                    postType === "Event" ? "active" : ""
                   }`}
-                  onClick={() => setPostType("event")}
+                  onClick={() => setPostType("Event")}
                 >
                   Event
                 </button>
@@ -162,7 +262,7 @@ function BrgyNewsUploadSection() {
                 </button>
               </div>
 
-              {postType === "event" && (
+              {postType === "Event" && (
                 <>
                   <div className="brgy-news-upload-row">
                     <div className="datepicker-group">
@@ -178,6 +278,7 @@ function BrgyNewsUploadSection() {
                         dateFormat="MMMM d, yyyy h:mm aa"
                         placeholderText="Select start date"
                         className="brgy-news-input datepicker-input"
+                        required
                       />
                     </div>
                     <div className="datepicker-group">
@@ -193,6 +294,7 @@ function BrgyNewsUploadSection() {
                         dateFormat="MMMM d, yyyy h:mm aa"
                         placeholderText="Select end date"
                         className="brgy-news-input datepicker-input"
+                        required
                       />
                     </div>
                   </div>
@@ -204,6 +306,7 @@ function BrgyNewsUploadSection() {
                     placeholder="Location"
                     value={form.location}
                     onChange={handleChange}
+                    required
                   />
 
                   <input
@@ -213,6 +316,7 @@ function BrgyNewsUploadSection() {
                     placeholder="Organizer"
                     value={form.organizer}
                     onChange={handleChange}
+                    required
                   />
 
                   <div className="brgy-news-upload-row rsvp-schedule-attendance-row">
@@ -221,6 +325,7 @@ function BrgyNewsUploadSection() {
                       className="brgy-news-select status-select"
                       value={form.status}
                       onChange={handleChange}
+                      required
                     >
                       <option value="Scheduled">Scheduled</option>
                       <option value="Ongoing">Ongoing</option>
@@ -245,7 +350,7 @@ function BrgyNewsUploadSection() {
                       placeholder="Attendance Limit"
                       value={form.attendance_limit}
                       onChange={handleChange}
-                      min="0"
+                      min="1"
                     />
                   </div>
 
@@ -260,8 +365,10 @@ function BrgyNewsUploadSection() {
                 </>
               )}
 
-              <button className="brgy-news-upload-post-button">Post Now</button>
-            </div>
+              <button type="submit" className="brgy-news-upload-post-button">
+                Post Now
+              </button>
+            </form>
           </div>
         </div>
       )}

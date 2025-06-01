@@ -25,7 +25,7 @@ Route::prefix('brgyresidents')->group(function () {
     Route::delete('residents/{id}', [BrgyResidentController::class, 'destroy']);
 });
 
-// Brgy Events Routes (Standalone)
+// Brgy Events Routes
 Route::prefix('events')->group(function () {
     Route::get('/', [BarangayEventsController::class, 'index']);
     Route::get('{id}', [BarangayEventsController::class, 'show']);
