@@ -3,11 +3,16 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/css/dashboard/sub-dashboard/brgy-news-upload-section.css";
 
+import BrgyNewsFeedUploadConfirm from "./brgy-news-upload-confirm";
+import BrgyNewsUploadMessage from "./brgy-news-upload-message";
+
 function BrgyNewsUploadSection() {
   const [userData, setUserData] = useState(null);
   const [postType, setPostType] = useState("News");
   const [isImportant, setIsImportant] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -43,106 +48,124 @@ function BrgyNewsUploadSection() {
     }
   };
 
-
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (
-    postType.toLowerCase() === "event" &&
-    form.date_start &&
-    form.date_end &&
-    form.date_end < form.date_start
-  ) {
-    alert("End Date must be after or equal to Start Date.");
-    return;
-  }
-
-  let payload = {
-    type: postType,
-    title: form.title,
-    description: form.description,
-    category: form.category,
-    priority: form.priority,
-    image_url: null,
-    is_important: isImportant,
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowConfirm(true);
   };
 
-  if (postType.toLowerCase() === "event") {
-    payload = {
-      ...payload,
-      date_start: form.date_start
-        ? form.date_start.toISOString().slice(0, 19).replace("T", " ")
-        : null,
-      date_end: form.date_end
-        ? form.date_end.toISOString().slice(0, 19).replace("T", " ")
-        : null,
-      location: form.location,
-      organizer: form.organizer,
-      status: form.status,
-      rsvp_required: form.rsvp_required,
-      attendance_limit:
-        form.attendance_limit !== "" ? parseInt(form.attendance_limit, 10) : null,
-      contact_person: form.contact_person,
-    };
-  } else {
-    payload.status = "Scheduled";
-    payload.date_start = null;
-    payload.date_end = null;
-    payload.location = null;
-    payload.organizer = null;
-    payload.rsvp_required = false;
-    payload.attendance_limit = null;
-    payload.contact_person = null;
-  }
-
-  try {
-    const response = await fetch("http://127.0.0.1:8000/api/events", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const responseText = await response.text();
-
-    if (!response.ok) {
-      let errorData;
-      try {
-        errorData = JSON.parse(responseText);
-        alert("Error: " + JSON.stringify(errorData.errors || errorData));
-      } catch {
-        alert("Error: Received non-JSON response from server.");
-        console.error("Non-JSON API error response:", responseText);
-      }
+  const submitPost = async () => {
+    if (
+      postType.toLowerCase() === "event" &&
+      form.date_start &&
+      form.date_end &&
+      form.date_end < form.date_start
+    ) {
+      alert("End Date must be after or equal to Start Date.");
+      setShowConfirm(false);
       return;
     }
 
-    alert("Post created successfully!");
+    let payload = {
+      type: postType,
+      title: form.title,
+      description: form.description,
+      category: form.category,
+      priority: form.priority,
+      image_url: null,
+      is_important: isImportant,
+    };
 
-    setForm({
-      title: "",
-      description: "",
-      category: "",
-      date_start: null,
-      date_end: null,
-      location: "",
-      organizer: "",
-      status: "Scheduled",
-      rsvp_required: false,
-      attendance_limit: "",
-      contact_person: "",
-      priority: "Medium",
-    });
-    setIsImportant(false);
-    setShowForm(false);
-  } catch (error) {
-    alert("Failed to submit post: " + error.message);
-    console.error("Fetch error:", error);
-  }
-};
+    if (postType.toLowerCase() === "event") {
+      payload = {
+        ...payload,
+        date_start: form.date_start
+          ? form.date_start.toISOString().slice(0, 19).replace("T", " ")
+          : null,
+        date_end: form.date_end
+          ? form.date_end.toISOString().slice(0, 19).replace("T", " ")
+          : null,
+        location: form.location,
+        organizer: form.organizer,
+        status: form.status,
+        rsvp_required: form.rsvp_required,
+        attendance_limit:
+          form.attendance_limit !== "" ? parseInt(form.attendance_limit, 10) : null,
+        contact_person: form.contact_person,
+      };
+    } else {
+      payload.status = "Scheduled";
+      payload.date_start = null;
+      payload.date_end = null;
+      payload.location = null;
+      payload.organizer = null;
+      payload.rsvp_required = false;
+      payload.attendance_limit = null;
+      payload.contact_person = null;
+    }
 
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responseText = await response.text();
+
+      if (!response.ok) {
+        let errorData;
+        try {
+          errorData = JSON.parse(responseText);
+          alert("Error: " + JSON.stringify(errorData.errors || errorData));
+        } catch {
+          alert("Error: Received non-JSON response from server.");
+          console.error("Non-JSON API error response:", responseText);
+        }
+        setShowConfirm(false);
+        setUploadStatus("error");
+        return;
+      }
+
+      setForm({
+        title: "",
+        description: "",
+        category: "",
+        date_start: null,
+        date_end: null,
+        location: "",
+        organizer: "",
+        status: "Scheduled",
+        rsvp_required: false,
+        attendance_limit: "",
+        contact_person: "",
+        priority: "Medium",
+      });
+      setIsImportant(false);
+      setShowForm(false);
+      setShowConfirm(false);
+      setUploadStatus("success");
+    } catch (error) {
+      alert("Failed to submit post: " + error.message);
+      console.error("Fetch error:", error);
+      setShowConfirm(false);
+      setUploadStatus("error");
+    }
+  };
+
+  const handleConfirm = () => {
+    setShowConfirm(false);
+    submitPost();
+  };
+
+  const handleCancelConfirm = () => {
+    setShowConfirm(false);
+  };
+
+  const handleHideMessage = () => {
+    setUploadStatus(null);
+  };
 
   return (
     <div className="brgy-news-upload-container">
@@ -326,6 +349,7 @@ const handleSubmit = async (e) => {
                       value={form.status}
                       onChange={handleChange}
                       required
+                      style={{marginBottom: '5px'}}
                     >
                       <option value="Scheduled">Scheduled</option>
                       <option value="Ongoing">Ongoing</option>
@@ -339,6 +363,7 @@ const handleSubmit = async (e) => {
                         name="rsvp_required"
                         checked={form.rsvp_required}
                         onChange={handleChange}
+                         style={{marginBottom: '5px'}}
                       />
                       RSVP Required
                     </label>
@@ -351,6 +376,7 @@ const handleSubmit = async (e) => {
                       value={form.attendance_limit}
                       onChange={handleChange}
                       min="1"
+                      style={{marginBottom: '5px'}}
                     />
                   </div>
 
@@ -371,6 +397,17 @@ const handleSubmit = async (e) => {
             </form>
           </div>
         </div>
+      )}
+
+      {showConfirm && (
+        <BrgyNewsFeedUploadConfirm
+          onConfirm={handleConfirm}
+          onCancel={handleCancelConfirm}
+        />
+      )}
+
+      {uploadStatus && (
+        <BrgyNewsUploadMessage status={uploadStatus} onHide={handleHideMessage} />
       )}
     </div>
   );
