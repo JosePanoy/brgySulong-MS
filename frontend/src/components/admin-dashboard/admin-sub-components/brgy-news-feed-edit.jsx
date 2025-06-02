@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../../../assets/css/dashboard/sub-dashboard/brgy-news-feed-edit.css";
 import SaveBTN from "../../../assets/img/save.png";
 import EditBTN from "../../../assets/img/edit.png";
 import CancelBTN from "../../../assets/img/cancel.png";
-import BrgyNewsFeedEditConfirm from './brgy-news-feed-edit-confirm';
-import BrgyNewsUpdateMessage from './brgy-news-update-message';
+import DeleteIcon from "../../../assets/img/delete.png";
+import BrgyNewsFeedEditConfirm from "./brgy-news-feed-edit-confirm";
+import BrgyNewsUpdateMessage from "./brgy-news-update-message";
+import BrgyNewsDelete from "./brgy-news-delete";
+import BrgyNewsDeleteConfirm from "./brgy-news-delete-confirm";
 
-function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {  
+function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
   const [localEventData, setLocalEventData] = useState(eventData);
   const [editingField, setEditingField] = useState(null);
   const [editedValues, setEditedValues] = useState({});
@@ -16,6 +19,8 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
   const [updateStatus, setUpdateStatus] = useState(null);
   const [newImageFile, setNewImageFile] = useState(null);
   const [newImagePreview, setNewImagePreview] = useState(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleteStatus, setDeleteStatus] = useState(null);
 
   useEffect(() => {
     setLocalEventData(eventData);
@@ -27,10 +32,10 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
 
   const formatDateDisplay = (dateString) => {
     if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -38,30 +43,95 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
     if (!dateString) return "";
     const d = new Date(dateString);
     const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
   const fields = [
-    { key: 'type', label: 'Type', value: localEventData.type, type: "text" },
-    { key: 'description', label: 'Description', value: localEventData.description, type: "text" },
-    { key: 'category', label: 'Category', value: localEventData.category || "N/A", type: "text" },
-    { key: 'date_start', label: 'Start Date', value: localEventData.date_start, type: "date" },
-    { key: 'date_end', label: 'End Date', value: localEventData.date_end, type: "date" },
-    { key: 'location', label: 'Location', value: localEventData.location || "N/A", type: "text" },
-    { key: 'organizer', label: 'Organizer', value: localEventData.organizer || "N/A", type: "text" },
-    { key: 'status', label: 'Status', value: localEventData.status, type: "text" },
-    { key: 'priority', label: 'Priority', value: localEventData.priority, type: "text" },
-    { key: 'rsvp_required', label: 'RSVP Required', value: localEventData.rsvp_required ? "Yes" : "No", type: "checkbox" },
-    { key: 'attendance_limit', label: 'Attendance Limit', value: localEventData.attendance_limit || "N/A", type: "text" },
-    { key: 'contact_person', label: 'Contact Person', value: localEventData.contact_person || "N/A", type: "text" },
-    { key: 'created_at', label: 'Created At', value: localEventData.created_at, type: "date" },
-    { key: 'updated_at', label: 'Updated At', value: localEventData.updated_at, type: "date" },
+    { key: "type", label: "Type", value: localEventData.type, type: "text" },
+    {
+      key: "description",
+      label: "Description",
+      value: localEventData.description,
+      type: "text",
+    },
+    {
+      key: "category",
+      label: "Category",
+      value: localEventData.category || "N/A",
+      type: "text",
+    },
+    {
+      key: "date_start",
+      label: "Start Date",
+      value: localEventData.date_start,
+      type: "date",
+    },
+    {
+      key: "date_end",
+      label: "End Date",
+      value: localEventData.date_end,
+      type: "date",
+    },
+    {
+      key: "location",
+      label: "Location",
+      value: localEventData.location || "N/A",
+      type: "text",
+    },
+    {
+      key: "organizer",
+      label: "Organizer",
+      value: localEventData.organizer || "N/A",
+      type: "text",
+    },
+    {
+      key: "status",
+      label: "Status",
+      value: localEventData.status,
+      type: "text",
+    },
+    {
+      key: "priority",
+      label: "Priority",
+      value: localEventData.priority,
+      type: "text",
+    },
+    {
+      key: "rsvp_required",
+      label: "RSVP Required",
+      value: localEventData.rsvp_required ? "Yes" : "No",
+      type: "checkbox",
+    },
+    {
+      key: "attendance_limit",
+      label: "Attendance Limit",
+      value: localEventData.attendance_limit || "N/A",
+      type: "text",
+    },
+    {
+      key: "contact_person",
+      label: "Contact Person",
+      value: localEventData.contact_person || "N/A",
+      type: "text",
+    },
+    {
+      key: "created_at",
+      label: "Created At",
+      value: localEventData.created_at,
+      type: "date",
+    },
+    {
+      key: "updated_at",
+      label: "Updated At",
+      value: localEventData.updated_at,
+      type: "date",
+    },
   ];
 
   const handleChange = (key, value) => {
-    setEditedValues(prev => ({ ...prev, [key]: value }));
+    setEditedValues((prev) => ({ ...prev, [key]: value }));
   };
 
   const confirmSave = () => {
@@ -71,102 +141,93 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
 
   const cancelSave = () => {
     setConfirmModalOpen(false);
-    if(fieldToSave === 'image_url'){
+    if (fieldToSave === "image_url") {
       setNewImageFile(null);
       setNewImagePreview(null);
     }
   };
 
   const handleSaveClick = (key) => {
-    if (key === 'image_url' ? newImageFile : (key in editedValues)) {
+    if (key === "image_url" ? newImageFile : key in editedValues) {
       setFieldToSave(key);
       setConfirmModalOpen(true);
     } else {
       setEditingField(null);
-      if(key === 'image_url'){
+      if (key === "image_url") {
         setNewImageFile(null);
         setNewImagePreview(null);
       }
     }
   };
 
-const handleSaveField = async (key) => {
-  setIsSaving(true);
-  try {
-    if (key === 'image_url') {
-      if (!newImageFile) {
-        setUpdateStatus("error");
-        setIsSaving(false);
-        return;
+  const handleSaveField = async (key) => {
+    setIsSaving(true);
+    try {
+      if (key === "image_url") {
+        if (!newImageFile) {
+          setUpdateStatus("error");
+          setIsSaving(false);
+          return;
+        }
+        const formData = new FormData();
+        formData.append("_method", "PUT");
+        formData.append("image_file", newImageFile);
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/events/${localEventData.event_id}`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        if (!response.ok) {
+          setUpdateStatus("error");
+          setIsSaving(false);
+          return;
+        }
+        const updatedEvent = await response.json();
+        setLocalEventData(updatedEvent);
+        if (onUpdate) setTimeout(() => onUpdate(updatedEvent), 0);
+        setNewImageFile(null);
+        setNewImagePreview(null);
+      } else {
+        let payloadValue = editedValues[key];
+        if (fields.find((f) => f.key === key)?.type === "checkbox") {
+          payloadValue = !!payloadValue;
+        }
+        const payload = { [key]: payloadValue };
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/events/${localEventData.event_id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }
+        );
+        if (!response.ok) {
+          setUpdateStatus("error");
+          setIsSaving(false);
+          return;
+        }
+        setLocalEventData((prev) => {
+          const updated = { ...prev, [key]: payloadValue };
+          if (onUpdate) setTimeout(() => onUpdate(updated), 0);
+          return updated;
+        });
+        setEditedValues((prev) => {
+          const newVals = { ...prev };
+          delete newVals[key];
+          return newVals;
+        });
       }
-
-      const formData = new FormData();
-      formData.append('_method', 'PUT');        // Spoof PUT method
-      formData.append('image_file', newImageFile);
-
-      const response = await fetch(`http://127.0.0.1:8000/api/events/${localEventData.event_id}`, {
-        method: 'POST',                         // POST with method spoofing
-        body: formData,
-      });
-
-      if (!response.ok) {
-        setUpdateStatus("error");
-        setIsSaving(false);
-        return;
-      }
-
-      const updatedEvent = await response.json();
-      setLocalEventData(updatedEvent);
-      if (onUpdate) setTimeout(() => onUpdate(updatedEvent), 0);
-
-      setNewImageFile(null);
-      setNewImagePreview(null);
-    } else {
-      let payloadValue = editedValues[key];
-      if (fields.find(f => f.key === key)?.type === "checkbox") {
-        payloadValue = !!payloadValue;
-      }
-
-      const payload = { [key]: payloadValue };
-
-      const response = await fetch(`http://127.0.0.1:8000/api/events/${localEventData.event_id}`, {
-        method: 'PUT',                        // Direct PUT request for JSON data
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        setUpdateStatus("error");
-        setIsSaving(false);
-        return;
-      }
-
-      setLocalEventData(prev => {
-        const updated = { ...prev, [key]: payloadValue };
-        if (onUpdate) setTimeout(() => onUpdate(updated), 0);
-        return updated;
-      });
-
-      setEditedValues(prev => {
-        const newVals = { ...prev };
-        delete newVals[key];
-        return newVals;
-      });
+      setEditingField(null);
+      setUpdateStatus("success");
+    } catch {
+      setUpdateStatus("error");
+    } finally {
+      setIsSaving(false);
+      setFieldToSave(null);
     }
-
-    setEditingField(null);
-    setUpdateStatus("success");
-  } catch {
-    setUpdateStatus("error");
-  } finally {
-    setIsSaving(false);
-    setFieldToSave(null);
-  }
-};
-
-
-
-
+  };
 
   const hideUpdateMessage = () => {
     setUpdateStatus(null);
@@ -179,7 +240,7 @@ const handleSaveField = async (key) => {
           <input
             type="date"
             value={editedValues[key] ?? formatDateInput(value)}
-            onChange={e => handleChange(key, e.target.value)}
+            onChange={(e) => handleChange(key, e.target.value)}
             disabled={isSaving}
           />
         );
@@ -188,8 +249,12 @@ const handleSaveField = async (key) => {
         return (
           <input
             type="checkbox"
-            checked={editedValues[key] !== undefined ? editedValues[key] : value === "Yes"}
-            onChange={e => handleChange(key, e.target.checked)}
+            checked={
+              editedValues[key] !== undefined
+                ? editedValues[key]
+                : value === "Yes"
+            }
+            onChange={(e) => handleChange(key, e.target.checked)}
             disabled={isSaving}
           />
         );
@@ -198,7 +263,7 @@ const handleSaveField = async (key) => {
         <input
           type="text"
           value={editedValues[key] ?? value}
-          onChange={e => handleChange(key, e.target.value)}
+          onChange={(e) => handleChange(key, e.target.value)}
           disabled={isSaving}
         />
       );
@@ -207,7 +272,11 @@ const handleSaveField = async (key) => {
         return <span className="field-value">{formatDateDisplay(value)}</span>;
       }
       if (type === "checkbox") {
-        return <span className="field-value">{value === "Yes" || value === true ? "Yes" : "No"}</span>;
+        return (
+          <span className="field-value">
+            {value === "Yes" || value === true ? "Yes" : "No"}
+          </span>
+        );
       }
       return <span className="field-value">{value}</span>;
     }
@@ -221,12 +290,24 @@ const handleSaveField = async (key) => {
         {!editingField ? (
           <>
             {existingImageUrl ? (
-              <img src={`http://127.0.0.1:8000/${existingImageUrl}`} alt="Featured" style={{width: 50, height: 50, objectFit: 'cover', verticalAlign: 'middle', marginRight: 8}} />
-            ) : "N/A"}
+              <img
+                src={`http://127.0.0.1:8000/${existingImageUrl}`}
+                alt="Featured"
+                style={{
+                  width: 50,
+                  height: 50,
+                  objectFit: "cover",
+                  verticalAlign: "middle",
+                  marginRight: 8,
+                }}
+              />
+            ) : (
+              "N/A"
+            )}
             <button
               className="icon-btn edit-btn"
               onClick={() => {
-                setEditingField('image_url');
+                setEditingField("image_url");
                 setNewImageFile(null);
                 setNewImagePreview(null);
               }}
@@ -238,11 +319,25 @@ const handleSaveField = async (key) => {
           </>
         ) : (
           <>
-            <div style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 8 }}>
+            <div
+              style={{
+                display: "inline-block",
+                verticalAlign: "middle",
+                marginRight: 8,
+              }}
+            >
               {newImagePreview ? (
-                <img src={newImagePreview} alt="New preview" style={{width: 50, height: 50, objectFit: 'cover'}} />
+                <img
+                  src={newImagePreview}
+                  alt="New preview"
+                  style={{ width: 50, height: 50, objectFit: "cover" }}
+                />
               ) : existingImageUrl ? (
-                <img src={`http://127.0.0.1:8000/${existingImageUrl}`} alt="Current" style={{width: 50, height: 50, objectFit: 'cover'}} />
+                <img
+                  src={`http://127.0.0.1:8000/${existingImageUrl}`}
+                  alt="Current"
+                  style={{ width: 50, height: 50, objectFit: "cover" }}
+                />
               ) : (
                 "N/A"
               )}
@@ -250,9 +345,9 @@ const handleSaveField = async (key) => {
             <input
               type="file"
               accept="image/*"
-              onChange={e => {
+              onChange={(e) => {
                 const file = e.target.files[0];
-                if(file){
+                if (file) {
                   setNewImageFile(file);
                   setNewImagePreview(URL.createObjectURL(file));
                 } else {
@@ -261,14 +356,14 @@ const handleSaveField = async (key) => {
                 }
               }}
               disabled={isSaving}
-              style={{verticalAlign: 'middle'}}
+              style={{ verticalAlign: "middle" }}
             />
             <button
               className="icon-btn save-btn"
-              onClick={() => handleSaveClick('image_url')}
+              onClick={() => handleSaveClick("image_url")}
               aria-label="Save Featured Image"
               disabled={isSaving || !newImageFile}
-              style={{marginLeft: 8}}
+              style={{ marginLeft: 8 }}
             >
               <img src={SaveBTN} alt="Save" width={20} height={20} />
             </button>
@@ -281,7 +376,7 @@ const handleSaveField = async (key) => {
               }}
               aria-label="Cancel Featured Image"
               disabled={isSaving}
-              style={{marginLeft: 8}}
+              style={{ marginLeft: 8 }}
             >
               <img src={CancelBTN} alt="Cancel" width={20} height={20} />
             </button>
@@ -291,11 +386,45 @@ const handleSaveField = async (key) => {
     );
   };
 
+  const handleDelete = async () => {
+    setDeleteStatus(null);
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/events/${localEventData.event_id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        setDeleteStatus("error");
+        return;
+      }
+      setDeleteStatus("success");
+      if (onUpdate) setTimeout(() => onUpdate(null), 0);
+      setDeleteConfirmOpen(false);
+    } catch {
+      setDeleteStatus("error");
+    }
+  };
+
   return (
     <div className="brgy-news-feed-edit-overlay">
       <div className="brgy-news-feed-edit-modal">
-        <button className="brgy-news-feed-edit-close-btn" onClick={onClose}>×</button>
-        <h2 className="brgy-news-feed-edit-title">{localEventData.title}</h2>
+        <button className="brgy-news-feed-edit-close-btn" onClick={onClose}>
+          ×
+        </button>
+        <h2 className="brgy-news-feed-edit-title">
+          {localEventData.title}
+          <button
+            className="icon-btn delete-btn"
+            aria-label="Delete Event"
+            disabled={isSaving}
+            onClick={() => setDeleteConfirmOpen(true)}
+          >
+            <img src={DeleteIcon} alt="Delete" width={30} height={30} />
+          </button>
+        </h2>
+
         <div className="brgy-news-feed-edit-columns">
           {fields.map(({ key, label, value, type }) => (
             <React.Fragment key={key}>
@@ -329,7 +458,7 @@ const handleSaveField = async (key) => {
                       className="icon-btn cancel-btn"
                       onClick={() => {
                         setEditingField(null);
-                        setEditedValues(prev => {
+                        setEditedValues((prev) => {
                           const newVals = { ...prev };
                           delete newVals[key];
                           return newVals;
@@ -338,7 +467,12 @@ const handleSaveField = async (key) => {
                       aria-label={`Cancel ${label}`}
                       disabled={isSaving}
                     >
-                      <img src={CancelBTN} alt="Cancel" width={20} height={20} />
+                      <img
+                        src={CancelBTN}
+                        alt="Cancel"
+                        width={20}
+                        height={20}
+                      />
                     </button>
                   </>
                 )}
@@ -347,15 +481,42 @@ const handleSaveField = async (key) => {
             </React.Fragment>
           ))}
         </div>
+
         {confirmModalOpen && (
           <BrgyNewsFeedEditConfirm
-            fieldLabel={fields.find(f => f.key === fieldToSave)?.label === undefined && fieldToSave === 'image_url' ? 'Featured Image' : fields.find(f => f.key === fieldToSave)?.label || ""}
+            fieldLabel={
+              fields.find((f) => f.key === fieldToSave)?.label === undefined &&
+              fieldToSave === "image_url"
+                ? "Featured Image"
+                : fields.find((f) => f.key === fieldToSave)?.label || ""
+            }
             onConfirm={confirmSave}
             onCancel={cancelSave}
           />
         )}
+
         {updateStatus && (
-          <BrgyNewsUpdateMessage status={updateStatus} onHide={hideUpdateMessage} />
+          <BrgyNewsUpdateMessage
+            status={updateStatus}
+            onClose={hideUpdateMessage}
+          />
+        )}
+
+        {deleteConfirmOpen && (
+          <BrgyNewsDelete
+            onConfirm={handleDelete}
+            onCancel={() => setDeleteConfirmOpen(false)}
+          />
+        )}
+
+        {deleteStatus && (
+          <BrgyNewsDeleteConfirm
+            status={deleteStatus}
+            onHide={() => {
+              setDeleteStatus(null);
+              if (deleteStatus === "success") onClose();
+            }}
+          />
         )}
       </div>
     </div>
