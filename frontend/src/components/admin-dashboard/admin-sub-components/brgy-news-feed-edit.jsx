@@ -6,8 +6,8 @@ import CancelBTN from "../../../assets/img/cancel.png";
 import DeleteIcon from "../../../assets/img/delete.png";
 import BrgyNewsFeedEditConfirm from "./brgy-news-feed-edit-confirm";
 import BrgyNewsUpdateMessage from "./brgy-news-update-message";
-import BrgyNewsDeleteConfirm from "./brgy-news-delete"; 
-import BrgyNewsDeleteConfirmMessage from "./brgy-news-delete-confirm"; 
+import BrgyNewsDeleteConfirm from "./brgy-news-delete";
+import BrgyNewsDeleteConfirmMessage from "./brgy-news-delete-confirm";
 
 function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
   const [localEventData, setLocalEventData] = useState(eventData);
@@ -395,29 +395,12 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
 
       if (!response.ok) {
         setDeleteStatus("error");
-
-        setTimeout(() => {
-          setDeleteStatus(null);
-          setDeleteConfirmOpen(false);
-        }, 3000);
-        return;
+        return; // Don't clear status here, let the message handle it
       }
 
       setDeleteStatus("success");
-
-      setTimeout(() => {
-        setDeleteStatus(null);
-        setDeleteConfirmOpen(false);
-        if (onUpdate) onUpdate(null);
-        onClose();
-      }, 3000);
     } catch {
       setDeleteStatus("error");
-
-      setTimeout(() => {
-        setDeleteStatus(null);
-        setDeleteConfirmOpen(false);
-      }, 3000);
     }
   };
 
