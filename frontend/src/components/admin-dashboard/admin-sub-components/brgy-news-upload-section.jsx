@@ -149,8 +149,10 @@ function BrgyNewsUploadSection({ refreshEvents }) {
       setImageFile(null);
       setShowForm(false);
       setShowConfirm(false);
-      setUploadStatus("success");
-      window.location.reload();
+setUploadStatus("success");
+setTimeout(() => {
+  window.location.reload();
+}, 2500);
 if (refreshEvents) {
   refreshEvents();
 }
@@ -159,6 +161,9 @@ if (refreshEvents) {
       alert("Failed to submit post: " + error.message);
       setShowConfirm(false);
       setUploadStatus("error");
+setTimeout(() => {
+  window.location.reload();
+}, 2500);
     }
   };
 
