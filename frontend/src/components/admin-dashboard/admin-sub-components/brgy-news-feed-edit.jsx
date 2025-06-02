@@ -387,23 +387,26 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
   };
 
   const handleDelete = async () => {
-    setDeleteStatus(null);
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/events/${localEventData.event_id}`,
-        {
-          method: "DELETE",
-        }
+        { method: "DELETE" }
       );
       if (!response.ok) {
         setDeleteStatus("error");
+        setDeleteConfirmOpen(false);
         return;
       }
       setDeleteStatus("success");
-      if (onUpdate) setTimeout(() => onUpdate(null), 0);
       setDeleteConfirmOpen(false);
+      if (onUpdate) setTimeout(() => onUpdate(null), 0);
+      setTimeout(() => {
+        setDeleteStatus(null);
+        onClose();
+      }, 3000);
     } catch {
       setDeleteStatus("error");
+      setDeleteConfirmOpen(false);
     }
   };
 
@@ -509,7 +512,7 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
           />
         )}
 
-        {deleteStatus && (
+        {(deleteStatus === "success" || deleteStatus === "error") && (
           <BrgyNewsDeleteConfirm
             status={deleteStatus}
             onHide={() => {
