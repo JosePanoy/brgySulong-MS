@@ -23,6 +23,13 @@ function BrgyNewsFeedAdmin() {
     setSelectedEvent(null);
   };
 
+  const handleDeleteEvent = (deletedEventId) => {
+    setEvents((prevEvents) =>
+      prevEvents.filter((event) => event.event_id !== deletedEventId)
+    );
+    setSelectedEvent(null);
+  };
+
   return (
     <>
       <BTNtoTop />
@@ -45,9 +52,7 @@ function BrgyNewsFeedAdmin() {
                 </button>
               </div>
               <div className="brgy-news-card-meta">
-                <span className="brgy-news-card-category">
-                  {event.category}
-                </span>
+                <span className="brgy-news-card-category">{event.category}</span>
                 <span className="brgy-news-card-date">
                   {new Date(event.date_start).toLocaleDateString()}
                 </span>
@@ -77,6 +82,7 @@ function BrgyNewsFeedAdmin() {
             eventData={selectedEvent}
             onClose={() => setSelectedEvent(null)}
             onUpdate={handleUpdateEvent}
+            onDelete={handleDeleteEvent}  
           />
         )}
       </div>

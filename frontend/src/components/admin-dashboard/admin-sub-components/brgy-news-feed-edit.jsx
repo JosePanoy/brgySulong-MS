@@ -9,7 +9,7 @@ import BrgyNewsUpdateMessage from "./brgy-news-update-message";
 import BrgyNewsDeleteConfirm from "./brgy-news-delete";
 import BrgyNewsDeleteConfirmMessage from "./brgy-news-delete-confirm";
 
-function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
+function BrgyNewsFeedEdit({ eventData, onClose, onUpdate, onDelete }) {
   const [localEventData, setLocalEventData] = useState(eventData);
   const [editingField, setEditingField] = useState(null);
   const [editedValues, setEditedValues] = useState({});
@@ -27,6 +27,20 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
     setNewImageFile(null);
     setNewImagePreview(null);
   }, [eventData]);
+
+useEffect(() => {
+  if (deleteStatus === "success" || deleteStatus === "error") {
+    const timer = setTimeout(() => {
+      setDeleteStatus(null);
+      if (deleteStatus === "success") {
+        onClose(); 
+      }
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }
+}, [deleteStatus, onClose]);
+
 
   if (!localEventData) return null;
 
@@ -385,24 +399,29 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
       </div>
     );
   };
+const handleDelete = async () => {
+   setDeleteConfirmOpen(false);
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/events/${localEventData.event_id}`,
+      { method: "DELETE" }
+    );
 
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/events/${localEventData.event_id}`,
-        { method: "DELETE" }
-      );
-
-      if (!response.ok) {
-        setDeleteStatus("error");
-        return; // Don't clear status here, let the message handle it
-      }
-
-      setDeleteStatus("success");
-    } catch {
+    if (!response.ok) {
       setDeleteStatus("error");
+      return;
     }
-  };
+
+    setDeleteStatus("success");
+
+    if (onDelete) {
+      onDelete(localEventData.event_id);
+    }
+  } catch {
+    setDeleteStatus("error");
+  }
+};
+
 
   return (
     <div className="brgy-news-feed-edit-overlay">
@@ -415,7 +434,7 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
           <button
             className="icon-btn delete-btn"
             aria-label="Delete Event"
-            disabled={isSaving}
+           disabled={!!deleteStatus}
             onClick={() => setDeleteConfirmOpen(true)}
           >
             <img src={DeleteIcon} alt="Delete" width={30} height={30} />
@@ -499,22 +518,23 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
           />
         )}
 
-        {deleteConfirmOpen && (
-          <BrgyNewsDeleteConfirm
-            onConfirm={handleDelete}
-            onCancel={() => setDeleteConfirmOpen(false)}
-          />
-        )}
+{deleteConfirmOpen && !deleteStatus && (
+  <BrgyNewsDeleteConfirm
+    onConfirm={() => {
+      setDeleteConfirmOpen(false);
+      handleDelete();
+    }}
+    onCancel={() => setDeleteConfirmOpen(false)}
+  />
+)}
 
-        {(deleteStatus === "success" || deleteStatus === "error") && (
-          <BrgyNewsDeleteConfirmMessage
-            status={deleteStatus}
-            onHide={() => {
-              setDeleteStatus(null);
-              if (deleteStatus === "success") onClose();
-            }}
-          />
-        )}
+{deleteStatus && (
+  <BrgyNewsDeleteConfirmMessage
+    status={deleteStatus}
+    onClose={() => setDeleteStatus(null)}
+  />
+)}
+
       </div>
     </div>
   );
