@@ -13,6 +13,7 @@ function BrgyNewsUploadSection() {
   const [showForm, setShowForm] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -65,63 +66,64 @@ function BrgyNewsUploadSection() {
       return;
     }
 
-    let payload = {
-      type: postType,
-      title: form.title,
-      description: form.description,
-      category: form.category,
-      priority: form.priority,
-      image_url: null,
-      is_important: isImportant,
-    };
+    const formData = new FormData();
+    formData.append("type", postType);
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+    formData.append("category", form.category);
+    formData.append("priority", form.priority);
+    formData.append("is_important", isImportant ? "1" : "0");
+
+    if (imageFile) {
+      formData.append("image_file", imageFile);
+    }
 
     if (postType.toLowerCase() === "event") {
-      payload = {
-        ...payload,
-        date_start: form.date_start
+      formData.append(
+        "date_start",
+        form.date_start
           ? form.date_start.toISOString().slice(0, 19).replace("T", " ")
-          : null,
-        date_end: form.date_end
+          : ""
+      );
+      formData.append(
+        "date_end",
+        form.date_end
           ? form.date_end.toISOString().slice(0, 19).replace("T", " ")
-          : null,
-        location: form.location,
-        organizer: form.organizer,
-        status: form.status,
-        rsvp_required: form.rsvp_required,
-        attendance_limit:
-          form.attendance_limit !== "" ? parseInt(form.attendance_limit, 10) : null,
-        contact_person: form.contact_person,
-      };
+          : ""
+      );
+      formData.append("location", form.location);
+      formData.append("organizer", form.organizer);
+      formData.append("status", form.status);
+      formData.append("rsvp_required", form.rsvp_required ? "1" : "0");
+      formData.append(
+        "attendance_limit",
+        form.attendance_limit ? form.attendance_limit : ""
+      );
+      formData.append("contact_person", form.contact_person);
     } else {
-      payload.status = "Scheduled";
-      payload.date_start = null;
-      payload.date_end = null;
-      payload.location = null;
-      payload.organizer = null;
-      payload.rsvp_required = false;
-      payload.attendance_limit = null;
-      payload.contact_person = null;
+      formData.append("status", "Scheduled");
+      formData.append("date_start", "");
+      formData.append("date_end", "");
+      formData.append("location", "");
+      formData.append("organizer", "");
+      formData.append("rsvp_required", "0");
+      formData.append("attendance_limit", "");
+      formData.append("contact_person", "");
     }
 
     try {
       const response = await fetch("http://127.0.0.1:8000/api/events", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
-      const responseText = await response.text();
-
       if (!response.ok) {
-        let errorData;
+        const text = await response.text();
         try {
-          errorData = JSON.parse(responseText);
+          const errorData = JSON.parse(text);
           alert("Error: " + JSON.stringify(errorData.errors || errorData));
         } catch {
-          alert("Error: Received non-JSON response from server.");
-          console.error("Non-JSON API error response:", responseText);
+          alert("Error: Server returned invalid response");
         }
         setShowConfirm(false);
         setUploadStatus("error");
@@ -143,12 +145,12 @@ function BrgyNewsUploadSection() {
         priority: "Medium",
       });
       setIsImportant(false);
+      setImageFile(null);
       setShowForm(false);
       setShowConfirm(false);
       setUploadStatus("success");
     } catch (error) {
       alert("Failed to submit post: " + error.message);
-      console.error("Fetch error:", error);
       setShowConfirm(false);
       setUploadStatus("error");
     }
@@ -259,7 +261,11 @@ function BrgyNewsUploadSection() {
               <div className="brgy-news-upload-row">
                 <label className="brgy-news-upload-file-label">
                   📎 Attach Image
-                  <input type="file" className="brgy-news-upload-file-input" />
+                  <input
+                    type="file"
+                    className="brgy-news-upload-file-input"
+                    onChange={(e) => setImageFile(e.target.files[0])}
+                  />
                 </label>
 
                 <select
@@ -349,7 +355,7 @@ function BrgyNewsUploadSection() {
                       value={form.status}
                       onChange={handleChange}
                       required
-                      style={{marginBottom: '5px'}}
+                      style={{ marginBottom: "5px" }}
                     >
                       <option value="Scheduled">Scheduled</option>
                       <option value="Ongoing">Ongoing</option>
@@ -363,7 +369,7 @@ function BrgyNewsUploadSection() {
                         name="rsvp_required"
                         checked={form.rsvp_required}
                         onChange={handleChange}
-                         style={{marginBottom: '5px'}}
+                        style={{ marginBottom: "5px" }}
                       />
                       RSVP Required
                     </label>
@@ -376,7 +382,7 @@ function BrgyNewsUploadSection() {
                       value={form.attendance_limit}
                       onChange={handleChange}
                       min="1"
-                      style={{marginBottom: '5px'}}
+                      style={{ marginBottom: "5px" }}
                     />
                   </div>
 

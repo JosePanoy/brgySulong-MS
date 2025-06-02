@@ -29,6 +29,7 @@ class BarangayEventsController extends Controller
         return response()->json($event, 200);
     }
 
+
 public function store(Request $request)
 {
     $validator = Validator::make($request->all(), [
@@ -49,7 +50,7 @@ public function store(Request $request)
         'location' => 'nullable|string|max:255',
         'organizer' => 'nullable|string|max:100',
         'status' => 'nullable|in:Scheduled,Ongoing,Completed,Cancelled',
-        'image_url' => 'nullable|string|max:255',
+        'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:15360',
         'priority' => 'nullable|in:High,Medium,Low',
         'rsvp_required' => 'nullable|boolean',
         'attendance_limit' => 'nullable|integer|min:1',
@@ -62,6 +63,13 @@ public function store(Request $request)
 
     try {
         $data = $validator->validated();
+
+        if ($request->hasFile('image_file')) {
+            $image = $request->file('image_file');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $image->getClientOriginalName());
+            $filePath = $image->storeAs('brgy_news_img', $filename, 'public');
+            $data['image_url'] = 'storage/' . $filePath;
+        }
 
         $data['status'] = $data['status'] ?? 'Scheduled';
         $data['priority'] = $data['priority'] ?? 'Medium';
@@ -86,7 +94,6 @@ public function store(Request $request)
         return response()->json(['error' => 'Server error: ' . $e->getMessage()], 500);
     }
 }
-
 
 
 
