@@ -6,7 +6,7 @@ import "../../../assets/css/dashboard/sub-dashboard/brgy-news-upload-section.css
 import BrgyNewsFeedUploadConfirm from "./brgy-news-upload-confirm";
 import BrgyNewsUploadMessage from "./brgy-news-upload-message";
 
-function BrgyNewsUploadSection() {
+function BrgyNewsUploadSection({ refreshEvents }) {
   const [userData, setUserData] = useState(null);
   const [postType, setPostType] = useState("News");
   const [isImportant, setIsImportant] = useState(false);
@@ -127,6 +127,7 @@ function BrgyNewsUploadSection() {
         }
         setShowConfirm(false);
         setUploadStatus("error");
+        window.location.reload();
         return;
       }
 
@@ -149,6 +150,11 @@ function BrgyNewsUploadSection() {
       setShowForm(false);
       setShowConfirm(false);
       setUploadStatus("success");
+      window.location.reload();
+if (refreshEvents) {
+  refreshEvents();
+}
+
     } catch (error) {
       alert("Failed to submit post: " + error.message);
       setShowConfirm(false);

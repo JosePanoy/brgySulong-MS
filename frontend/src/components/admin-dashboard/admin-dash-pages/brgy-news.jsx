@@ -7,19 +7,31 @@ import BrgyNewsUploadSection from '../admin-sub-components/brgy-news-upload-sect
 import BrgyNewsFeedAdmin from '../admin-sub-components/brgy-news-feed-admin'
 
 function BrgyNews() {
+  const [events, setEvents] = React.useState([]);
+
+  const fetchEvents = () => {
+    fetch("http://127.0.0.1:8000/api/events")
+      .then(res => res.json())
+      .then(data => setEvents(data));
+  };
+
+  React.useEffect(() => {
+    fetchEvents();
+  }, []);
+
   return (
     <>
-        <AdminMainNav />
-        <AdminSideNav />
-        <AdminSlideNav />
+      <AdminMainNav />
+      <AdminSideNav />
+      <AdminSlideNav />
 
-        <div style={{textAlign: 'center'}}>Barangay News Page</div>
+      <div style={{ textAlign: 'center' }}>Barangay News Page</div>
 
-        <BrgyNewsUploadSection />
-        <BrgyNewsFeedAdmin />
-
+      <BrgyNewsUploadSection refreshEvents={fetchEvents} />
+      <BrgyNewsFeedAdmin events={events} refreshEvents={fetchEvents} />
     </>
-  )
+  );
 }
+
 
 export default BrgyNews

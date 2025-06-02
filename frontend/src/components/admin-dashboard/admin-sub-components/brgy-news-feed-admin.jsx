@@ -1,42 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import "../../../assets/css/dashboard/sub-dashboard/brgy-news-feed-admin.css";
 import EditBTN from "../../../assets/img/edit.png";
-import BrgyNewsFeedEdit from './brgy-news-feed-edit';
-import BTNtoTop from '../../../sub-components/button-top-top';
+import BrgyNewsFeedEdit from "./brgy-news-feed-edit";
+import BTNtoTop from "../../../sub-components/button-top-top";
 
 function BrgyNewsFeedAdmin() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const fetchEvents = async () => {
+    const response = await fetch("http://127.0.0.1:8000/api/events");
+    const data = await response.json();
+    setEvents(data);
+  };
+
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/events")
-      .then(response => response.json())
-      .then(data => setEvents(data));
+    fetchEvents();
   }, []);
 
-  const handleUpdateEvent = (updatedEvent) => {
-    if (updatedEvent === null) {
-      // If null, it means event was deleted — remove it from the list
-      setEvents(prevEvents =>
-        prevEvents.filter(event => event.event_id !== selectedEvent.event_id)
-      );
-      setSelectedEvent(null);
-    } else {
-      // Otherwise, update the event in the list
-      setEvents(prevEvents =>
-        prevEvents.map(event =>
-          event.event_id === updatedEvent.event_id ? updatedEvent : event
-        )
-      );
-      setSelectedEvent(updatedEvent);
-    }
+  const handleUpdateEvent = async () => {
+    await fetchEvents();
+    setSelectedEvent(null);
   };
 
   return (
     <>
       <BTNtoTop />
       <div className="brgy-news-feed-admin">
-        {events.map(event => (
+        {events.map((event) => (
           <div key={event.event_id} className="brgy-news-card">
             <div className="brgy-news-card-header">
               <div className="brgy-news-card-title-wrapper">
@@ -46,12 +37,20 @@ function BrgyNewsFeedAdmin() {
                   onClick={() => setSelectedEvent(event)}
                   aria-label="Edit event"
                 >
-                  <img src={EditBTN} alt="Edit" className="brgy-news-card-edit-icon" />
+                  <img
+                    src={EditBTN}
+                    alt="Edit"
+                    className="brgy-news-card-edit-icon"
+                  />
                 </button>
               </div>
               <div className="brgy-news-card-meta">
-                <span className="brgy-news-card-category">{event.category}</span>
-                <span className="brgy-news-card-date">{new Date(event.date_start).toLocaleDateString()}</span>
+                <span className="brgy-news-card-category">
+                  {event.category}
+                </span>
+                <span className="brgy-news-card-date">
+                  {new Date(event.date_start).toLocaleDateString()}
+                </span>
               </div>
             </div>
             <div className="brgy-news-card-body">
@@ -66,7 +65,9 @@ function BrgyNewsFeedAdmin() {
             </div>
             <div className="brgy-news-card-footer">
               <span className="brgy-news-card-status">{event.status}</span>
-              {event.rsvp_required && <span className="brgy-news-card-rsvp">RSVP Required</span>}
+              {event.rsvp_required && (
+                <span className="brgy-news-card-rsvp">RSVP Required</span>
+              )}
             </div>
           </div>
         ))}

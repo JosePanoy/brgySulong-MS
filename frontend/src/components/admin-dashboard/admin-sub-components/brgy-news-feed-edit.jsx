@@ -6,8 +6,8 @@ import CancelBTN from "../../../assets/img/cancel.png";
 import DeleteIcon from "../../../assets/img/delete.png";
 import BrgyNewsFeedEditConfirm from "./brgy-news-feed-edit-confirm";
 import BrgyNewsUpdateMessage from "./brgy-news-update-message";
-import BrgyNewsDeleteConfirm from "./brgy-news-delete"; // for confirming deleting the data
-import BrgyNewsDeleteConfirmMessage from "./brgy-news-delete-confirm"; /// for displaying status message if success or error deleting
+import BrgyNewsDeleteConfirm from "./brgy-news-delete"; 
+import BrgyNewsDeleteConfirmMessage from "./brgy-news-delete-confirm"; 
 
 function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
   const [localEventData, setLocalEventData] = useState(eventData);
