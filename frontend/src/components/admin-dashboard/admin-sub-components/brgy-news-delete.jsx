@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../../assets/css/dashboard/sub-dashboard/admin-edit-confirm-modal.css";
 
-function BrgyNewsDelete({ onConfirm, onCancel }) {
+function BrgyNewsDeleteConfirm({ onConfirm, onCancel }) {
   const [agreed, setAgreed] = useState(false);
 
   return (
@@ -56,4 +56,4 @@ function BrgyNewsDelete({ onConfirm, onCancel }) {
   );
 }
 
-export default BrgyNewsDelete;
+export default BrgyNewsDeleteConfirm;

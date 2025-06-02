@@ -3,7 +3,7 @@ import "../../../assets/css/dashboard/sub-dashboard/admin-personal-update-messag
 import ConfirmGIF from "../../../assets/gif/confirm.gif";
 import DeniedGIF from "../../../assets/gif/denied.gif";
 
-function BrgyNewsDeleteConfirm({ status }) {
+function BrgyNewsDeleteConfirmMessage({ status }) {
 
 
   return (
@@ -20,4 +20,4 @@ function BrgyNewsDeleteConfirm({ status }) {
   );
 }
 
-export default BrgyNewsDeleteConfirm;
+export default BrgyNewsDeleteConfirmMessage;

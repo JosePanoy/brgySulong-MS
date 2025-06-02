@@ -6,8 +6,8 @@ import CancelBTN from "../../../assets/img/cancel.png";
 import DeleteIcon from "../../../assets/img/delete.png";
 import BrgyNewsFeedEditConfirm from "./brgy-news-feed-edit-confirm";
 import BrgyNewsUpdateMessage from "./brgy-news-update-message";
-import BrgyNewsDelete from "./brgy-news-delete";
-import BrgyNewsDeleteConfirm from "./brgy-news-delete-confirm";
+import BrgyNewsDeleteConfirm from "./brgy-news-delete"; // for confirming deleting the data
+import BrgyNewsDeleteConfirmMessage from "./brgy-news-delete-confirm"; /// for displaying status message if success or error deleting
 
 function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
   const [localEventData, setLocalEventData] = useState(eventData);
@@ -392,21 +392,32 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
         `http://127.0.0.1:8000/api/events/${localEventData.event_id}`,
         { method: "DELETE" }
       );
+
       if (!response.ok) {
         setDeleteStatus("error");
-        setDeleteConfirmOpen(false);
+
+        setTimeout(() => {
+          setDeleteStatus(null);
+          setDeleteConfirmOpen(false);
+        }, 3000);
         return;
       }
+
       setDeleteStatus("success");
-      setDeleteConfirmOpen(false);
-      if (onUpdate) setTimeout(() => onUpdate(null), 0);
+
       setTimeout(() => {
         setDeleteStatus(null);
+        setDeleteConfirmOpen(false);
+        if (onUpdate) onUpdate(null);
         onClose();
       }, 3000);
     } catch {
       setDeleteStatus("error");
-      setDeleteConfirmOpen(false);
+
+      setTimeout(() => {
+        setDeleteStatus(null);
+        setDeleteConfirmOpen(false);
+      }, 3000);
     }
   };
 
@@ -506,14 +517,14 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate }) {
         )}
 
         {deleteConfirmOpen && (
-          <BrgyNewsDelete
+          <BrgyNewsDeleteConfirm
             onConfirm={handleDelete}
             onCancel={() => setDeleteConfirmOpen(false)}
           />
         )}
 
         {(deleteStatus === "success" || deleteStatus === "error") && (
-          <BrgyNewsDeleteConfirm
+          <BrgyNewsDeleteConfirmMessage
             status={deleteStatus}
             onHide={() => {
               setDeleteStatus(null);
