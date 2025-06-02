@@ -7,7 +7,7 @@ function BrgyNewsUpdateMessage({ status, onHide }) {
 useEffect(() => {
   const timer = setTimeout(() => {
     onHide();
-  }, 3000);
+  }, 2500);
   return () => clearTimeout(timer);
 }, [onHide]);
 

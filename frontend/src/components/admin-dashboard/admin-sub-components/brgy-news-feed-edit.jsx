@@ -4,8 +4,12 @@ import SaveBTN from "../../../assets/img/save.png";
 import EditBTN from "../../../assets/img/edit.png";
 import CancelBTN from "../../../assets/img/cancel.png";
 import DeleteIcon from "../../../assets/img/delete.png";
+
+
 import BrgyNewsFeedEditConfirm from "./brgy-news-feed-edit-confirm";
 import BrgyNewsUpdateMessage from "./brgy-news-update-message";
+
+
 import BrgyNewsDeleteConfirm from "./brgy-news-delete";
 
 function BrgyNewsFeedEdit({ eventData, onClose, onUpdate, onDelete }) {
@@ -123,7 +127,7 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate, onDelete }) {
         if (!response.ok) throw new Error();
         setLocalEventData((prev) => {
           const updated = { ...prev, [key]: payloadValue };
-          if (onUpdate) setTimeout(() => onUpdate(updated), 0);
+          if (onUpdate) setTimeout(() => onUpdate(updated), 2500);
           return updated;
         });
         setEditedValues((prev) => {
