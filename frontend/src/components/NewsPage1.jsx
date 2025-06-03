@@ -5,14 +5,31 @@ import axios from "axios";
 import "../assets/css/events-page1.css";
 import FilteringEvents from "../sub-components/filtering-events";
 
-import CategoryIcon from "../assets/img/news_logo/category.png";
-import WhenIcon from "../assets/img/news_logo/when.png";
 import LocationLogo from "../assets/img/news_logo/location.png";
 import OrganizerLogo from "../assets/img/news_logo/organizer.png";
 import StatusLogo from "../assets/img/news_logo/status.png";
 import RsvpLogo from "../assets/img/news_logo/rsvp.png";
 import ContactLogo from "../assets/img/news_logo/contact.png";
 import BTNtoTop from "../sub-components/button-top-top";
+
+import StartLogo from "../assets/img/start.png";
+import EndLogo from "../assets/img/end.png";
+
+function formatDateTime(dateStr) {
+  const date = new Date(dateStr);
+  const datePart = date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const timePart = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+  return `${datePart} ${timePart}`;
+}
+
 
 function EventBox({ event }) {
   const AnimatedDiv = animated.div;
@@ -27,13 +44,6 @@ function EventBox({ event }) {
 
   const isExpired = new Date(event.date_end) < new Date();
 
-  const formatDate = (dateStr) =>
-    new Date(dateStr).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-
   return (
     <>
       <BTNtoTop />
@@ -41,7 +51,7 @@ function EventBox({ event }) {
         <div className="event-page1-header">
           <div>
             <h2 className="event-page1-box-title">{event.title}</h2>
-            <p className="event-page1-date">{formatDate(event.created_at)}</p>
+            <p className="event-page1-date">{formatDateTime(event.created_at)}</p>
           </div>
           <div className="event-page1-box-topright">
             <p className="event-page1-box-category">{event.category}</p>
@@ -60,15 +70,6 @@ function EventBox({ event }) {
         )}
 
         <div className="event-page1-box-details grid-2x3">
-          <div className="detail-item">
-            <img src={WhenIcon} alt="Start Date" className="icon" />
-            <span>{formatDate(event.date_start)}</span>
-          </div>
-
-          <div className="detail-item">
-            <img src={WhenIcon} alt="End Date" className="icon" />
-            <span>{formatDate(event.date_end)}</span>
-          </div>
 
           <div className="detail-item">
             <img src={LocationLogo} alt="Location" className="icon" />
@@ -95,6 +96,12 @@ function EventBox({ event }) {
           <img src={ContactLogo} alt="Contact" className="icon contact-icon" />
           <strong>
             Person to contact <span>{event.contact_person}</span>
+          </strong>
+        </div>
+
+        <div className="event-duration">
+          <strong>
+            Starts: {formatDateTime(event.date_start)} | Ends: {formatDateTime(event.date_end)}
           </strong>
         </div>
       </AnimatedDiv>
@@ -152,13 +159,8 @@ function NewsPage1() {
 
   return (
     <div className="event-page1-container">
-      <h1 className="event-page1-title">
-        Brgy. Sulong News
-      </h1>
-      <FilteringEvents
-        setSearchQuery={setSearchQuery}
-        setFilterType={setFilterType}
-      />
+      <h1 className="event-page1-title">Brgy. Sulong News</h1>
+      <FilteringEvents setSearchQuery={setSearchQuery} setFilterType={setFilterType} />
       <div className="event-page1-list">
         {filteredEvents.map((event) => (
           <EventBox key={event.event_id} event={event} />

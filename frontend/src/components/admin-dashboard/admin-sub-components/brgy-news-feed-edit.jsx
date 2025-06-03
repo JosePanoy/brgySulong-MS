@@ -165,42 +165,57 @@ function BrgyNewsFeedEdit({ eventData, onClose, onUpdate, onDelete }) {
     }
   };
 
-  const renderFieldValue = ({ key, value, type }) => {
-    if (editingField === key) {
-      if (type === "date") {
-        return (
-          <input
-            type="date"
-            value={editedValues[key] ?? formatDateInput(value)}
-            onChange={(e) => handleChange(key, e.target.value)}
-            disabled={isSaving}
-          />
-        );
-      }
-      if (type === "checkbox") {
-        return (
-          <input
-            type="checkbox"
-            checked={editedValues[key] !== undefined ? editedValues[key] : value === "Yes"}
-            onChange={(e) => handleChange(key, e.target.checked)}
-            disabled={isSaving}
-          />
-        );
-      }
+const renderFieldValue = ({ key, value, type }) => {
+  if (editingField === key) {
+    if (key === "status") {
+      return (
+        <select
+          value={editedValues[key] ?? value ?? "Scheduled"}
+          onChange={(e) => handleChange(key, e.target.value)}
+          disabled={isSaving}
+        >
+          <option value="Scheduled">Scheduled</option>
+          <option value="Ongoing">Ongoing</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      );
+    }
+    if (type === "date") {
       return (
         <input
-          type="text"
-          value={editedValues[key] ?? value}
+          type="date"
+          value={editedValues[key] ?? formatDateInput(value)}
           onChange={(e) => handleChange(key, e.target.value)}
           disabled={isSaving}
         />
       );
-    } else {
-      if (type === "date") return <span className="field-value">{formatDateDisplay(value)}</span>;
-      if (type === "checkbox") return <span className="field-value">{value === "Yes" || value === true ? "Yes" : "No"}</span>;
-      return <span className="field-value">{value}</span>;
     }
-  };
+    if (type === "checkbox") {
+      return (
+        <input
+          type="checkbox"
+          checked={editedValues[key] !== undefined ? editedValues[key] : value === "Yes"}
+          onChange={(e) => handleChange(key, e.target.checked)}
+          disabled={isSaving}
+        />
+      );
+    }
+    return (
+      <input
+        type="text"
+        value={editedValues[key] ?? value}
+        onChange={(e) => handleChange(key, e.target.value)}
+        disabled={isSaving}
+      />
+    );
+  } else {
+    if (type === "date") return <span className="field-value">{formatDateDisplay(value)}</span>;
+    if (type === "checkbox") return <span className="field-value">{value === "Yes" || value === true ? "Yes" : "No"}</span>;
+    return <span className="field-value">{value}</span>;
+  }
+};
+
 
   const renderImageField = () => {
     const existingImageUrl = localEventData.image_url || null;

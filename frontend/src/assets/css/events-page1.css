@@ -24,6 +24,16 @@
 }
 
 
+.event-duration {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  font-weight: 400;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  cursor: default;
+  color: #353333;
+}
 
 .event-page1-header {
   display: flex;
@@ -47,7 +57,7 @@
   font-weight: 700;
   color: #222;
   margin: 0;
-    cursor: default;
+  cursor: default;
 }
 
 .event-page1-box-topright {
@@ -58,8 +68,8 @@
 
 .event-page1-box-category {
   font-weight: 600;
-  color: #007BFF;
-    cursor: default;
+  color: hsl(134, 51%, 42%);
+  cursor: default;
 }
 
 .event-expired-label {
@@ -89,11 +99,11 @@
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-    cursor: default;
+  cursor: default;
 }
 
 .event-page1-date {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #888;
   margin-top: 4px;
   cursor: default;
@@ -106,7 +116,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 5px;
-    cursor: default;
+  cursor: default;
 }
 
 .detail-item .icon {
@@ -124,6 +134,7 @@
   font-weight: 500;
   color: #555;
   cursor: default;
+  font-size: 0.8rem;
 }
 
 .contact-icon {
@@ -146,12 +157,15 @@
     gap: 10px 15px;
     max-width: 600px;
   }
+
   .event-page1-box-title {
     font-size: 1.6rem;
   }
+
   .event-page1-box-description {
     font-size: 1rem;
   }
+
   .detail-item {
     font-size: 0.95rem;
   }
@@ -162,20 +176,31 @@
     gap: 8px 12px;
     max-width: 450px;
   }
+
+  .event-duration {
+    font-size: 0.9rem;
+    bottom: 10px;
+    left: 10px;
+  }
+
   .event-page1-box-title {
     font-size: 1.4rem;
   }
+
   .event-page1-box-description {
     font-size: 0.95rem;
   }
+
   .detail-item {
     font-size: 0.9rem;
   }
+
   .detail-item .icon,
   .contact-icon {
     width: 14px;
     height: 14px;
   }
+
   .contact-info {
     position: static;
     margin-top: 15px;
@@ -190,20 +215,32 @@
     gap: 6px 10px;
     margin-bottom: 30px;
   }
+
+  .event-duration {
+    font-size: 0.85rem;
+    bottom: 8px;
+    left: 8px;
+    white-space: normal;
+  }
+
   .event-page1-box-title {
     font-size: 1.2rem;
   }
+
   .event-page1-box-description {
     font-size: 0.9rem;
   }
+
   .detail-item {
     font-size: 0.85rem;
   }
+
   .detail-item .icon,
   .contact-icon {
     width: 12px;
     height: 12px;
   }
+
   .contact-info {
     justify-content: center;
     margin-top: 10px;
