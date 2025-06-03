@@ -102,7 +102,7 @@ function EventBox({ event }) {
   );
 }
 
-function EventPage1() {
+function NewsPage1() {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -114,7 +114,7 @@ function EventPage1() {
     axios
       .get("http://127.0.0.1:8000/api/events")
       .then((response) => {
-        const eventOnly = response.data.filter((item) => item.type === "Event");
+        const eventOnly = response.data.filter((item) => item.type === "News");
         setEvents(eventOnly);
         setFilteredEvents(eventOnly);
         setLoading(false);
@@ -153,7 +153,7 @@ function EventPage1() {
   return (
     <div className="event-page1-container">
       <h1 className="event-page1-title">
-        Brgy. Sulong Schedules and Upcoming Events!
+        Brgy. Sulong News
       </h1>
       <FilteringEvents
         setSearchQuery={setSearchQuery}
@@ -168,4 +168,4 @@ function EventPage1() {
   );
 }
 
-export default EventPage1;
+export default NewsPage1;
