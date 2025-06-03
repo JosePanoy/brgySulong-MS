@@ -49,7 +49,7 @@
   .admin-slide-nav {
     width: 220px;
      z-index: 9;
-     top: 100px;
+        top: 90px;
   }
 
   .admin-slide-nav-button {
@@ -67,6 +67,7 @@
 @media (max-width: 480px) {
   .admin-slide-nav {
     width: 190px;
+    top: 90px;
   }
 
   .admin-slide-nav-button {
@@ -100,7 +101,7 @@
 }
 
 /* Hide AdminSlideNav on PC view */
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   .admin-slide-nav {
     display: none;
   }
@@ -114,8 +115,12 @@
 }
 
 
-@media (min-width: 765px) {
+
+
+
+@media (max-width: 320px) {
   .admin-slide-nav {
-    display: none;
+    width: 190px;
+    top: 85px;
   }
 }

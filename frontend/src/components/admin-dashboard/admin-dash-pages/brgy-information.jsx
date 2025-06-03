@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSpring, animated } from "@react-spring/web";
+import { useInView } from "react-intersection-observer";
 import AdminSideNav from "../admin-sub-components/admin-side-nav";
 import AdminSlideNav from "../admin-sub-components/admin-slide-nav";
 import AdminMainNav from "../admin-sub-components/admin-main-nav";
 import "../../../assets/css/dashboard/sub-dashboard/brgy-information.css";
 import BrgyInfoFilter from "../admin-sub-components/brgy-information-filter";
 import BTNtoTop from "../../../sub-components/button-top-top";
+
+function AnimatedBox({ children, className }) {
+  const AnimatedDiv = animated.div;
+  const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.1 });
+  const style = useSpring({
+    opacity: inView ? 1 : 0,
+    transform: inView ? "translateY(0)" : "translateY(30px)",
+    config: { duration: 700 },
+    reset: true,
+  });
+
+  return (
+    <AnimatedDiv ref={ref} style={style} className={className}>
+      {children}
+    </AnimatedDiv>
+  );
+}
 
 function BrgyInformation() {
   const [captain, setCaptain] = useState(null);
@@ -125,7 +144,7 @@ function BrgyInformation() {
 
         <div className="brgy-info-grid">
           {(includeCaptainInDefaultView || filters.captain) && captain && (
-            <div className="brgy-info-box brgy-info-box1">
+            <AnimatedBox className="brgy-info-box brgy-info-box1">
               <div className="box-content">
                 <div className="top-row">
                   <div className="official-name">
@@ -133,18 +152,20 @@ function BrgyInformation() {
                   </div>
                   <div className="position">Barangay Captain</div>
                 </div>
-<img
-  className="profile-pic"
-  src={
-    captain.profile_picture
-      ? `http://127.0.0.1:8000/storage/${captain.profile_picture}`
-      : "profile-pic.jpg"
-  }
-  alt="Captain"
-/>
+                <img
+                  className="profile-pic"
+                  src={
+                    captain.profile_picture
+                      ? `http://127.0.0.1:8000/storage/${captain.profile_picture}`
+                      : "profile-pic.jpg"
+                  }
+                  alt="Captain"
+                />
 
                 <div className="sub-box">
-                  <div className="status">Status:{captain.position_status || "N/A"}</div>
+                  <div className="status">
+                    Status:{captain.position_status || "N/A"}
+                  </div>
                   <div className="age">Age: {captain.age || "N/A"}</div>
                   <div className="view">
                     <Link to={`/brgy-information/personal/${captain.id}`}>
@@ -166,7 +187,7 @@ function BrgyInformation() {
                   </div>
                 </div>
               </div>
-            </div>
+            </AnimatedBox>
           )}
 
           {displayNoDataMessage ? (
@@ -183,7 +204,7 @@ function BrgyInformation() {
             </div>
           ) : (
             filteredOfficials.map((admin, index) => (
-              <div
+              <AnimatedBox
                 key={index}
                 className={`brgy-info-box brgy-info-box${index + 2}`}
               >
@@ -198,18 +219,20 @@ function BrgyInformation() {
                         : admin.brgy_position.replace("Barangay", "Brgy.")}
                     </div>
                   </div>
-<img
-  className="profile-pic"
-  src={
-    admin.profile_picture
-      ? `http://127.0.0.1:8000/storage/${admin.profile_picture}`
-      : "profile-pic.jpg"
-  }
-  alt="Official"
-/>
+                  <img
+                    className="profile-pic"
+                    src={
+                      admin.profile_picture
+                        ? `http://127.0.0.1:8000/storage/${admin.profile_picture}`
+                        : "profile-pic.jpg"
+                    }
+                    alt="Official"
+                  />
 
                   <div className="sub-box">
-                    <div className="status">Status: {admin.position_status || "N/A"}</div>
+                    <div className="status">
+                      Status: {admin.position_status || "N/A"}
+                    </div>
                     <div className="age">Age: {admin.age || "N/A"}</div>
                     <div className="view">
                       <Link to={`/brgy-information/personal/${admin.id}`}>
@@ -231,7 +254,7 @@ function BrgyInformation() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </AnimatedBox>
             ))
           )}
         </div>

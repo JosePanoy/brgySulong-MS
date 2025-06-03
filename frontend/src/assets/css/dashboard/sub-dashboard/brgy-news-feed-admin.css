@@ -115,3 +115,11 @@
   height: 20px;
   object-fit: contain;
 }
+
+
+.event-type-icon img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  margin-top: -5px;
+}
