@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import InfoLogo from "../../../assets/img/info.png";
 import MaleLogo from "../../../assets/img/male.png";
 import FemaleLogo from "../../../assets/img/female.png";
@@ -98,7 +99,9 @@ function DisplayAllResident() {
               <td>{resident.phone_number || 'N/A'}</td>
               <td>{resident.emergency_contact || 'N/A'}</td>
               <td style={{ textAlign: 'center' }}>
-                <img src={InfoLogo} alt="Info" className="info-logo" />
+                <Link to={`/brgy-residents/personal/${resident.id}`}>
+                  <img src={InfoLogo} alt="Info" className="info-logo" />
+                </Link>
               </td>
             </tr>
           ))}
