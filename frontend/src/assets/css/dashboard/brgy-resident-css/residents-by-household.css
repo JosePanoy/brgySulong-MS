@@ -1,0 +1,200 @@
+.resident-by-household-container {
+  max-width: 1000px;
+  max-height: 500px;
+  margin: 0 auto;
+  overflow-y: auto;
+  padding: 6px 10px 40px 10px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  background-color: #fafafa;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.resident-by-household-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.resident-by-household-row:hover {
+  background-color: #e9f5e9;
+}
+
+.resident-by-household-label {
+  color: #2a2a2acd;
+  font-size: 0.8rem;
+}
+
+.resident-by-household-icon {
+  height: 18px;
+  width: 18px;
+}
+
+.resident-by-household-head-row {
+  display: flex;
+  padding: 6px 12px;
+  background-color: #dff0d8;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #3c763d;
+  align-items: center;
+  gap: 8px;
+}
+
+.resident-by-household-head-label {
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.resident-by-household-head-name {
+  flex-grow: 1;
+  cursor: default;
+}
+
+.resident-by-household-members-row {
+  padding: 6px 12px 10px 12px;
+  background-color: #f4f9f4;
+  border-bottom: 1px solid #ccc;
+}
+
+.resident-by-household-members-title {
+  font-weight: 600;
+  color: #2a6b2a;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  display: block;
+  cursor: default;
+}
+
+.resident-by-household-members-list {
+  font-size: 0.8rem;
+  color: #333;
+  cursor: default;
+}
+
+.resident-by-household-member {
+  padding: 2px 0;
+}
+
+.resident-by-household-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+  margin-top: 12px;
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+}
+
+.resident-by-household-page-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.resident-by-household-page-text {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: hsl(134, 61%, 41%);
+  cursor: default;
+}
+
+@media (max-width: 768px) {
+  .resident-by-household-container {
+    max-width: 100%;
+    max-height: 400px;
+    padding: 5px 8px 36px 8px;
+    font-size: 0.85rem;
+  }
+  .resident-by-household-row {
+    height: 36px;
+    padding: 0 10px;
+  }
+  .resident-by-household-icon {
+    height: 16px;
+    width: 16px;
+  }
+  .resident-by-household-head-row {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+  }
+  .resident-by-household-members-row {
+    padding: 5px 10px 8px 10px;
+  }
+  .resident-by-household-members-title {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
+  .resident-by-household-members-list {
+    font-size: 0.75rem;
+  }
+  .resident-by-household-member {
+    padding: 1.5px 0;
+  }
+  .resident-by-household-pagination {
+    bottom: 6px;
+    gap: 8px;
+  }
+  .resident-by-household-page-icon {
+    width: 18px;
+    height: 18px;
+  }
+  .resident-by-household-page-text {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .resident-by-household-container {
+    max-height: 300px;
+    padding: 4px 6px 32px 6px;
+    font-size: 0.8rem;
+  }
+  .resident-by-household-row {
+    height: 34px;
+    padding: 0 8px;
+  }
+  .resident-by-household-icon {
+    height: 14px;
+    width: 14px;
+  }
+  .resident-by-household-head-row {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+  .resident-by-household-members-row {
+    padding: 4px 8px 6px 8px;
+  }
+  .resident-by-household-members-title {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+  .resident-by-household-members-list {
+    font-size: 0.7rem;
+  }
+  .resident-by-household-member {
+    padding: 1px 0;
+  }
+  .resident-by-household-pagination {
+    gap: 6px;
+    bottom: 5px;
+  }
+  .resident-by-household-page-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .resident-by-household-page-text {
+    font-size: 0.75rem;
+  }
+}

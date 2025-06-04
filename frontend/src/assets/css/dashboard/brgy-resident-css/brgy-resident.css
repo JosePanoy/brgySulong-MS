@@ -37,12 +37,12 @@
 }
 
 .brgy-residents-hidden-div {
-  max-height: none;            /* Allow natural height */
-  height: auto;                /* Expand with content */
+  max-height: none;          
+  height: auto;               
   background-color: #f4f4f4;
-  overflow: visible;           /* Show full content */
-  transition: none;            /* Disable height transition */
-  margin-bottom: 20px;         /* Space after expanded content */
+  overflow: visible;          
+  transition: none;           
+  margin-bottom: 20px;        
 }
 
 @media (max-width: 768px) {
