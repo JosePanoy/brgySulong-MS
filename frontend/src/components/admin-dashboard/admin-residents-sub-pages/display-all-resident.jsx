@@ -3,24 +3,26 @@ import InfoLogo from "../../../assets/img/info.png";
 import MaleLogo from "../../../assets/img/male.png";
 import FemaleLogo from "../../../assets/img/female.png";
 import OtherLogo from "../../../assets/img/other.png";
+import LeftBTN from "../../../assets/img/left.png";
+import RightBTN from "../../../assets/img/right.png";
 import "../../../assets/css/dashboard/brgy-resident-css/display-all-resident.css";
 
 function DisplayAllResident() {
   const [residents, setResidents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const residentsPerPage = 15;
 
   useEffect(() => {
-    const fetchResidents = () => {
-      fetch('http://127.0.0.1:8000/api/brgyresidents/residents')
-        .then(response => response.json())
-        .then(data => setResidents(data));
-    };
-
-    fetchResidents();
-
-    const interval = setInterval(fetchResidents, 1000);
-
-    return () => clearInterval(interval);
+    fetch('http://127.0.0.1:8000/api/brgyresidents/residents')
+      .then(response => response.json())
+      .then(data => setResidents(data));
   }, []);
+
+  const indexOfLastResident = currentPage * residentsPerPage;
+  const indexOfFirstResident = indexOfLastResident - residentsPerPage;
+  const currentResidents = residents.slice(indexOfFirstResident, indexOfLastResident);
+
+  const totalPages = Math.ceil(residents.length / residentsPerPage);
 
   const calculateAge = (birthdate) => {
     const birthDate = new Date(birthdate);
@@ -54,6 +56,18 @@ function DisplayAllResident() {
     return OtherLogo;
   };
 
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
   return (
     <div className="resident-table">
       <table>
@@ -71,7 +85,7 @@ function DisplayAllResident() {
           </tr>
         </thead>
         <tbody>
-          {residents.map((resident) => (
+          {currentResidents.map((resident) => (
             <tr key={resident.id}>
               <td>
                 <img src={getProfileImage(resident)} alt="Profile" className="profile-picture" />
@@ -90,6 +104,15 @@ function DisplayAllResident() {
           ))}
         </tbody>
       </table>
+      <div className="pagination-buttons">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          <img src={LeftBTN} alt="Previous" />
+        </button>
+        <span>{currentPage} / {totalPages}</span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          <img src={RightBTN} alt="Next" />
+        </button>
+      </div>
     </div>
   );
 }
