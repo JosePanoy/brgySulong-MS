@@ -1,18 +1,131 @@
-import React from 'react'
-import AdminMainNav from '../admin-sub-components/admin-main-nav'
-import AdminSideNav from '../admin-sub-components/admin-side-nav'
-import AdminSlideNav from '../admin-sub-components/admin-slide-nav'
+import React, { useState } from 'react';
+import AdminMainNav from '../admin-sub-components/admin-main-nav';
+import AdminSideNav from '../admin-sub-components/admin-side-nav';
+import AdminSlideNav from '../admin-sub-components/admin-slide-nav';
+import "../../../assets/css/dashboard/brgy-resident-css/brgy-resident.css";
+import DownLogo from "../../../assets/img/down.png";
+import UpLogo from "../../../assets/img/up.png";
+import DisplayAllResident from '../admin-residents-sub-pages/display-all-resident';
 
 function BrgyResidents() {
-  return (
-<>
-    <AdminMainNav />
-    <AdminSideNav />
-    <AdminSlideNav />
+  const [activeIndex, setActiveIndex] = useState(null);
 
-    <div style={{textAlign: 'center'}}>Barangay Residents Page</div>
-</>
-  )
+  const toggleMenu = (index) => {
+    if (activeIndex === index) {
+      setActiveIndex(null); 
+    } else {
+      setActiveIndex(index); 
+    }
+  };
+
+  return (
+    <>
+      <AdminMainNav />
+      <AdminSideNav />
+      <AdminSlideNav />
+
+      <div className="brgy-residents-container">
+      <h2>Brgy Resident Information</h2>
+        <div className="brgy-residents-menu" onClick={() => toggleMenu(0)}>
+          <span className="brgy-residents-label">All Residents</span>
+          <img 
+            src={activeIndex === 0 ? UpLogo : DownLogo} 
+            alt="Toggle Icon" 
+            className="brgy-residents-icon" 
+          />
+        </div>
+        {activeIndex === 0 && (
+          <div className="brgy-residents-hidden-div">
+            <DisplayAllResident />
+          </div>
+        )}
+
+        <div className="brgy-residents-menu" onClick={() => toggleMenu(1)}>
+          <span className="brgy-residents-label">By Household</span>
+          <img 
+            src={activeIndex === 1 ? UpLogo : DownLogo} 
+            alt="Toggle Icon" 
+            className="brgy-residents-icon" 
+          />
+        </div>
+        {activeIndex === 1 && (
+          <div className="brgy-residents-hidden-div">
+            {/* Content for By Household */}
+          </div>
+        )}
+
+        <div className="brgy-residents-menu" onClick={() => toggleMenu(2)}>
+          <span className="brgy-residents-label">Special Groups</span>
+          <img 
+            src={activeIndex === 2 ? UpLogo : DownLogo} 
+            alt="Toggle Icon" 
+            className="brgy-residents-icon" 
+          />
+        </div>
+        {activeIndex === 2 && (
+          <div className="brgy-residents-hidden-div">
+            {/* Content for Special Groups */}
+          </div>
+        )}
+
+        <div className="brgy-residents-menu" onClick={() => toggleMenu(3)}>
+          <span className="brgy-residents-label">Voter Status</span>
+          <img 
+            src={activeIndex === 3 ? UpLogo : DownLogo} 
+            alt="Toggle Icon" 
+            className="brgy-residents-icon" 
+          />
+        </div>
+        {activeIndex === 3 && (
+          <div className="brgy-residents-hidden-div">
+            {/* Content for Voter Status */}
+          </div>
+        )}
+
+        <div className="brgy-residents-menu" onClick={() => toggleMenu(4)}>
+          <span className="brgy-residents-label">New Residents</span>
+          <img 
+            src={activeIndex === 4 ? UpLogo : DownLogo} 
+            alt="Toggle Icon" 
+            className="brgy-residents-icon" 
+          />
+        </div>
+        {activeIndex === 4 && (
+          <div className="brgy-residents-hidden-div">
+            {/* Content for New Residents */}
+          </div>
+        )}
+
+        <div className="brgy-residents-menu" onClick={() => toggleMenu(5)}>
+          <span className="brgy-residents-label">By Employment</span>
+          <img 
+            src={activeIndex === 5 ? UpLogo : DownLogo} 
+            alt="Toggle Icon" 
+            className="brgy-residents-icon" 
+          />
+        </div>
+        {activeIndex === 5 && (
+          <div className="brgy-residents-hidden-div">
+            {/* Content for By Employment */}
+          </div>
+        )}
+
+        <div className="brgy-residents-menu" onClick={() => toggleMenu(6)}>
+          <span className="brgy-residents-label">Health & Emergency</span>
+          <img 
+            src={activeIndex === 6 ? UpLogo : DownLogo} 
+            alt="Toggle Icon" 
+            className="brgy-residents-icon" 
+          />
+        </div>
+        {activeIndex === 6 && (
+          <div className="brgy-residents-hidden-div">
+            {/* Content for Health & Emergency */}
+          </div>
+        )}
+      </div>
+    </>
+  );
 }
 
-export default BrgyResidents
+export default BrgyResidents;

@@ -1,0 +1,170 @@
+.resident-table {
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  overflow-x: auto;
+  max-height: 500px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+th, td {
+  padding: 3px 6px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.6rem;
+}
+
+th {
+  background-color: #f4f4f4;
+  color: hsl(134, 61%, 41%);
+}
+
+td {
+  font-size: 0.6rem;
+}
+
+.profile-picture {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+button {
+  background-color: hsl(134, 61%, 41%);
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 0.7rem;
+}
+
+button:hover {
+  background-color: hsl(134, 61%, 35%);
+}
+
+button:focus {
+  outline: none;
+}
+
+textarea {
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+table th, table td {
+  min-width: 80px;
+  padding: 3px 6px;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+table td {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.resident-table {
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 500px;
+  scrollbar-color: hsla(134, 61%, 41%, 0.602) transparent;
+}
+
+.resident-table::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+.resident-table::-webkit-scrollbar-thumb {
+  background-color: hsl(134, 61%, 41%);
+  border-radius: 4px;
+}
+
+.resident-table::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.resident-table::-webkit-scrollbar-vertical {
+  width: 2px;
+  max-height: 100px;
+}
+
+.resident-table::-webkit-scrollbar-horizontal {
+  height: 50px;
+  max-width: 100px;
+}
+
+.info-logo {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+table th, table td {
+  width: 12%;
+}
+
+.action-column {
+  width: 5%;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  th, td {
+    padding: 3px 6px;
+    font-size: 0.75rem;
+  }
+
+  button {
+    padding: 3px 6px;
+    font-size: 0.75rem;
+  }
+
+  .profile-picture {
+    width: 12px;
+    height: 12px;
+  }
+
+  table th, table td {
+    width: 12.5%;
+  }
+
+  .action-column {
+    width: 10%;
+  }
+}
+
+@media (max-width: 480px) {
+  th, td {
+    padding: 2px 5px;
+    font-size: 0.7rem;
+  }
+
+  button {
+    padding: 2px 5px;
+    font-size: 0.7rem;
+  }
+
+  .profile-picture {
+    width: 10px;
+    height: 10px;
+  }
+
+  table th, table td {
+    width: 12.5%;
+  }
+
+  .action-column {
+    width: 12%;
+  }
+}
