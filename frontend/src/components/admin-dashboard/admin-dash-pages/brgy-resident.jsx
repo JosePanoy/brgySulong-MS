@@ -8,6 +8,7 @@ import UpLogo from "../../../assets/img/up.png";
 import DisplayAllResident from '../admin-residents-sub-pages/display-all-resident';
 import ResidentByHousehold from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-by-household';
 import ResidentSpecialGroup from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-househiold';
+import ResidentByVoters from '../admin-residents-sub-pages/residents-sub-components.jsx/resident-by-voters';
 
 function BrgyResidents() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -80,7 +81,7 @@ function BrgyResidents() {
         </div>
         {activeIndex === 3 && (
           <div className="brgy-residents-hidden-div">
-            {/* Content for Voter Status */}
+            <ResidentByVoters />
           </div>
         )}
 

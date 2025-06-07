@@ -10,6 +10,7 @@ class BrgyResident extends Model
     protected $fillable = [
         'fname',
         'lname',
+        'age',
         'phone_number',
         'email',
         'profile_picture',

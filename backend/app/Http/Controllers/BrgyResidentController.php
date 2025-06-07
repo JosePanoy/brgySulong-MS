@@ -30,6 +30,7 @@ class BrgyResidentController extends Controller
         $validated = $request->validate([
             'fname' => 'required|string',
             'lname' => 'required|string',
+            'age' => 'required|string',
             'phone_number' => 'required|string',
             'email' => 'required|email|unique:brgy_residents,email',
             'profile_picture' => 'nullable|string',
@@ -70,6 +71,7 @@ class BrgyResidentController extends Controller
         $validated = $request->validate([
             'fname' => 'nullable|string',
             'lname' => 'nullable|string',
+            'age' => 'nullable|string',
             'phone_number' => 'nullable|string',
             'email' => 'nullable|email|unique:brgy_residents,email,' . $id,
             'profile_picture' => 'nullable|string',
