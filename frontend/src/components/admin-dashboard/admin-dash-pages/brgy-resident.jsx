@@ -7,6 +7,7 @@ import DownLogo from "../../../assets/img/down.png";
 import UpLogo from "../../../assets/img/up.png";
 import DisplayAllResident from '../admin-residents-sub-pages/display-all-resident';
 import ResidentByHousehold from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-by-household';
+import ResidentSpecialGroup from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-househiold';
 
 function BrgyResidents() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -65,7 +66,7 @@ function BrgyResidents() {
         </div>
         {activeIndex === 2 && (
           <div className="brgy-residents-hidden-div">
-            {/* Content for Special Groups */}
+            <ResidentSpecialGroup />
           </div>
         )}
 
