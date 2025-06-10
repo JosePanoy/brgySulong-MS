@@ -10,6 +10,7 @@ import ResidentByHousehold from '../admin-residents-sub-pages/residents-sub-comp
 import ResidentSpecialGroup from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-househiold';
 import ResidentByVoters from '../admin-residents-sub-pages/residents-sub-components.jsx/resident-by-voters';
 import BrgyNewResidents from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-new-registered';
+import ResidentByEmployment from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-by-employment';
 
 function BrgyResidents() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -110,7 +111,7 @@ function BrgyResidents() {
         </div>
         {activeIndex === 5 && (
           <div className="brgy-residents-hidden-div">
-            {/* Content for By Employment */}
+            <ResidentByEmployment />
           </div>
         )}
 

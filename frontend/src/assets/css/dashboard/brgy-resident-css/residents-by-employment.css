@@ -1,0 +1,160 @@
+.resident-by-employment-container {
+  max-width: 100%;
+  max-height: 550px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.resident-by-employment-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.resident-by-employment-filters button {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  position: relative;
+  color: #333;
+  transition: color 0.3s ease;
+  min-width: 80px;
+  text-align: center;
+}
+
+.resident-by-employment-filters button.active,
+.resident-by-employment-filters button:hover {
+  color: hsl(134, 61%, 41%);
+}
+
+.resident-by-employment-filters button::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: hsla(134, 61%, 41%, 0.736);
+  transition: width 0.3s ease;
+  border-radius: 12px;
+}
+
+.resident-by-employment-filters button:hover::after,
+.resident-by-employment-filters button.active::after {
+  width: 100%;
+}
+
+.resident-by-employment-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  font-size: 0.65rem;
+  margin-top: -10px;
+}
+
+.resident-by-employment-table th,
+.resident-by-employment-table td {
+  padding: 2px 4px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.resident-by-employment-table th {
+  background-color: #f4f4f4;
+  color: hsl(134, 61%, 41%);
+  font-weight: 600;
+}
+
+.resident-by-employment-profile-picture {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.resident-by-employment-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  gap: 15px;
+  font-size: 0.8rem;
+  color: hsl(134, 61%, 41%);
+}
+
+.resident-by-employment-pagination button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resident-by-employment-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.resident-by-employment-pagination img {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 1024px) {
+  .resident-by-employment-filters {
+    gap: 8px;
+  }
+  .resident-by-employment-filters button {
+    padding: 3px 6px;
+    font-size: 0.75rem;
+    min-width: 70px;
+  }
+  .resident-by-employment-table th,
+  .resident-by-employment-table td {
+    padding: 2px 3px;
+    font-size: 0.6rem;
+  }
+  .resident-by-employment-pagination {
+    font-size: 0.75rem;
+  }
+  .resident-by-employment-pagination img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .resident-by-employment-filters {
+    justify-content: center;
+    gap: 6px;
+  }
+  .resident-by-employment-filters button {
+    padding: 2px 4px;
+    font-size: 0.7rem;
+    min-width: 60px;
+  }
+  .resident-by-employment-table th,
+  .resident-by-employment-table td {
+    padding: 1.5px 2px;
+    font-size: 0.55rem;
+  }
+  .resident-by-employment-profile-picture {
+    width: 16px;
+    height: 16px;
+  }
+  .resident-by-employment-pagination {
+    font-size: 0.7rem;
+    gap: 6px;
+  }
+  .resident-by-employment-pagination img {
+    width: 14px;
+    height: 14px;
+  }
+}
