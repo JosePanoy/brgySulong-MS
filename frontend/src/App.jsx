@@ -18,6 +18,7 @@ import BrgySettings from "./components/admin-dashboard/admin-dash-pages/brgy-set
 import BrgySupport from "./components/admin-dashboard/admin-dash-pages/brgy-support";
 import AdminPersonalPage from "./components/admin-dashboard/admin-sub-pages/admin-personal-page";
 import BrgyResidentInfo from "./components/admin-dashboard/admin-residents-sub-pages/residents-sub-components.jsx/residents-view-all-info"
+import ResidentInfoRecord from "./components/admin-dashboard/admin-residents-sub-pages/residents-sub-components.jsx/resident-info-record";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
 
       <Route path="/brgy-information" element={<BrgyInformation />} />
       <Route path="/brgy-information/personal/:id" element={<AdminPersonalPage />} />
+      <Route path="/brgy-information/medical-record/:id" element={<ResidentInfoRecord />} />
       <Route path="/brgy-news" element={<BrgyNews />} />
       <Route path="/brgy-residents" element={<BrgyResidents />} />
       <Route path="/brgy-residents/personal/:id" element={<BrgyResidentInfo/>} />

@@ -11,6 +11,8 @@ import ResidentSpecialGroup from '../admin-residents-sub-pages/residents-sub-com
 import ResidentByVoters from '../admin-residents-sub-pages/residents-sub-components.jsx/resident-by-voters';
 import BrgyNewResidents from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-new-registered';
 import ResidentByEmployment from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-by-employment';
+import ResidentsMedicalRecords from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-medical-records';
+import BTNtoTop from '../../../sub-components/button-top-top';
 
 function BrgyResidents() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -28,6 +30,7 @@ function BrgyResidents() {
       <AdminMainNav />
       <AdminSideNav />
       <AdminSlideNav />
+      <BTNtoTop />
 
       <div className="brgy-residents-container">
       <h2>Brgy Resident Information</h2>
@@ -125,7 +128,7 @@ function BrgyResidents() {
         </div>
         {activeIndex === 6 && (
           <div className="brgy-residents-hidden-div">
-            {/* Content for Health & Emergency */}
+            <ResidentsMedicalRecords />
           </div>
         )}
       </div>

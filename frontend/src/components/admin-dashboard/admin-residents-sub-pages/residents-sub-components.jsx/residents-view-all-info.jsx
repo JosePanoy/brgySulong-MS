@@ -7,6 +7,7 @@ import "../../../../assets/css/dashboard/brgy-resident-css/residents-view-all-in
 import AdminMainNav from '../../admin-sub-components/admin-main-nav';
 import AdminSideNav from '../../admin-sub-components/admin-side-nav';
 import AdminSlideNav from '../../admin-sub-components/admin-slide-nav';
+import BTNtoTop from '../../../../sub-components/button-top-top';
 
 function ResidentsViewAllInfo() {
   const { id } = useParams();
@@ -54,6 +55,7 @@ function ResidentsViewAllInfo() {
       <AdminMainNav />
       <AdminSideNav />
       <AdminSlideNav />
+      <BTNtoTop />
 
       <div className="resident-info__container">
         <header className="resident-info__header">
