@@ -6,13 +6,15 @@ import "../assets/css/login-page.css";
 import { Link } from "react-router-dom";
 import WrongComponent from "../sub-components/wrong-div";
 import CheckComponent from "../sub-components/check-div";
+import LoadingGif from "../assets/gif/loading.gif";
 
 function LoginPage() {
-  const [emailOrPhone, setEmailOrPhone] = useState(""); 
+  const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showWrong, setShowWrong] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailOrPhoneChange = (e) => setEmailOrPhone(e.target.value);
@@ -23,7 +25,10 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
-    const isEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(emailOrPhone);
+    setLoading(true);
+    const isEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(
+      emailOrPhone
+    );
     const payload = {
       email: isEmail ? emailOrPhone : undefined,
       phone_number: !isEmail ? emailOrPhone : undefined,
@@ -43,6 +48,7 @@ function LoginPage() {
 
       if (response.ok) {
         setShowCheck(true);
+        setLoading(false);
         setTimeout(() => {
           localStorage.setItem("jwt_token", data.token);
           localStorage.setItem("user_data", JSON.stringify(data.user));
@@ -50,12 +56,13 @@ function LoginPage() {
         }, 4500);
       } else {
         setShowWrong(true);
+        setLoading(false);
         setTimeout(() => {
           setShowWrong(false);
         }, 4500);
       }
-    } catch (error) {
-      console.error("Error during login:", error);
+    } catch {
+      setLoading(false);
       alert("An error occurred while logging in.");
     }
   };
@@ -99,6 +106,11 @@ function LoginPage() {
           <button className="login-page-btn" onClick={handleLogin}>
             Log In
           </button>
+          {loading && (
+            <div className="loading-wait-animation">
+              <img src={LoadingGif} alt="Loading..." />
+            </div>
+          )}
           <div className="login-page-forgot-password">
             <a href="/forgot-password">Forgot password?</a>
           </div>
@@ -108,8 +120,8 @@ function LoginPage() {
           </div>
         </div>
       </div>
-      {showWrong && <WrongComponent />}
-      {showCheck && <CheckComponent />}
+      {!loading && showWrong && <WrongComponent />}
+      {!loading && showCheck && <CheckComponent />}
     </>
   );
 }
