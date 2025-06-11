@@ -1,0 +1,139 @@
+.display-resident-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 20px auto 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+  border: 1px solid rgba(167, 167, 167, 0.199);
+  border-radius: 3px;
+}
+
+.display-resident-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #cccccc93;
+  padding-bottom: 1rem;
+}
+
+.resident-profile-picture {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid hsla(120, 82%, 28%, 0.615);
+}
+
+.resident-name-address h2 {
+  font-size: 2rem;
+  color: #2e2e2e;
+  margin: 0;
+  cursor: default;
+}
+
+.resident-name-address p {
+  color: #666;
+  font-size: 0.8rem;
+  margin-top: -0.3rem;
+   cursor: default;
+}
+
+.display-resident-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.display-resident-section {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.display-resident-section.full-width {
+  grid-column: 1 / -1;
+}
+
+.display-resident-section h4 {
+  margin-bottom: 0.8rem;
+  color: #333;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #19a645;
+  padding-bottom: 0.5rem;
+   cursor: default;
+}
+
+.display-resident-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+   cursor: default;
+}
+
+.display-resident-section li {
+  padding: 0.4rem 0;
+  font-size: 0.95rem;
+  color: #444;
+   cursor: default;
+}
+
+.display-resident-section li strong {
+  color: #111;
+   cursor: default;
+}
+
+.display-resident-loading {
+  padding: 2rem;
+  margin-left: 260px;
+  margin-top: 80px;
+  font-size: 1.2rem;
+  color: #666;
+   cursor: default;
+}
+
+@media (max-width: 900px) {
+  .display-resident-container {
+    padding: 1rem;
+    margin: 10px 1rem 10px;
+  }
+
+  .display-resident-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .display-resident-section.full-width {
+    grid-column: auto;
+  }
+
+  .display-resident-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .resident-profile-picture {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .display-resident-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .resident-name-address h2 {
+    font-size: 1.5rem;
+  }
+
+  .display-resident-section h4 {
+    font-size: 1.1rem;
+  }
+
+  .display-resident-section li {
+    font-size: 0.9rem;
+  }
+}

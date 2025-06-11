@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../../../../assets/css/dashboard/brgy-resident-css/brgy-resident-voters.css";
 import LeftButton from "../../../../assets/img/left.png";
 import RightButton from "../../../../assets/img/right.png";
@@ -14,9 +14,9 @@ function ResidentByVoters() {
   const residentsPerPage = 15;
 
   const fetchData = () => {
-    fetch('http://127.0.0.1:8000/api/brgyresidents/residents')
-      .then(response => response.json())
-      .then(data => setResidents(data));
+    fetch("http://127.0.0.1:8000/api/brgyresidents/residents")
+      .then((response) => response.json())
+      .then((data) => setResidents(data));
   };
 
   useEffect(() => {
@@ -32,9 +32,14 @@ function ResidentByVoters() {
     setCurrentPage(1);
   };
 
-  const filteredResidents = isRegistered
-    ? residents.filter(resident => resident.voter_status === "Registered")
-    : residents.filter(resident => !resident.voter_status || resident.voter_status === "Not Registered");
+  const filteredResidents = (
+    isRegistered
+      ? residents.filter((resident) => resident.voter_status === "Registered")
+      : residents.filter(
+          (resident) =>
+            !resident.voter_status || resident.voter_status === "Not Registered"
+        )
+  ).sort((a, b) => a.lname.localeCompare(b.lname));
 
   const indexOfLast = currentPage * residentsPerPage;
   const indexOfFirst = indexOfLast - residentsPerPage;
@@ -51,7 +56,13 @@ function ResidentByVoters() {
 
   const getProfileImage = (resident) => {
     if (resident.profile_picture) {
-      return <img src={resident.profile_picture} alt="Profile" className="profile-img" />;
+      return (
+        <img
+          src={resident.profile_picture}
+          alt="Profile"
+          className="profile-img"
+        />
+      );
     }
     if (resident.gender === "Male") {
       return <img src={MaleIcon} alt="Male" className="gender-icon" />;
@@ -76,10 +87,12 @@ function ResidentByVoters() {
           </tr>
         </thead>
         <tbody>
-          {currentResidents.map(resident => (
+          {currentResidents.map((resident) => (
             <tr key={resident.id}>
               <td>{getProfileImage(resident)}</td>
-              <td>{resident.lname}, {resident.fname}</td>
+              <td>
+                {resident.lname}, {resident.fname}
+              </td>
               <td>{resident.age}</td>
               <td>{resident.address}</td>
               <td>{resident.phone_number}</td>
@@ -90,8 +103,14 @@ function ResidentByVoters() {
       </table>
       <div className="resident-by-voters-total">
         {isRegistered
-          ? `Total Registered Voters: ${residents.filter(r => r.voter_status === "Registered").length}`
-          : `Total Not Registered: ${residents.filter(r => !r.voter_status || r.voter_status === "Not Registered").length}`}
+          ? `Total Registered Voters: ${
+              residents.filter((r) => r.voter_status === "Registered").length
+            }`
+          : `Total Not Registered: ${
+              residents.filter(
+                (r) => !r.voter_status || r.voter_status === "Not Registered"
+              ).length
+            }`}
       </div>
     </>
   );
@@ -99,15 +118,39 @@ function ResidentByVoters() {
   return (
     <div className="resident-by-voters-container">
       <div className="resident-by-voters-buttons">
-        <button onClick={() => toggleStatus(true)} className={`button ${isRegistered ? 'active' : ''}`}>Registered</button>
-        <button onClick={() => toggleStatus(false)} className={`button ${!isRegistered ? 'active' : ''}`}>Not Registered</button>
+        <button
+          onClick={() => toggleStatus(true)}
+          className={`button ${isRegistered ? "active" : ""}`}
+        >
+          Registered
+        </button>
+        <button
+          onClick={() => toggleStatus(false)}
+          className={`button ${!isRegistered ? "active" : ""}`}
+        >
+          Not Registered
+        </button>
       </div>
       <div className="resident-by-voters-table-container">
         {renderTable()}
         <div className="resident-by-voters-pagination">
-          <img src={LeftButton} alt="Previous" onClick={prevPage} className={`nav-icon ${currentPage === 1 ? 'disabled' : ''}`} />
-          <span>{currentPage}/{totalPages || 1}</span>
-          <img src={RightButton} alt="Next" onClick={nextPage} className={`nav-icon ${currentPage === totalPages ? 'disabled' : ''}`} />
+          <img
+            src={LeftButton}
+            alt="Previous"
+            onClick={prevPage}
+            className={`nav-icon ${currentPage === 1 ? "disabled" : ""}`}
+          />
+          <span>
+            {currentPage}/{totalPages || 1}
+          </span>
+          <img
+            src={RightButton}
+            alt="Next"
+            onClick={nextPage}
+            className={`nav-icon ${
+              currentPage === totalPages ? "disabled" : ""
+            }`}
+          />
         </div>
       </div>
     </div>

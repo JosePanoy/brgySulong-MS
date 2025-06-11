@@ -18,9 +18,9 @@ function BrgyNewResidents() {
     axios
       .get("http://127.0.0.1:8000/api/brgyresidents/residents/")
       .then((response) => {
-        const filtered = response.data.filter(
-          (resident) => resident.created_at !== null
-        );
+        const filtered = response.data
+          .filter((resident) => resident.created_at !== null)
+          .sort((a, b) => a.lname.localeCompare(b.lname));
         setResidents(filtered);
       })
       .catch(() => {});
@@ -86,7 +86,7 @@ function BrgyNewResidents() {
                 </td>
                 <td>
                   {displayField(
-                    `${resident.fname || ""} ${resident.lname || ""}`.trim()
+                    `${resident.lname || ""}, ${resident.fname || ""} `.trim()
                   )}
                 </td>
                 <td>{displayField(resident.address)}</td>
@@ -112,7 +112,11 @@ function BrgyNewResidents() {
           onClick={goToPrevPage}
           disabled={currentPage === 1}
         >
-          <img src={LeftButtonIcon} alt="Previous" className="pagination-icon" />
+          <img
+            src={LeftButtonIcon}
+            alt="Previous"
+            className="pagination-icon"
+          />
         </button>
         <span className="pagination-info">
           {currentPage} / {totalPages || 1}

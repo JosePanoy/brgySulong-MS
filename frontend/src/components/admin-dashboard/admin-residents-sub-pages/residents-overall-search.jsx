@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import SearchIcon from "../../../assets/img/search.png";
 import MaleIcon from "../../../assets/img/male.png";
 import FemaleIcon from "../../../assets/img/female.png";
 import OtherIcon from "../../../assets/img/other.png";
 import "../../../assets/css/dashboard/brgy-resident-css/residents-overall-css.css";
+import CloseButton from "../../../assets/img/cancel.png";
 
 function ResidentsOverallSearch() {
   const [query, setQuery] = useState("");
@@ -13,6 +15,7 @@ function ResidentsOverallSearch() {
   const [allResults, setAllResults] = useState([]);
   const [hasMoreResults, setHasMoreResults] = useState(false);
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (query.trim().length === 0) {
@@ -23,14 +26,9 @@ function ResidentsOverallSearch() {
     }
 
     const controller = new AbortController();
-
     fetch(
-      `http://127.0.0.1:8000/api/brgyresidents/search?q=${encodeURIComponent(
-        query
-      )}`,
-      {
-        signal: controller.signal,
-      }
+      `http://127.0.0.1:8000/api/brgyresidents/search?q=${encodeURIComponent(query)}`,
+      { signal: controller.signal }
     )
       .then((res) => res.json())
       .then((data) => {
@@ -49,11 +47,7 @@ function ResidentsOverallSearch() {
   };
 
   const handleViewMore = () => {
-    fetch(
-      `http://127.0.0.1:8000/api/brgyresidents/search?q=${encodeURIComponent(
-        query
-      )}`
-    )
+    fetch(`http://127.0.0.1:8000/api/brgyresidents/search?q=${encodeURIComponent(query)}`)
       .then((res) => res.json())
       .then((data) => {
         const filteredResults = data.filter(
@@ -81,12 +75,16 @@ function ResidentsOverallSearch() {
   }, []);
 
   const getProfilePicture = (resident) => {
-    if (resident.profile_picture_url) {
-      return resident.profile_picture_url;
-    }
+    if (resident.profile_picture_url) return resident.profile_picture_url;
     if (resident.gender === "Male") return MaleIcon;
     if (resident.gender === "Female") return FemaleIcon;
     return OtherIcon;
+  };
+
+  const handleResidentClick = (id) => {
+    navigate(`/brgy-residents/resident/${id}`);
+    setShowSuggestions(false);
+    setShowModal(false);
   };
 
   return (
@@ -108,13 +106,17 @@ function ResidentsOverallSearch() {
             {suggestions.length > 0 ? (
               <ul className="suggestions-list">
                 {suggestions.map((resident) => (
-                  <li key={resident.id} className="suggestion-item">
+                  <li
+                    key={resident.id}
+                    className="suggestion-item"
+                    onClick={() => handleResidentClick(resident.id)}
+                  >
                     <img
                       src={getProfilePicture(resident)}
                       alt={`${resident.fname} ${resident.lname}`}
                       className="suggestion-profile-pic"
                     />
-                    {resident.fname} {resident.lname} - {resident.household_no}
+                    {resident.fname} {resident.lname} - {resident.household_no || "N/A"}
                   </li>
                 ))}
                 {hasMoreResults && (
@@ -125,15 +127,7 @@ function ResidentsOverallSearch() {
               </ul>
             ) : (
               <ul className="suggestions-list">
-                <li
-                  className="no-results"
-                  style={{
-                    color: "black",
-                    fontWeight: 700,
-                    cursor: 'default',
-                    textAlign: "center",
-                  }}
-                >
+                <li className="no-results">
                   No related data matched.
                 </li>
               </ul>
@@ -145,31 +139,47 @@ function ResidentsOverallSearch() {
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Search results for "{query}"</h3>
+            <div className="modal-header">
+              <h3>Search results for "{query}"</h3>
+              <img
+                src={CloseButton}
+                alt="Close"
+                className="modal-close-icon"
+                onClick={closeModal}
+              />
+            </div>
             <ul className="all-results-list">
               {allResults.length === 0 ? (
-                <li
-                  className="no-results"
-                  style={{
-                    color: "black",
-                    fontWeight: 700,
-                    cursor: 'default',
-                    textAlign: "center",
-                  }}
-                >
+                <li className="no-results">
                   No related data matched.
                 </li>
               ) : (
-                allResults.map((resident) => (
-                  <li key={resident.id}>
-                    {resident.fname} {resident.lname} - {resident.household_no}
-                  </li>
-                ))
+                [...allResults]
+                  .sort((a, b) => a.fname.localeCompare(b.fname))
+                  .map((resident) => (
+                    <li
+                      key={resident.id}
+                      className="modal-resident-item"
+                      onClick={() => handleResidentClick(resident.id)}
+                    >
+                      <img
+                        src={getProfilePicture(resident)}
+                        alt={`${resident.fname} ${resident.lname}`}
+                        className="modal-profile-pic"
+                      />
+                      <div className="modal-resident-info">
+                        <strong>
+                          {resident.fname} {resident.lname}
+                        </strong>
+                        <br />
+                        Household No: {resident.household_no || "N/A"}
+                        <br />
+                        Phone: {resident.phone_number || "N/A"}
+                      </div>
+                    </li>
+                  ))
               )}
             </ul>
-            <button className="close-modal-btn" onClick={closeModal}>
-              Close
-            </button>
           </div>
         </div>
       )}

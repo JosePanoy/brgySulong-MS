@@ -26,12 +26,13 @@ function ResidentSpecialGroup() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const filtered = residents.filter(r =>
-      r.pwd_status === true || r.solo_parent === true || r.senior_citizen === true
-    );
-    setFilteredResidents(filtered);
-  }, [residents]);
+useEffect(() => {
+  const filtered = residents
+    .filter(r => r.pwd_status === true || r.solo_parent === true || r.senior_citizen === true)
+    .sort((a, b) => a.lname.localeCompare(b.lname));
+  setFilteredResidents(filtered);
+}, [residents]);
+
 
   const totalPages = Math.ceil(filteredResidents.length / residentsPerPage);
   const startIndex = (currentPage - 1) * residentsPerPage;
