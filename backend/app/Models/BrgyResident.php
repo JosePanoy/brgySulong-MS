@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class BrgyResident extends Model
 {
- 
     protected $fillable = [
         'fname',
         'lname',
@@ -30,24 +29,32 @@ class BrgyResident extends Model
         'religion',
         'emergency_contact',
         'medical_conditions',
+        'diagnosis_details',
+        'diagnosis_status',
+        'attending_physician',
+        'date_diagnosed',
+        'medications',
+        'last_checkup',
+        'medical_remarks',
+        'family_medical_history',
+        'medical_files',
         'password',
     ];
-
 
     protected $hidden = [
         'password',
     ];
 
-
     protected $casts = [
         'birthdate' => 'date',
+        'date_diagnosed' => 'date',
+        'last_checkup' => 'date',
         'is_household_head' => 'boolean',
         'pwd_status' => 'boolean',
         'solo_parent' => 'boolean',
         'senior_citizen' => 'boolean',
     ];
 
- 
     public function getFullNameAttribute()
     {
         return "{$this->fname} {$this->lname}";

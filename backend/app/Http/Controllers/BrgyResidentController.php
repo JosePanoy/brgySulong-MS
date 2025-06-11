@@ -50,10 +50,18 @@ class BrgyResidentController extends Controller
             'religion' => 'nullable|string|max:100',
             'emergency_contact' => 'nullable|string|max:255',
             'medical_conditions' => 'nullable|string',
+            'diagnosis_details' => 'nullable|string',
+            'diagnosis_status' => 'nullable|in:Ongoing,Recovered,Critical,Under Observation',
+            'attending_physician' => 'nullable|string|max:255',
+            'date_diagnosed' => 'nullable|date',
+            'medications' => 'nullable|string|max:255',
+            'last_checkup' => 'nullable|date',
+            'medical_remarks' => 'nullable|string',
+            'family_medical_history' => 'nullable|string',
+            'medical_files' => 'nullable|string',
             'password' => 'required|string|min:8',
         ]);
 
-        // Hash password before saving
         $validated['password'] = Hash::make($validated['password']);
 
         $resident = BrgyResident::create($validated);
@@ -91,6 +99,15 @@ class BrgyResidentController extends Controller
             'religion' => 'nullable|string|max:100',
             'emergency_contact' => 'nullable|string|max:255',
             'medical_conditions' => 'nullable|string',
+            'diagnosis_details' => 'nullable|string',
+            'diagnosis_status' => 'nullable|in:Ongoing,Recovered,Critical,Under Observation',
+            'attending_physician' => 'nullable|string|max:255',
+            'date_diagnosed' => 'nullable|date',
+            'medications' => 'nullable|string|max:255',
+            'last_checkup' => 'nullable|date',
+            'medical_remarks' => 'nullable|string',
+            'family_medical_history' => 'nullable|string',
+            'medical_files' => 'nullable|string',
             'password' => 'nullable|string|min:8',
         ]);
 
@@ -115,4 +132,45 @@ class BrgyResidentController extends Controller
         $resident->delete();
         return response()->json(['message' => 'Resident deleted successfully']);
     }
+
+
+public function searchResident(Request $request)
+{
+    $query = $request->input('q');
+
+    if (!$query) {
+        return response()->json(['message' => 'Search query is required'], 400);
+    }
+
+    $queryLower = strtolower($query);
+    $monthNames = [
+        'january', 'february', 'march', 'april', 'may', 'june',
+        'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+
+    $residents = BrgyResident::where(function ($q) use ($query, $queryLower, $monthNames) {
+        $q->where('fname', 'LIKE', "%{$query}%")
+          ->orWhere('lname', 'LIKE', "%{$query}%")
+          ->orWhere('phone_number', 'LIKE', "%{$query}%")
+          ->orWhere('household_no', 'LIKE', "%{$query}%")
+          ->orWhere('solo_parent', 'LIKE', "%{$query}%")
+          ->orWhere('senior_citizen', 'LIKE', "%{$query}%");
+
+        if (preg_match('/^\d{4}$/', $query)) {
+            $q->orWhereRaw('YEAR(birthdate) = ?', [$query]);
+        } else {
+            foreach ($monthNames as $month) {
+                if (strpos($month, $queryLower) !== false) {
+                    $q->orWhereRaw('LOWER(MONTHNAME(birthdate)) LIKE ?', ["%{$queryLower}%"]);
+                    break;
+                }
+            }
+        }
+    })
+    ->get();
+
+    return response()->json($residents);
+}
+
+
 }

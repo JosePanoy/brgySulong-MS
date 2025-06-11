@@ -23,6 +23,9 @@ Route::prefix('brgyresidents')->group(function () {
     Route::post('residents', [BrgyResidentController::class, 'store']);
     Route::put('residents/{id}', [BrgyResidentController::class, 'update']);
     Route::delete('residents/{id}', [BrgyResidentController::class, 'destroy']);
+    Route::get('search', [BrgyResidentController::class, 'searchResident']);
+
+
 });
 
 // Brgy Events Routes
