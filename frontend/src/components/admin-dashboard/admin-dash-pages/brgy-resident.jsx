@@ -13,6 +13,7 @@ import BrgyNewResidents from '../admin-residents-sub-pages/residents-sub-compone
 import ResidentByEmployment from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-by-employment';
 import ResidentsMedicalRecords from '../admin-residents-sub-pages/residents-sub-components.jsx/residents-medical-records';
 import BTNtoTop from '../../../sub-components/button-top-top';
+import ResidentsOverallSearch from '../admin-residents-sub-pages/residents-overall-search';
 
 function BrgyResidents() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -34,6 +35,7 @@ function BrgyResidents() {
 
       <div className="brgy-residents-container">
       <h2>Brgy Resident Information</h2>
+      <ResidentsOverallSearch />
         <div className="brgy-residents-menu" onClick={() => toggleMenu(0)}>
           <span className="brgy-residents-label">All Residents</span>
           <img 
