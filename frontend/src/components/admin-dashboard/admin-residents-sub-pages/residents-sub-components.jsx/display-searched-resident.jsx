@@ -75,8 +75,8 @@ function DisplaySearchedResident() {
             src={profileSrc}
             alt="Profile"
             className="resident-profile-picture"
-            width={50}
-            height={50}
+            width={100}
+            height={100}
           />
           <div className="resident-name-address">
             <h2>
