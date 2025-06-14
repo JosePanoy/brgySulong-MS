@@ -6,7 +6,7 @@
   height: 40px;
   cursor: pointer;
   display: none;
-  z-index: 1000;
+  z-index: 10000;
   filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.15));
   animation: bounce 2s infinite;
 }
