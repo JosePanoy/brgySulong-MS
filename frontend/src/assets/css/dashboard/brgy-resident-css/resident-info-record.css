@@ -4,6 +4,17 @@
   padding: 0 1rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #222;
+  position: relative;
+}
+
+.rir-back-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 100;
 }
 
 .rir-profile-header {
@@ -74,6 +85,13 @@
 @media (max-width: 600px) {
   .rir-main {
     max-width: 95%;
+  }
+
+  .rir-back-button {
+    width: 20px;
+    height: 20px;
+    top: 8px;
+    right: 8px;
   }
 
   .rir-profile-header {

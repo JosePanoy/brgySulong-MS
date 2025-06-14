@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSpring, animated } from '@react-spring/web';
+import { useInView } from 'react-intersection-observer';
 import AdminMainNav from '../admin-sub-components/admin-main-nav';
 import AdminSideNav from '../admin-sub-components/admin-side-nav';
 import AdminSlideNav from '../admin-sub-components/admin-slide-nav';
@@ -15,15 +17,33 @@ import ResidentsMedicalRecords from '../admin-residents-sub-pages/residents-sub-
 import BTNtoTop from '../../../sub-components/button-top-top';
 import ResidentsOverallSearch from '../admin-residents-sub-pages/residents-overall-search';
 
+function AnimatedMenu({ index, activeIndex, toggleMenu, label, iconUp, iconDown }) {
+    const AnimatedDiv = animated.div;
+  const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.1 });
+  const animation = useSpring({
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0)' : 'translateY(30px)',
+    config: { duration: 700 },
+    reset: true,
+  });
+
+  return (
+    <animated.div ref={ref} style={animation} className="brgy-residents-menu" onClick={() => toggleMenu(index)}>
+      <span className="brgy-residents-label">{label}</span>
+      <img
+        src={activeIndex === index ? iconUp : iconDown}
+        alt="Toggle Icon"
+        className="brgy-residents-icon"
+      />
+    </animated.div>
+  );
+}
+
 function BrgyResidents() {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleMenu = (index) => {
-    if (activeIndex === index) {
-      setActiveIndex(null); 
-    } else {
-      setActiveIndex(index); 
-    }
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
@@ -34,100 +54,101 @@ function BrgyResidents() {
       <BTNtoTop />
 
       <div className="brgy-residents-container">
-      <h2>Brgy Resident Information</h2>
-      <ResidentsOverallSearch />
-        <div className="brgy-residents-menu" onClick={() => toggleMenu(0)}>
-          <span className="brgy-residents-label">All Residents</span>
-          <img 
-            src={activeIndex === 0 ? UpLogo : DownLogo} 
-            alt="Toggle Icon" 
-            className="brgy-residents-icon" 
-          />
-        </div>
+        <h2>Brgy Resident Information</h2>
+        <ResidentsOverallSearch />
+
+        <AnimatedMenu
+          index={0}
+          activeIndex={activeIndex}
+          toggleMenu={toggleMenu}
+          label="All Residents"
+          iconUp={UpLogo}
+          iconDown={DownLogo}
+        />
         {activeIndex === 0 && (
           <div className="brgy-residents-hidden-div">
             <DisplayAllResident />
           </div>
         )}
 
-        <div className="brgy-residents-menu" onClick={() => toggleMenu(1)}>
-          <span className="brgy-residents-label">By Household</span>
-          <img 
-            src={activeIndex === 1 ? UpLogo : DownLogo} 
-            alt="Toggle Icon" 
-            className="brgy-residents-icon" 
-          />
-        </div>
+        <AnimatedMenu
+          index={1}
+          activeIndex={activeIndex}
+          toggleMenu={toggleMenu}
+          label="By Household"
+          iconUp={UpLogo}
+          iconDown={DownLogo}
+        />
         {activeIndex === 1 && (
           <div className="brgy-residents-hidden-div">
-           <ResidentByHousehold />
+            <ResidentByHousehold />
           </div>
         )}
 
-        <div className="brgy-residents-menu" onClick={() => toggleMenu(2)}>
-          <span className="brgy-residents-label">Special Groups</span>
-          <img 
-            src={activeIndex === 2 ? UpLogo : DownLogo} 
-            alt="Toggle Icon" 
-            className="brgy-residents-icon" 
-          />
-        </div>
+        <AnimatedMenu
+          index={2}
+          activeIndex={activeIndex}
+          toggleMenu={toggleMenu}
+          label="Special Groups"
+          iconUp={UpLogo}
+          iconDown={DownLogo}
+        />
         {activeIndex === 2 && (
           <div className="brgy-residents-hidden-div">
             <ResidentSpecialGroup />
           </div>
         )}
 
-        <div className="brgy-residents-menu" onClick={() => toggleMenu(3)}>
-          <span className="brgy-residents-label">Voter Status</span>
-          <img 
-            src={activeIndex === 3 ? UpLogo : DownLogo} 
-            alt="Toggle Icon" 
-            className="brgy-residents-icon" 
-          />
-        </div>
+        <AnimatedMenu
+          index={3}
+          activeIndex={activeIndex}
+          toggleMenu={toggleMenu}
+          label="Voter Status"
+          iconUp={UpLogo}
+          iconDown={DownLogo}
+        />
         {activeIndex === 3 && (
           <div className="brgy-residents-hidden-div">
             <ResidentByVoters />
           </div>
         )}
 
-        <div className="brgy-residents-menu" onClick={() => toggleMenu(4)}>
-          <span className="brgy-residents-label">New Residents</span>
-          <img 
-            src={activeIndex === 4 ? UpLogo : DownLogo} 
-            alt="Toggle Icon" 
-            className="brgy-residents-icon" 
-          />
-        </div>
+        <AnimatedMenu
+          index={4}
+          activeIndex={activeIndex}
+          toggleMenu={toggleMenu}
+          label="New Residents"
+          iconUp={UpLogo}
+          iconDown={DownLogo}
+        />
         {activeIndex === 4 && (
           <div className="brgy-residents-hidden-div">
-           <BrgyNewResidents />
+            <BrgyNewResidents />
           </div>
         )}
 
-        <div className="brgy-residents-menu" onClick={() => toggleMenu(5)}>
-          <span className="brgy-residents-label">By Employment</span>
-          <img 
-            src={activeIndex === 5 ? UpLogo : DownLogo} 
-            alt="Toggle Icon" 
-            className="brgy-residents-icon" 
-          />
-        </div>
+        <AnimatedMenu
+          index={5}
+          activeIndex={activeIndex}
+          toggleMenu={toggleMenu}
+          label="By Employment"
+          iconUp={UpLogo}
+          iconDown={DownLogo}
+        />
         {activeIndex === 5 && (
           <div className="brgy-residents-hidden-div">
             <ResidentByEmployment />
           </div>
         )}
 
-        <div className="brgy-residents-menu" onClick={() => toggleMenu(6)}>
-          <span className="brgy-residents-label">Health & Emergency</span>
-          <img 
-            src={activeIndex === 6 ? UpLogo : DownLogo} 
-            alt="Toggle Icon" 
-            className="brgy-residents-icon" 
-          />
-        </div>
+        <AnimatedMenu
+          index={6}
+          activeIndex={activeIndex}
+          toggleMenu={toggleMenu}
+          label="Health & Emergency"
+          iconUp={UpLogo}
+          iconDown={DownLogo}
+        />
         {activeIndex === 6 && (
           <div className="brgy-residents-hidden-div">
             <ResidentsMedicalRecords />

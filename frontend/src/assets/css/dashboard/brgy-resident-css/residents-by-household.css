@@ -2,13 +2,19 @@
   max-width: 1000px;
   max-height: 500px;
   margin: 0 auto;
-  overflow-y: auto;
   padding: 6px 10px 40px 10px;
   box-sizing: border-box;
   border-radius: 6px;
   background-color: #fafafa;
   font-size: 0.9rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.resident-by-household-scroll {
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
 .resident-by-household-row {
@@ -16,7 +22,8 @@
   justify-content: space-between;
   align-items: center;
   height: 40px;
-  padding: 0 12px;
+    padding: 0 8px;
+  font-size: 0.7rem;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
   font-weight: 600;
@@ -40,10 +47,10 @@
 
 .resident-by-household-head-row {
   display: flex;
-  padding: 6px 12px;
+  padding: 4px 8px;
   background-color: #dff0d8;
   border-bottom: 1px solid #ccc;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #3c763d;
   align-items: center;
@@ -61,7 +68,7 @@
 }
 
 .resident-by-household-members-row {
-  padding: 6px 12px 10px 12px;
+  padding: 4px 8px 6px 8px;
   background-color: #f4f9f4;
   border-bottom: 1px solid #ccc;
 }
@@ -69,20 +76,20 @@
 .resident-by-household-members-title {
   font-weight: 600;
   color: #2a6b2a;
-  font-size: 0.9rem;
-  margin-bottom: 6px;
+  font-size: 0.7rem;
+  margin-bottom: 4px;
   display: block;
   cursor: default;
 }
 
 .resident-by-household-members-list {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #333;
   cursor: default;
 }
 
 .resident-by-household-member {
-  padding: 2px 0;
+  padding: 1px 0;
 }
 
 .resident-by-household-pagination {

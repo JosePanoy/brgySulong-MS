@@ -52,58 +52,59 @@ function ResidentByHousehold() {
 
   return (
     <div className="resident-by-household-container">
-      {currentHouseholds.map(({ household_no, members }, index) => {
-        const absoluteIndex = startIndex + index;
-        const head = members.find((m) => m.is_household_head);
-        return (
-          <React.Fragment key={household_no}>
-            <div
-              className="resident-by-household-row"
-              onClick={() => toggleExpand(absoluteIndex)}
-            >
-              <span className="resident-by-household-label">
-                {household_no}
-                {head ? ` - ${head.lname}'s` : ""}
-              </span>
-
-              <img
-                src={expandedIndex === absoluteIndex ? UpLogo : DownLogo}
-                alt="Toggle Icon"
-                className="resident-by-household-icon"
-              />
-            </div>
-            {expandedIndex === absoluteIndex && (
-              <>
-                {head && (
-                  <div className="resident-by-household-head-row">
-                    <span className="resident-by-household-head-label">
-                      Head:
+      <div className="resident-by-household-scroll">
+        {currentHouseholds.map(({ household_no, members }, index) => {
+          const absoluteIndex = startIndex + index;
+          const head = members.find((m) => m.is_household_head);
+          return (
+            <React.Fragment key={household_no}>
+              <div
+                className="resident-by-household-row"
+                onClick={() => toggleExpand(absoluteIndex)}
+              >
+                <span className="resident-by-household-label">
+                  {household_no}
+                  {head ? ` - ${head.lname}'s` : ""}
+                </span>
+                <img
+                  src={expandedIndex === absoluteIndex ? UpLogo : DownLogo}
+                  alt="Toggle Icon"
+                  className="resident-by-household-icon"
+                />
+              </div>
+              {expandedIndex === absoluteIndex && (
+                <>
+                  {head && (
+                    <div className="resident-by-household-head-row">
+                      <span className="resident-by-household-head-label">
+                        Head:
+                      </span>
+                      <span className="resident-by-household-head-name">
+                        {head.fname} {head.lname}
+                      </span>
+                    </div>
+                  )}
+                  <div className="resident-by-household-members-row">
+                    <span className="resident-by-household-members-title">
+                      Members:
                     </span>
-                    <span className="resident-by-household-head-name">
-                      {head.fname} {head.lname}
-                    </span>
+                    <div className="resident-by-household-members-list">
+                      {members.map((member) => (
+                        <div
+                          key={member.id}
+                          className="resident-by-household-member"
+                        >
+                          {member.fname} {member.lname}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                )}
-                <div className="resident-by-household-members-row">
-                  <span className="resident-by-household-members-title">
-                    Members:
-                  </span>
-                  <div className="resident-by-household-members-list">
-                    {members.map((member) => (
-                      <div
-                        key={member.id}
-                        className="resident-by-household-member"
-                      >
-                        {member.fname} {member.lname}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-          </React.Fragment>
-        );
-      })}
+                </>
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
       <div className="resident-by-household-pagination">
         <img
           src={LeftLogo}

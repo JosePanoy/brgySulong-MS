@@ -8,6 +8,7 @@ import MaleIcon from "../../../../assets/img/male.png";
 import FemaleIcon from "../../../../assets/img/female.png";
 import OtherIcon from "../../../../assets/img/other.png";
 import BTNtoTop from "../../../../sub-components/button-top-top";
+import BackButton from "../../../../assets/img/back.png";
 
 function ResidentInfoRecord() {
   const { id } = useParams();
@@ -43,18 +44,8 @@ function ResidentInfoRecord() {
     if (!birthdate) return "";
     const date = new Date(birthdate);
     const months = [
-      "Jan.",
-      "Feb.",
-      "Mar.",
-      "Apr.",
-      "May",
-      "Jun.",
-      "Jul.",
-      "Aug.",
-      "Sep.",
-      "Oct.",
-      "Nov.",
-      "Dec.",
+      "Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
+      "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
     ];
     const month = months[date.getMonth()];
     const day = String(date.getDate()).padStart(2, "0");
@@ -90,6 +81,12 @@ function ResidentInfoRecord() {
       <AdminSideNav />
       <AdminSlideNav />
       <main className="rir-main">
+        <img
+          src={BackButton}
+          alt="Back"
+          className="rir-back-button"
+          onClick={() => window.history.back()}
+        />
         <section className="rir-profile-header">
           <img
             src={profilePicture}
