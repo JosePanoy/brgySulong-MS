@@ -37,19 +37,24 @@ Route::prefix('events')->group(function () {
     Route::delete('{id}', [BarangayEventsController::class, 'destroy']);
 });
 
-// Brgy Inventory Routes
+
+// Brgy Inventory routes
 Route::prefix('inventory')->group(function () {
     Route::get('/', [BrgyInventoryController::class, 'index']);
+    Route::get('stock-count', [BrgyInventoryController::class, 'stockCount']); 
+    Route::get('condition-counts', [BrgyInventoryController::class, 'conditionCounts']);
     Route::get('{id}', [BrgyInventoryController::class, 'show']);
     Route::post('/', [BrgyInventoryController::class, 'store']);
     Route::put('{id}', [BrgyInventoryController::class, 'update']);
     Route::delete('{id}', [BrgyInventoryController::class, 'destroy']);
-    Route::post('{id}/adjust-stock', [BrgyInventoryController::class, 'adjustStock']); // for stock adjustment
+    Route::post('{id}/adjust-stock', [BrgyInventoryController::class, 'adjustStock']);
 });
+
 
 // Brgy Issuance Routes
 Route::prefix('issuance')->group(function () {
     Route::get('/', [BrgyIssuanceController::class, 'index']);
+    Route::get('overdue-count', [BrgyIssuanceController::class, 'overdueCount']);
     Route::get('{id}', [BrgyIssuanceController::class, 'show']);
     Route::post('/', [BrgyIssuanceController::class, 'store']);
     Route::put('{id}', [BrgyIssuanceController::class, 'update']);
@@ -59,6 +64,7 @@ Route::prefix('issuance')->group(function () {
 // Brgy Expenses Routes
 Route::prefix('expenses')->group(function () {
     Route::get('/', [BrgyExpensesController::class, 'index']);
+    Route::get('calculated-total', [BrgyExpensesController::class, 'calculatedTotalCount']);
     Route::get('{id}', [BrgyExpensesController::class, 'show']);
     Route::post('/', [BrgyExpensesController::class, 'store']);
     Route::put('{id}', [BrgyExpensesController::class, 'update']);
