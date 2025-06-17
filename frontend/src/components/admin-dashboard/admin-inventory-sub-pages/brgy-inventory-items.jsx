@@ -1,17 +1,134 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import AdminMainNav from "../admin-sub-components/admin-main-nav";
 import AdminSideNav from "../admin-sub-components/admin-side-nav";
 import AdminSlideNav from "../admin-sub-components/admin-slide-nav";
+import "../../../assets/css/dashboard/brgy-inventory-css/brgy-inventory-items.css";
+import BTNtoTop from "../../../sub-components/button-top-top";
+import FilterIcon from "../../../assets/img/filter.png";
 
 function BrgyInventoryItems() {
+  const [inventoryItems, setInventoryItems] = useState([]);
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/inventory");
+        const data = await response.json();
+        setInventoryItems(data);
+      } catch (error) {
+        console.error("Error fetching inventory data:", error);
+      }
+    };
+
+    fetchInventory();
+  }, []);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "—";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const handleSort = (field) => {
+    const isSameField = field === sortField;
+    const newDirection = isSameField && sortDirection === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortDirection(newDirection);
+  };
+
+  const sortedItems = [...inventoryItems].sort((a, b) => {
+    if (!sortField) return 0;
+    const valueA = a[sortField] || "";
+    const valueB = b[sortField] || "";
+    if (typeof valueA === "number" && typeof valueB === "number") {
+      return sortDirection === "asc" ? valueA - valueB : valueB - valueA;
+    }
+    return sortDirection === "asc"
+      ? String(valueA).localeCompare(String(valueB))
+      : String(valueB).localeCompare(String(valueA));
+  });
+
   return (
-   <>
-    <AdminMainNav />
-    <AdminSideNav />
-    <AdminSlideNav />
-     <div style={{textAlign: 'center'}}>Brgy Inventory Items</div>
-   </>
-  )
+    <>
+      <AdminMainNav />
+      <AdminSideNav />
+      <AdminSlideNav />
+      <BTNtoTop />
+      
+      <div className="brgy-inventory-items__container">
+        <h2 className="brgy-inventory-items__title">Brgy Inventory Items</h2>
+        <div className="brgy-inventory-items__table-wrapper">
+          <table className="brgy-inventory-items__table">
+            <thead>
+              <tr>
+                <th onClick={() => handleSort("item_name")}>
+                  <div className="sortable-header">
+                    Name
+                    <img src={FilterIcon} alt="Sort" />
+                  </div>
+                </th>
+                <th onClick={() => handleSort("description")}>
+                  <div className="sortable-header">
+                    Description
+                    <img src={FilterIcon} alt="Sort" />
+                  </div>
+                </th>
+                <th onClick={() => handleSort("quantity_total")}>
+                  <div className="sortable-header">
+                    Total
+                    <img src={FilterIcon} alt="Sort" />
+                  </div>
+                </th>
+                <th onClick={() => handleSort("quantity_available")}>
+                  <div className="sortable-header">
+                    Available
+                    <img src={FilterIcon} alt="Sort" />
+                  </div>
+                </th>
+                <th onClick={() => handleSort("unit")}>
+                  <div className="sortable-header">
+                    Unit
+                    <img src={FilterIcon} alt="Sort" />
+                  </div>
+                </th>
+                <th onClick={() => handleSort("condition_status")}>
+                  <div className="sortable-header">
+                    Condition
+                    <img src={FilterIcon} alt="Sort" />
+                  </div>
+                </th>
+                <th onClick={() => handleSort("last_maintenance_date")}>
+                  <div className="sortable-header">
+                    Maintenance Date
+                    <img src={FilterIcon} alt="Sort" />
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedItems.map((item) => (
+                <tr key={item.inventory_id}>
+                  <td>{item.item_name}</td>
+                  <td>{item.description || "—"}</td>
+                  <td>{item.quantity_total}</td>
+                  <td>{item.quantity_available}</td>
+                  <td>{item.unit}</td>
+                  <td>{item.condition_status}</td>
+                  <td>{formatDate(item.last_maintenance_date)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  );
 }
 
-export default BrgyInventoryItems
+export default BrgyInventoryItems;

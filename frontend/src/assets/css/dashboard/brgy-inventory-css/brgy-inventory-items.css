@@ -1,0 +1,77 @@
+.brgy-inventory-items__container {
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.brgy-inventory-items__title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.brgy-inventory-items__table-wrapper {
+  overflow-x: auto;
+}
+
+.brgy-inventory-items__table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.brgy-inventory-items__table th,
+.brgy-inventory-items__table td {
+  padding: 5px 6px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.6rem;
+}
+
+.brgy-inventory-items__table th {
+  background-color: #f4f4f4;
+  color: hsl(134, 61%, 41%);
+}
+
+.brgy-inventory-items__table td {
+  font-size: 0.6rem;
+}
+
+.sortable-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sortable-header img {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
+
+@media (max-width: 720px) {
+  .brgy-inventory-items__title {
+    font-size: 20px;
+  }
+
+  .brgy-inventory-items__table th,
+  .brgy-inventory-items__table td {
+    padding: 3px 5px;
+    font-size: 0.55rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brgy-inventory-items__title {
+    font-size: 18px;
+  }
+
+  .brgy-inventory-items__table th,
+  .brgy-inventory-items__table td {
+    padding: 2px 4px;
+    font-size: 0.5rem;
+  }
+}
