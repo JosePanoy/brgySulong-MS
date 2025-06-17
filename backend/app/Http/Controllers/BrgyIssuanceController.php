@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BrgyIssuance;
 use App\Models\BrgyInventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BrgyIssuanceController extends Controller
 {
@@ -99,13 +100,15 @@ class BrgyIssuanceController extends Controller
         return response()->json(['message' => 'Issuance record deleted and stock restored.']);
     }
 
-    // ✅ Overdue Returns Count
+    //  Overdue Returns Count
     public function overdueCount()
     {
-        $overdue = BrgyIssuance::whereNotNull('expected_return')
-            ->whereNull('date_returned')
-            ->where('expected_return', '<', now()->toDateString())
-            ->sum('quantity_issued');
+        $overdue = Cache::remember('overdue_return_count', 2, function () {
+            return BrgyIssuance::whereNotNull('expected_return')
+                ->whereNull('date_returned')
+                ->where('expected_return', '<', now()->toDateString())
+                ->sum('quantity_issued');
+        });
 
         return response()->json(['overdue_return_count' => $overdue]);
     }

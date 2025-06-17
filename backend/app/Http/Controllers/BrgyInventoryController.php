@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BrgyInventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BrgyInventoryController extends Controller
 {
@@ -94,22 +95,26 @@ class BrgyInventoryController extends Controller
     // Real-Time Stock Count (sum of quantity_available)
     public function stockCount()
     {
-        $totalAvailable = BrgyInventory::sum('quantity_available');
+        $totalAvailable = Cache::remember('real_time_stock_count', 2, function () {
+            return BrgyInventory::sum('quantity_available');
+        });
+
         return response()->json(['real_time_stock_count' => $totalAvailable]);
     }
 
     // real time count of condition item
     public function conditionCounts()
-{
-    $counts = BrgyInventory::selectRaw("condition_status, COUNT(*) as total")
-        ->groupBy('condition_status')
-        ->get()
-        ->pluck('total', 'condition_status');
+    {
+        $counts = Cache::remember('condition_item_counts', 2, function () {
+            return BrgyInventory::selectRaw("condition_status, COUNT(*) as total")
+                ->groupBy('condition_status')
+                ->get()
+                ->pluck('total', 'condition_status');
+        });
 
-    return response()->json([
-        'Good' => $counts->get('Good', 0),
-        'Needs Repair' => $counts->get('Needs Repair', 0),
-    ]);
-}
-
+        return response()->json([
+            'Good' => $counts->get('Good', 0),
+            'Needs Repair' => $counts->get('Needs Repair', 0),
+        ]);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BrgyExpenses;
 use App\Models\BrgyInventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BrgyExpensesController extends Controller
 {
@@ -72,13 +73,16 @@ class BrgyExpensesController extends Controller
 
     public function calculatedTotalCount()
     {
-        $totalQuantity = BrgyExpenses::whereNotNull('quantity')->sum('quantity');
-        $totalPesos = BrgyExpenses::sum('total_cost');
+        $totals = Cache::remember('calculated_total_counts', 2, function () {
+            $totalQuantity = BrgyExpenses::whereNotNull('quantity')->sum('quantity');
+            $totalPesos = BrgyExpenses::sum('total_cost');
 
-        return response()->json([
-            'calculated_total_count' => $totalQuantity,
-            'calculated_total_pesos' => number_format($totalPesos, 2, '.', ',')
+            return [
+                'calculated_total_count' => $totalQuantity,
+                'calculated_total_pesos' => number_format($totalPesos, 2, '.', ','),
+            ];
+        });
 
-        ]);
+        return response()->json($totals);
     }
 }
