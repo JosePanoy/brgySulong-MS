@@ -8,17 +8,10 @@ use Illuminate\Http\Request;
 
 class BrgyIssuanceController extends Controller
 {
-
     public function index()
     {
-        $issuances = BrgyIssuance::with('inventory')->paginate(10);
-        return view('brgy_issuance.index', compact('issuances'));
-    }
-
-    public function create()
-    {
-        $inventories = BrgyInventory::where('quantity_available', '>', 0)->get();
-        return view('brgy_issuance.create', compact('inventories'));
+        $issuances = BrgyIssuance::with('inventory')->get();
+        return response()->json($issuances);
     }
 
     public function store(Request $request)
@@ -37,29 +30,22 @@ class BrgyIssuanceController extends Controller
         $inventory = BrgyInventory::findOrFail($data['inventory_id']);
 
         if ($inventory->quantity_available < $data['quantity_issued']) {
-            return back()->withErrors('Not enough stock available.');
+            return response()->json(['error' => 'Not enough stock available.'], 400);
         }
 
-        BrgyIssuance::create($data);
-
+        $issuance = BrgyIssuance::create($data);
         $inventory->quantity_available -= $data['quantity_issued'];
         $inventory->save();
 
-        return redirect()->route('brgy_issuance.index')->with('success', 'Issuance recorded and stock updated.');
+        return response()->json(['message' => 'Issuance recorded.', 'data' => $issuance], 201);
     }
 
     public function show($id)
     {
         $issuance = BrgyIssuance::with('inventory')->findOrFail($id);
-        return view('brgy_issuance.show', compact('issuance'));
+        return response()->json($issuance);
     }
 
-    public function edit($id)
-    {
-        $issuance = BrgyIssuance::findOrFail($id);
-        $inventories = BrgyInventory::all();
-        return view('brgy_issuance.edit', compact('issuance', 'inventories'));
-    }
     public function update(Request $request, $id)
     {
         $issuance = BrgyIssuance::findOrFail($id);
@@ -77,15 +63,13 @@ class BrgyIssuanceController extends Controller
         ]);
 
         $qtyDifference = $data['quantity_issued'] - $issuance->quantity_issued;
-
         $inventory = BrgyInventory::findOrFail($data['inventory_id']);
 
         if ($qtyDifference > 0 && $inventory->quantity_available < $qtyDifference) {
-            return back()->withErrors('Not enough stock available for update.');
+            return response()->json(['error' => 'Not enough stock available for update.'], 400);
         }
 
         if ($data['inventory_id'] != $issuance->inventory_id) {
-
             $oldInventory = BrgyInventory::findOrFail($issuance->inventory_id);
             $oldInventory->quantity_available += $issuance->quantity_issued;
             $oldInventory->save();
@@ -99,21 +83,30 @@ class BrgyIssuanceController extends Controller
 
         $issuance->update($data);
 
-        return redirect()->route('brgy_issuance.index')->with('success', 'Issuance record updated.');
+        return response()->json(['message' => 'Issuance record updated.', 'data' => $issuance]);
     }
 
-  
     public function destroy($id)
     {
         $issuance = BrgyIssuance::findOrFail($id);
-
-       
         $inventory = BrgyInventory::findOrFail($issuance->inventory_id);
+
         $inventory->quantity_available += $issuance->quantity_issued;
         $inventory->save();
 
         $issuance->delete();
 
-        return redirect()->route('brgy_issuance.index')->with('success', 'Issuance record deleted and stock restored.');
+        return response()->json(['message' => 'Issuance record deleted and stock restored.']);
+    }
+
+    // ✅ Overdue Returns Count
+    public function overdueCount()
+    {
+        $overdue = BrgyIssuance::whereNotNull('expected_return')
+            ->whereNull('date_returned')
+            ->where('expected_return', '<', now()->toDateString())
+            ->sum('quantity_issued');
+
+        return response()->json(['overdue_return_count' => $overdue]);
     }
 }

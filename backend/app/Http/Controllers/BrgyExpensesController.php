@@ -8,18 +8,10 @@ use Illuminate\Http\Request;
 
 class BrgyExpensesController extends Controller
 {
-    
     public function index()
     {
-        $expenses = BrgyExpenses::with('inventory')->paginate(10);
-        return view('brgy_expenses.index', compact('expenses'));
-    }
-
-
-    public function create()
-    {
-        $inventories = BrgyInventory::all();
-        return view('brgy_expenses.create', compact('inventories'));
+        $expenses = BrgyExpenses::with('inventory')->get();
+        return response()->json($expenses);
     }
 
     public function store(Request $request)
@@ -37,25 +29,16 @@ class BrgyExpensesController extends Controller
             'receipt_document' => 'nullable|string|max:255',
         ]);
 
-        BrgyExpenses::create($data);
+        $expense = BrgyExpenses::create($data);
 
-        return redirect()->route('brgy_expenses.index')->with('success', 'Expense recorded.');
+        return response()->json(['message' => 'Expense recorded.', 'data' => $expense], 201);
     }
 
     public function show($id)
     {
         $expense = BrgyExpenses::with('inventory')->findOrFail($id);
-        return view('brgy_expenses.show', compact('expense'));
+        return response()->json($expense);
     }
-
-
-    public function edit($id)
-    {
-        $expense = BrgyExpenses::findOrFail($id);
-        $inventories = BrgyInventory::all();
-        return view('brgy_expenses.edit', compact('expense', 'inventories'));
-    }
-
 
     public function update(Request $request, $id)
     {
@@ -76,15 +59,26 @@ class BrgyExpensesController extends Controller
 
         $expense->update($data);
 
-        return redirect()->route('brgy_expenses.index')->with('success', 'Expense updated.');
+        return response()->json(['message' => 'Expense updated.', 'data' => $expense]);
     }
-
-
     public function destroy($id)
     {
         $expense = BrgyExpenses::findOrFail($id);
         $expense->delete();
 
-        return redirect()->route('brgy_expenses.index')->with('success', 'Expense deleted.');
+        return response()->json(['message' => 'Expense deleted.']);
+    }
+
+
+    public function calculatedTotalCount()
+    {
+        $totalQuantity = BrgyExpenses::whereNotNull('quantity')->sum('quantity');
+        $totalPesos = BrgyExpenses::sum('total_cost');
+
+        return response()->json([
+            'calculated_total_count' => $totalQuantity,
+            'calculated_total_pesos' => number_format($totalPesos, 2, '.', ',')
+
+        ]);
     }
 }

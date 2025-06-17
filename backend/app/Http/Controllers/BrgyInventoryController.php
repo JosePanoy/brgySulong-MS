@@ -7,20 +7,14 @@ use Illuminate\Http\Request;
 
 class BrgyInventoryController extends Controller
 {
-    
+    // Get all inventory items (API)
     public function index()
     {
-        $items = BrgyInventory::paginate(10);
-        return view('brgy_inventory.index', compact('items'));
+        $items = BrgyInventory::all();
+        return response()->json($items);
     }
 
-  
-    public function create()
-    {
-        return view('brgy_inventory.create');
-    }
-
-  
+    // Store a new inventory item
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,24 +28,19 @@ class BrgyInventoryController extends Controller
             'unique_identifier' => 'nullable|string|max:100',
         ]);
 
-        BrgyInventory::create($data);
+        $item = BrgyInventory::create($data);
 
-        return redirect()->route('brgy_inventory.index')->with('success', 'Inventory item added.');
+        return response()->json(['message' => 'Inventory item added.', 'data' => $item], 201);
     }
 
-
+    // Show a specific inventory item
     public function show($id)
     {
         $item = BrgyInventory::findOrFail($id);
-        return view('brgy_inventory.show', compact('item'));
+        return response()->json($item);
     }
 
-    public function edit($id)
-    {
-        $item = BrgyInventory::findOrFail($id);
-        return view('brgy_inventory.edit', compact('item'));
-    }
-
+    // Update an inventory item
     public function update(Request $request, $id)
     {
         $item = BrgyInventory::findOrFail($id);
@@ -69,33 +58,58 @@ class BrgyInventoryController extends Controller
 
         $item->update($data);
 
-        return redirect()->route('brgy_inventory.index')->with('success', 'Inventory item updated.');
+        return response()->json(['message' => 'Inventory item updated.', 'data' => $item]);
     }
 
+    // Delete an inventory item
     public function destroy($id)
     {
         $item = BrgyInventory::findOrFail($id);
         $item->delete();
 
-        return redirect()->route('brgy_inventory.index')->with('success', 'Inventory item deleted.');
+        return response()->json(['message' => 'Inventory item deleted.']);
     }
 
+    // Adjust available stock
     public function adjustStock(Request $request, $id)
     {
         $item = BrgyInventory::findOrFail($id);
 
         $data = $request->validate([
-            'adjustment' => 'required|integer', 
+            'adjustment' => 'required|integer',
         ]);
 
         $newQuantity = $item->quantity_available + $data['adjustment'];
+
         if ($newQuantity < 0) {
-            return back()->withErrors('Adjustment exceeds available stock.');
+            return response()->json(['error' => 'Adjustment exceeds available stock.'], 400);
         }
 
         $item->quantity_available = $newQuantity;
         $item->save();
 
-        return redirect()->route('brgy_inventory.show', $id)->with('success', 'Stock quantity adjusted.');
+        return response()->json(['message' => 'Stock quantity adjusted.', 'data' => $item]);
     }
+
+    // Real-Time Stock Count (sum of quantity_available)
+    public function stockCount()
+    {
+        $totalAvailable = BrgyInventory::sum('quantity_available');
+        return response()->json(['real_time_stock_count' => $totalAvailable]);
+    }
+
+    // real time count of condition item
+    public function conditionCounts()
+{
+    $counts = BrgyInventory::selectRaw("condition_status, COUNT(*) as total")
+        ->groupBy('condition_status')
+        ->get()
+        ->pluck('total', 'condition_status');
+
+    return response()->json([
+        'Good' => $counts->get('Good', 0),
+        'Needs Repair' => $counts->get('Needs Repair', 0),
+    ]);
+}
+
 }
