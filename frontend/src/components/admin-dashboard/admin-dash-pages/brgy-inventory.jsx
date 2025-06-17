@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import AdminMainNav from "../admin-sub-components/admin-main-nav";
 import AdminSideNav from "../admin-sub-components/admin-side-nav";
 import AdminSlideNav from "../admin-sub-components/admin-slide-nav";
@@ -24,9 +25,8 @@ function BrgyInventory() {
       <OverallPreview />
 
       <div className="brgy-inventory-container">
-
         <div className="brgy-inventory-row">
-          <div className="brgy-inventory-box wide">
+          <Link to="/brgy-inventory/items" className="brgy-inventory-box wide">
             <div className="brgy-inventory-header">
               <h3 className="brgy-inventory-title">
                 Inventory Items
@@ -35,8 +35,8 @@ function BrgyInventory() {
             </div>
             <p className="brgy-inventory-phrase">View all available items with key details.</p>
             <img src={ViewButton} alt="View" className="brgy-inventory-view-button" />
-          </div>
-          <div className="brgy-inventory-box narrow">
+          </Link>
+          <Link to="/brgy-inventory/tracking" className="brgy-inventory-box narrow">
             <div className="brgy-inventory-header">
               <h3 className="brgy-inventory-title">
                 Stock Tracking
@@ -45,11 +45,11 @@ function BrgyInventory() {
             </div>
             <p className="brgy-inventory-phrase">Monitor item quantities and stock levels.</p>
             <img src={ViewButton} alt="View" className="brgy-inventory-view-button" />
-          </div>
+          </Link>
         </div>
 
         <div className="brgy-inventory-row">
-          <div className="brgy-inventory-box narrow">
+          <Link to="/brgy-inventory/issuance" className="brgy-inventory-box narrow">
             <div className="brgy-inventory-header">
               <h3 className="brgy-inventory-title">
                 Issuance Records
@@ -58,8 +58,8 @@ function BrgyInventory() {
             </div>
             <p className="brgy-inventory-phrase">Log and trace item checkouts and returns.</p>
             <img src={ViewButton} alt="View" className="brgy-inventory-view-button" />
-          </div>
-          <div className="brgy-inventory-box wide">
+          </Link>
+          <Link to="/brgy-inventory/status" className="brgy-inventory-box wide">
             <div className="brgy-inventory-header">
               <h3 className="brgy-inventory-title">
                 Condition Status
@@ -68,11 +68,11 @@ function BrgyInventory() {
             </div>
             <p className="brgy-inventory-phrase">Track item health, issues, and maintenance.</p>
             <img src={ViewButton} alt="View" className="brgy-inventory-view-button" />
-          </div>
+          </Link>
         </div>
 
         <div className="brgy-inventory-row">
-          <div className="brgy-inventory-box wide">
+          <Link to="/brgy-inventory/expenses" className="brgy-inventory-box wide">
             <div className="brgy-inventory-header">
               <h3 className="brgy-inventory-title">
                 Expenses Tracking
@@ -81,8 +81,8 @@ function BrgyInventory() {
             </div>
             <p className="brgy-inventory-phrase">Record and review inventory-related spending.</p>
             <img src={ViewButton} alt="View" className="brgy-inventory-view-button" />
-          </div>
-          <div className="brgy-inventory-box narrow">
+          </Link>
+          <Link to="/brgy-inventory/reports" className="brgy-inventory-box narrow">
             <div className="brgy-inventory-header">
               <h3 className="brgy-inventory-title">
                 Reports
@@ -91,9 +91,8 @@ function BrgyInventory() {
             </div>
             <p className="brgy-inventory-phrase">Generate summaries of inventory activities.</p>
             <img src={ViewButton} alt="View" className="brgy-inventory-view-button" />
-          </div>
+          </Link>
         </div>
-
       </div>
     </>
   );
