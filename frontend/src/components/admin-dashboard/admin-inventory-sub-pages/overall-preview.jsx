@@ -37,8 +37,7 @@ function OverallPreview() {
     };
 
     fetchStockCount();
-    const interval = setInterval(fetchStockCount, 1000);
-
+    const interval = setInterval(fetchStockCount, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -56,7 +55,7 @@ function OverallPreview() {
     };
 
     fetchCalculatedCounts();
-    const interval = setInterval(fetchCalculatedCounts, 1000);
+    const interval = setInterval(fetchCalculatedCounts, 2000);
 
     return () => clearInterval(interval);
   }, []);
@@ -75,7 +74,7 @@ function OverallPreview() {
     };
 
     fetchConditionCounts();
-    const interval = setInterval(fetchConditionCounts, 1000);
+    const interval = setInterval(fetchConditionCounts, 2000);
 
     return () => clearInterval(interval);
   }, []);
@@ -94,7 +93,7 @@ function OverallPreview() {
     };
 
     fetchOverdueCount();
-    const interval = setInterval(fetchOverdueCount, 1000);
+    const interval = setInterval(fetchOverdueCount, 2000);
 
     return () => clearInterval(interval);
   }, []);
