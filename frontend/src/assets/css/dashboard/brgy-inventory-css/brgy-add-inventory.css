@@ -1,0 +1,188 @@
+.brgy-add-inventory {
+  max-width: 950px;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(81, 79, 79, 0.133);
+}
+
+.brgy-add-inventory::before {
+  content: "Add Inventory for Barangay";
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #379b34;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.brgy-add-inventory__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.brgy-add-inventory__field {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.brgy-add-inventory__field label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  color: #2f6132;
+}
+
+.brgy-add-inventory__field input,
+.brgy-add-inventory__field select,
+.brgy-add-inventory__field textarea,
+.brgy-add-inventory__datepicker {
+  padding: 10px 5px;
+  font-size: 0.6rem;
+  border: 1px solid #83cf78;
+  border-radius: 6px;
+  background-color: #ffffff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.brgy-add-inventory__field input:focus,
+.brgy-add-inventory__field select:focus,
+.brgy-add-inventory__field textarea:focus,
+.brgy-add-inventory__datepicker:focus {
+  outline: none;
+  border-color: #52ad468d;
+  box-shadow: 0 0 0 3px rgba(82, 173, 70, 0.2);
+}
+
+.brgy-add-inventory__row--centered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.brgy-add-inventory__row--centered .brgy-add-inventory__field {
+  flex: 1 1 48%;
+}
+
+.brgy-add-inventory__upload-box {
+  position: relative;
+  min-height: 200px;
+  border: 2px dashed #6ed369be;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  font-size: 10rem;
+  color: #52ad46;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: #e9f8e7;
+  transition: background-color 0.3s, transform 0.2s;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.brgy-add-inventory__file-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.brgy-add-inventory__image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+.brgy-add-inventory__image-item {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.brgy-add-inventory__image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.brgy-add-inventory__remove-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.brgy-add-inventory__textarea textarea {
+  margin-right: 2px;
+}
+
+@media (max-width: 720px) {
+  .brgy-add-inventory::before {
+    font-size: 1.3rem;
+  }
+
+  .brgy-add-inventory__field label {
+    font-size: 0.9rem;
+  }
+
+  .brgy-add-inventory__field input,
+  .brgy-add-inventory__field select,
+  .brgy-add-inventory__field textarea,
+  .brgy-add-inventory__datepicker {
+    font-size: 0.8rem;
+    padding: 8px 5px;
+  }
+
+  .brgy-add-inventory__upload-box {
+    font-size: 8rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .brgy-add-inventory::before {
+    font-size: 1.2rem;
+  }
+
+  .brgy-add-inventory__field label {
+    font-size: 0.85rem;
+  }
+
+  .brgy-add-inventory__field input,
+  .brgy-add-inventory__field select,
+  .brgy-add-inventory__field textarea,
+  .brgy-add-inventory__datepicker {
+    font-size: 0.75rem;
+    padding: 6px 5px;
+  }
+
+  .brgy-add-inventory__upload-box {
+    font-size: 6rem;
+  }
+}

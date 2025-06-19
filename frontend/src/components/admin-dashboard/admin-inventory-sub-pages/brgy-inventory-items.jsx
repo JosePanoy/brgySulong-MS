@@ -7,6 +7,7 @@ import BTNtoTop from "../../../sub-components/button-top-top";
 import FilterIcon from "../../../assets/img/filter.png";
 import LeftButton from "../../../assets/img/left.png";
 import RightButton from "../../../assets/img/right.png";
+import BrgyAddInventory from "./brgy-add-inventory";
 
 function BrgyInventoryItems() {
   const [inventoryItems, setInventoryItems] = useState([]);
@@ -154,6 +155,8 @@ function BrgyInventoryItems() {
           </button>
         </div>
       </div>
+
+      <BrgyAddInventory />
     </>
   );
 }

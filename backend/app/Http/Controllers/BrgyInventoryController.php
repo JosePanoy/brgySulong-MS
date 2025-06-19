@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\BrgyInventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class BrgyInventoryController extends Controller
 {
-    // Get all inventory items (API)
     public function index()
     {
         $items = BrgyInventory::all();
         return response()->json($items);
     }
 
-    // Store a new inventory item
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -27,21 +26,23 @@ class BrgyInventoryController extends Controller
             'condition_status' => 'required|in:Good,Damaged,Needs Repair',
             'last_maintenance_date' => 'nullable|date',
             'unique_identifier' => 'nullable|string|max:100',
+            'item_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $item = BrgyInventory::create($data);
+        if ($request->hasFile('item_image')) {
+            $data['item_image'] = $request->file('item_image')->store('inventory_img', 'public');
+        }
 
+        $item = BrgyInventory::create($data);
         return response()->json(['message' => 'Inventory item added.', 'data' => $item], 201);
     }
 
-    // Show a specific inventory item
     public function show($id)
     {
         $item = BrgyInventory::findOrFail($id);
         return response()->json($item);
     }
 
-    // Update an inventory item
     public function update(Request $request, $id)
     {
         $item = BrgyInventory::findOrFail($id);
@@ -55,23 +56,30 @@ class BrgyInventoryController extends Controller
             'condition_status' => 'required|in:Good,Damaged,Needs Repair',
             'last_maintenance_date' => 'nullable|date',
             'unique_identifier' => 'nullable|string|max:100',
+            'item_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
-        $item->update($data);
+        if ($request->hasFile('item_image')) {
+            if ($item->item_image) {
+                Storage::disk('public')->delete($item->item_image);
+            }
+            $data['item_image'] = $request->file('item_image')->store('inventory_img', 'public');
+        }
 
+        $item->update($data);
         return response()->json(['message' => 'Inventory item updated.', 'data' => $item]);
     }
 
-    // Delete an inventory item
     public function destroy($id)
     {
         $item = BrgyInventory::findOrFail($id);
+        if ($item->item_image) {
+            Storage::disk('public')->delete($item->item_image);
+        }
         $item->delete();
-
         return response()->json(['message' => 'Inventory item deleted.']);
     }
 
-    // Adjust available stock
     public function adjustStock(Request $request, $id)
     {
         $item = BrgyInventory::findOrFail($id);
@@ -92,7 +100,6 @@ class BrgyInventoryController extends Controller
         return response()->json(['message' => 'Stock quantity adjusted.', 'data' => $item]);
     }
 
-    // Real-Time Stock Count (sum of quantity_available)
     public function stockCount()
     {
         $totalAvailable = Cache::remember('real_time_stock_count', 2, function () {
@@ -102,7 +109,6 @@ class BrgyInventoryController extends Controller
         return response()->json(['real_time_stock_count' => $totalAvailable]);
     }
 
-    // real time count of condition item
     public function conditionCounts()
     {
         $counts = Cache::remember('condition_item_counts', 2, function () {

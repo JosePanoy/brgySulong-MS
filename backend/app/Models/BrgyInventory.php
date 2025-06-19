@@ -11,12 +11,12 @@ class BrgyInventory extends Model
 
     protected $table = 'brgy_inventory';
 
-   
     protected $primaryKey = 'inventory_id';
 
     protected $fillable = [
         'item_name',
         'description',
+        'item_image',
         'quantity_total',
         'quantity_available',
         'unit',
@@ -24,7 +24,6 @@ class BrgyInventory extends Model
         'last_maintenance_date',
         'unique_identifier',
     ];
-
 
     protected $dates = [
         'last_maintenance_date',
