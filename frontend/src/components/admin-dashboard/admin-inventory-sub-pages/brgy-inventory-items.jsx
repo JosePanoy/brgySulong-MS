@@ -14,7 +14,7 @@ function BrgyInventoryItems() {
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const residentsPerPage = 15;
+  const residentsPerPage = 10;
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -28,6 +28,9 @@ function BrgyInventoryItems() {
     };
 
     fetchInventory();
+    const intervalId = setInterval(fetchInventory, 2500);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const formatDate = (dateString) => {
@@ -42,7 +45,8 @@ function BrgyInventoryItems() {
 
   const handleSort = (field) => {
     const isSameField = field === sortField;
-    const newDirection = isSameField && sortDirection === "asc" ? "desc" : "asc";
+    const newDirection =
+      isSameField && sortDirection === "asc" ? "desc" : "asc";
     setSortField(field);
     setSortDirection(newDirection);
   };
@@ -61,7 +65,10 @@ function BrgyInventoryItems() {
 
   const totalPages = Math.ceil(sortedItems.length / residentsPerPage);
   const startIndex = (currentPage - 1) * residentsPerPage;
-  const currentItems = sortedItems.slice(startIndex, startIndex + residentsPerPage);
+  const currentItems = sortedItems.slice(
+    startIndex,
+    startIndex + residentsPerPage
+  );
 
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
