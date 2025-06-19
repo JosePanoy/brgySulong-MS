@@ -142,7 +142,36 @@
 .brgy-add-inventory__textarea textarea {
   margin-right: 2px;
 }
+.brgy-add-inventory__save-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #252525;
+  padding: 5px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+  border: 1px solid rgba(128, 128, 128, 0.308);
+}
 
+.brgy-add-inventory__save-button:hover {
+  background-color: #65c267de;
+}
+
+.brgy-add-inventory__save-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.brgy-add-inventory__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
 @media (max-width: 720px) {
   .brgy-add-inventory::before {
     font-size: 1.3rem;

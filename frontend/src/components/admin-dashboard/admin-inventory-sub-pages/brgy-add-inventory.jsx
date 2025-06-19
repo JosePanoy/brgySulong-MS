@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
+import SaveIcon from "../../../assets/img/save1.png";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/css/dashboard/brgy-inventory-css/brgy-add-inventory.css";
 
@@ -38,62 +39,72 @@ function BrgyAddInventory() {
     setImage(null);
   };
 
-const handleSubmit = async () => {
-  const formData = new FormData();
-  formData.append("item_name", itemName);
-  formData.append("description", description);
-  formData.append("quantity_total", parseInt(quantityTotal) || 0);
-  formData.append(
-    "quantity_available",
-    parseInt(quantityAvailable) || parseInt(quantityTotal) || 0
-  );
-  formData.append("unit", unit);
-  formData.append("condition_status", conditionStatus);
-  formData.append(
-    "last_maintenance_date",
-    lastMaintenance ? lastMaintenance.toISOString().split("T")[0] : ""
-  );
-  formData.append("unique_identifier", uniqueIdentifier);
-  formData.append("status", status);
+  const isFormValid =
+    itemName &&
+    itemType &&
+    description &&
+    unit &&
+    conditionStatus &&
+    quantityTotal &&
+    uniqueIdentifier &&
+    status &&
+    lastMaintenance &&
+    acquisitionDate;
 
-  if (image?.file) {
-    const validTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
-    if (!validTypes.includes(image.file.type)) {
-      alert("Error: Image must be jpeg, png, jpg, or gif.");
-      setMessage("Error: Image must be jpeg, png, jpg, or gif.");
-      return;
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("item_name", itemName);
+    formData.append("description", description);
+    formData.append("quantity_total", parseInt(quantityTotal) || 0);
+    formData.append(
+      "quantity_available",
+      parseInt(quantityAvailable) || parseInt(quantityTotal) || 0
+    );
+    formData.append("unit", unit);
+    formData.append("condition_status", conditionStatus);
+    formData.append(
+      "last_maintenance_date",
+      lastMaintenance ? lastMaintenance.toISOString().split("T")[0] : ""
+    );
+    formData.append("unique_identifier", uniqueIdentifier);
+    formData.append("status", status);
+
+    if (image?.file) {
+      const validTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+      if (!validTypes.includes(image.file.type)) {
+        alert("Error: Image must be jpeg, png, jpg, or gif.");
+        setMessage("Error: Image must be jpeg, png, jpg, or gif.");
+        return;
+      }
+      formData.append("item_image", image.file);
     }
-    formData.append("item_image", image.file);
-  }
 
-  try {
-    setLoading(true);
-    await axios.post("http://127.0.0.1:8000/api/inventory", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    alert("Inventory item successfully added.");
-    setItemName("");
-    setItemType("");
-    setDescription("");
-    setUnit("");
-    setConditionStatus("");
-    setQuantityTotal("");
-    setQuantityAvailable("");
-    setUniqueIdentifier("");
-    setStatus("");
-    setLastMaintenance(null);
-    setAcquisitionDate(null);
-    removeImage();
-  } catch (error) {
-    const errorMsg =
-      error.response?.data?.message || "Submission failed.";
-    alert("Error: " + errorMsg);
-    setMessage("Error: " + errorMsg);
-  } finally {
-    setLoading(false);
-  }
-};
-
+    try {
+      setLoading(true);
+      await axios.post("http://127.0.0.1:8000/api/inventory", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("Inventory item successfully added.");
+      setItemName("");
+      setItemType("");
+      setDescription("");
+      setUnit("");
+      setConditionStatus("");
+      setQuantityTotal("");
+      setQuantityAvailable("");
+      setUniqueIdentifier("");
+      setStatus("");
+      setLastMaintenance(null);
+      setAcquisitionDate(null);
+      removeImage();
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || "Submission failed.";
+      alert("Error: " + errorMsg);
+      setMessage("Error: " + errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="brgy-add-inventory">
@@ -110,7 +121,10 @@ const handleSubmit = async () => {
         </div>
         <div className="brgy-add-inventory__field">
           <label>Item Type</label>
-          <select value={itemType} onChange={(e) => setItemType(e.target.value)}>
+          <select
+            value={itemType}
+            onChange={(e) => setItemType(e.target.value)}
+          >
             <option value="">Choose</option>
             <option>Equipment</option>
             <option>Medical</option>
@@ -231,8 +245,13 @@ const handleSubmit = async () => {
       </div>
 
       <div className="brgy-add-inventory__actions">
-        <button onClick={handleSubmit} disabled={loading}>
-          {loading ? "Submitting..." : "Submit"}
+        <button
+          onClick={handleSubmit}
+          disabled={loading || !isFormValid}
+          className="brgy-add-inventory__save-button"
+        >
+          <img src={SaveIcon} alt="Save" />
+          {loading ? "Saving..." : "Save"}
         </button>
       </div>
     </div>
