@@ -8,6 +8,8 @@ import FilterIcon from "../../../assets/img/filter.png";
 import LeftButton from "../../../assets/img/left.png";
 import RightButton from "../../../assets/img/right.png";
 import BrgyAddInventory from "./brgy-add-inventory";
+import ConfirmSaveComponent from "./confirm-save-component";
+import SuccessErrorMessage from "./success-errorr-message";
 
 function BrgyInventoryItems() {
   const [inventoryItems, setInventoryItems] = useState([]);
@@ -84,6 +86,7 @@ function BrgyInventoryItems() {
       <AdminSideNav />
       <AdminSlideNav />
       <BTNtoTop />
+
 
       <div className="brgy-inventory-items__container">
         <h2 className="brgy-inventory-items__title">Brgy Inventory Items</h2>
