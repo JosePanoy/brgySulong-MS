@@ -23,10 +23,13 @@ class BrgyInventory extends Model
         'condition_status',
         'last_maintenance_date',
         'unique_identifier',
+        'status',             
+        'acquisition_date',
     ];
 
     protected $dates = [
         'last_maintenance_date',
+        'acquisition_date',
         'created_at',
         'updated_at',
     ];

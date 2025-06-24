@@ -6,6 +6,8 @@ use App\Models\BrgyInventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 
 class BrgyInventoryController extends Controller
 {
@@ -15,46 +17,58 @@ class BrgyInventoryController extends Controller
         return response()->json($items);
     }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'item_name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'quantity_total' => 'required|integer|min:0',
-        'quantity_available' => 'required|integer|min:0',
-        'unit' => 'required|string|max:50',
-        'condition_status' => 'required|in:Good,Damaged,Needs Repair',
-        'last_maintenance_date' => 'nullable|date',
-        'unique_identifier' => 'nullable|string|max:100',
-        'status' => 'required|string|in:Active,Inactive',
-        'acquisition_date' => 'nullable|date', 
-        'item_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'item_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'quantity_total' => 'required|integer|min:0',
+            'quantity_available' => 'required|integer|min:0',
+            'unit' => 'required|string|max:50',
+            'condition_status' => 'required|in:Good,Damaged,Needs Repair',
+            'last_maintenance_date' => 'nullable|date',
+            'unique_identifier' => 'nullable|string|max:100',
+            'status' => 'required|string|in:Active,Inactive',
+            'acquisition_date' => 'nullable|date',
+            'item_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+        ]);
+
+        $data = $request->only([
+            'item_name',
+            'description',
+            'quantity_total',
+            'quantity_available',
+            'unit',
+            'condition_status',
+            'last_maintenance_date',
+            'unique_identifier',
+            'status',
+            'acquisition_date',
+        ]);
+
+        if ($request->hasFile('item_image')) {
+            $data['item_image'] = $request->file('item_image')->store('inventory_img', 'public');
+        } else {
+            $data['item_image'] = null;
+        }
+
+        try {
+            $item = BrgyInventory::create($data);
+        } catch (\Exception $e) {
+            Log::error('CREATE FAILED: ' . $e->getMessage());
+
+            return response()->json([
+                'message' => 'Failed to create inventory item.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
 
 
-    $data = $request->only([
-        'item_name',
-        'description',
-        'quantity_total',
-        'quantity_available',
-        'unit',
-        'condition_status',
-        'last_maintenance_date',
-        'unique_identifier',
-        'status',           
-        'acquisition_date', 
-    ]);
-
-    if ($request->hasFile('item_image')) {
-        $data['item_image'] = $request->file('item_image')->store('inventory_img', 'public');
-    } else {
-        $data['item_image'] = null;
+        return response()->json([
+            'message' => 'Inventory item added.',
+            'data' => $item
+        ], 201);
     }
-
-    $item = BrgyInventory::create($data);
-
-    return response()->json(['message' => 'Inventory item added.', 'data' => $item], 201);
-}
 
 
 
