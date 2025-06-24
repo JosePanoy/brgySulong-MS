@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "../../../assets/css/dashboard/brgy-inventory-css/confirm-save-component.css";
 import LoadingGif from "../../../assets/gif/loading2.gif";
 
@@ -6,9 +6,10 @@ function ConfirmSaveComponent({ onClose, onConfirm }) {
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setIsLoading(true);
-    onConfirm(); // Call external handler (can include async logic outside)
+    await onConfirm();
+    setIsLoading(false);
   };
 
   return (

@@ -4,10 +4,11 @@ import DatePicker from "react-datepicker";
 import SaveIcon from "../../../assets/img/save1.png";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/css/dashboard/brgy-inventory-css/brgy-add-inventory.css";
+import ConfirmSaveComponent from "./confirm-save-component";
+import SuccessErrorMessage from "./success-errorr-message";
 
 function BrgyAddInventory() {
   const [itemName, setItemName] = useState("");
-  const [itemType, setItemType] = useState("");
   const [description, setDescription] = useState("");
   const [unit, setUnit] = useState("");
   const [conditionStatus, setConditionStatus] = useState("");
@@ -18,8 +19,8 @@ function BrgyAddInventory() {
   const [lastMaintenance, setLastMaintenance] = useState(null);
   const [acquisitionDate, setAcquisitionDate] = useState(null);
   const [image, setImage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [messageType, setMessageType] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -41,7 +42,6 @@ function BrgyAddInventory() {
 
   const isFormValid =
     itemName &&
-    itemType &&
     description &&
     unit &&
     conditionStatus &&
@@ -51,7 +51,7 @@ function BrgyAddInventory() {
     lastMaintenance &&
     acquisitionDate;
 
-  const handleSubmit = async () => {
+  const handleConfirmAndSubmit = async () => {
     const formData = new FormData();
     formData.append("item_name", itemName);
     formData.append("description", description);
@@ -67,26 +67,22 @@ function BrgyAddInventory() {
       lastMaintenance ? lastMaintenance.toISOString().split("T")[0] : ""
     );
     formData.append("unique_identifier", uniqueIdentifier);
+    formData.append(
+      "acquisition_date",
+      acquisitionDate ? acquisitionDate.toISOString().split("T")[0] : ""
+    );
     formData.append("status", status);
 
     if (image?.file) {
-      const validTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
-      if (!validTypes.includes(image.file.type)) {
-        alert("Error: Image must be jpeg, png, jpg, or gif.");
-        setMessage("Error: Image must be jpeg, png, jpg, or gif.");
-        return;
-      }
       formData.append("item_image", image.file);
     }
 
     try {
-      setLoading(true);
       await axios.post("http://127.0.0.1:8000/api/inventory", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("Inventory item successfully added.");
+
       setItemName("");
-      setItemType("");
       setDescription("");
       setUnit("");
       setConditionStatus("");
@@ -97,18 +93,25 @@ function BrgyAddInventory() {
       setLastMaintenance(null);
       setAcquisitionDate(null);
       removeImage();
+      setShowConfirm(false);
+      setMessageType("success");
     } catch (error) {
-      const errorMsg = error.response?.data?.message || "Submission failed.";
-      alert("Error: " + errorMsg);
-      setMessage("Error: " + errorMsg);
-    } finally {
-      setLoading(false);
+      console.error("Failed to submit form:", error);
+      setShowConfirm(false);
+      setMessageType("error");
     }
   };
 
   return (
     <div className="brgy-add-inventory">
-      {message && <div className="brgy-add-inventory__message">{message}</div>}
+      {showConfirm && (
+        <ConfirmSaveComponent
+          onClose={() => setShowConfirm(false)}
+          onConfirm={handleConfirmAndSubmit}
+        />
+      )}
+
+      {messageType && <SuccessErrorMessage type={messageType} />}
 
       <div className="brgy-add-inventory__row">
         <div className="brgy-add-inventory__field">
@@ -118,19 +121,6 @@ function BrgyAddInventory() {
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
           />
-        </div>
-        <div className="brgy-add-inventory__field">
-          <label>Item Type</label>
-          <select
-            value={itemType}
-            onChange={(e) => setItemType(e.target.value)}
-          >
-            <option value="">Choose</option>
-            <option>Equipment</option>
-            <option>Medical</option>
-            <option>Utility</option>
-            <option>Armory</option>
-          </select>
         </div>
       </div>
 
@@ -190,7 +180,7 @@ function BrgyAddInventory() {
           <select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="">Choose</option>
             <option>Active</option>
-            <option>Archived</option>
+            <option>Inactive</option>
           </select>
         </div>
       </div>
@@ -246,12 +236,12 @@ function BrgyAddInventory() {
 
       <div className="brgy-add-inventory__actions">
         <button
-          onClick={handleSubmit}
-          disabled={loading || !isFormValid}
+          onClick={() => setShowConfirm(true)}
+          disabled={!isFormValid}
           className="brgy-add-inventory__save-button"
         >
           <img src={SaveIcon} alt="Save" />
-          {loading ? "Saving..." : "Save"}
+          Save
         </button>
       </div>
     </div>
