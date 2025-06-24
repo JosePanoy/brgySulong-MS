@@ -30,7 +30,7 @@ class BrgyInventoryController extends Controller
             'unique_identifier' => 'nullable|string|max:100',
             'status' => 'required|string|in:Active,Inactive',
             'acquisition_date' => 'nullable|date',
-            'item_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'item_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
         ]);
 
         $data = $request->only([

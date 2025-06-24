@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import SaveIcon from "../../../assets/img/save1.png";
@@ -101,6 +101,16 @@ function BrgyAddInventory() {
       setMessageType("error");
     }
   };
+
+  useEffect(() => {
+  if (messageType) {
+    const timer = setTimeout(() => {
+      setMessageType(null);
+    }, 3000); // 3000ms = 3 seconds
+
+    return () => clearTimeout(timer); // cleanup
+  }
+}, [messageType]);
 
   return (
     <div className="brgy-add-inventory">

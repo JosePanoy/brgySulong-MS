@@ -12,6 +12,19 @@
   z-index: 1000;
   max-width: 250px;
   width: calc(100% - 40px);
+  animation: fadeInRight 0.5s ease forwards;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .sem-success {
