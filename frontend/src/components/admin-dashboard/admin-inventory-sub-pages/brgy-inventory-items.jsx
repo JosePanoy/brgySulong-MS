@@ -7,6 +7,7 @@ import BTNtoTop from "../../../sub-components/button-top-top";
 import FilterIcon from "../../../assets/img/filter.png";
 import LeftButton from "../../../assets/img/left.png";
 import RightButton from "../../../assets/img/right.png";
+import InfoButton from "../../../assets/img/search.png";
 import BrgyAddInventory from "./brgy-add-inventory";
 import ConfirmSaveComponent from "./confirm-save-component";
 import SuccessErrorMessage from "./success-errorr-message";
@@ -87,34 +88,22 @@ function BrgyInventoryItems() {
       <AdminSlideNav />
       <BTNtoTop />
 
-
       <div className="brgy-inventory-items__container">
         <h2 className="brgy-inventory-items__title">Brgy Inventory Items</h2>
         <div className="brgy-inventory-items__table-wrapper">
           <table className="brgy-inventory-items__table">
             <thead>
               <tr>
+                <th>Image</th>
                 <th onClick={() => handleSort("item_name")}>
                   <div className="sortable-header">
                     Name
                     <img src={FilterIcon} alt="Sort" />
                   </div>
                 </th>
-                <th onClick={() => handleSort("description")}>
-                  <div className="sortable-header">
-                    Description
-                    <img src={FilterIcon} alt="Sort" />
-                  </div>
-                </th>
                 <th onClick={() => handleSort("quantity_total")}>
                   <div className="sortable-header">
-                    Total
-                    <img src={FilterIcon} alt="Sort" />
-                  </div>
-                </th>
-                <th onClick={() => handleSort("quantity_available")}>
-                  <div className="sortable-header">
-                    Available
+                    Qty (Avail/Total)
                     <img src={FilterIcon} alt="Sort" />
                   </div>
                 </th>
@@ -136,18 +125,31 @@ function BrgyInventoryItems() {
                     <img src={FilterIcon} alt="Sort" />
                   </div>
                 </th>
+                <th>Info</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((item) => (
                 <tr key={item.inventory_id}>
+                  <td>
+                    <img
+                      src={`http://127.0.0.1:8000/storage/${item.item_image}`}
+                      alt="item"
+                      className="inventory-image"
+                    />
+                  </td>
                   <td>{item.item_name}</td>
-                  <td>{item.description || "—"}</td>
-                  <td>{item.quantity_total}</td>
-                  <td>{item.quantity_available}</td>
+                  <td>{`${item.quantity_available}/${item.quantity_total}`}</td>
                   <td>{item.unit}</td>
                   <td>{item.condition_status}</td>
                   <td>{formatDate(item.last_maintenance_date)}</td>
+                  <td>
+                    <img
+                      src={InfoButton}
+                      alt="Info"
+                      className="info-button-img"
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
