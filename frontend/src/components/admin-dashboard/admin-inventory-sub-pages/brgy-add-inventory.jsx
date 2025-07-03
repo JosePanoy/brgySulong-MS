@@ -134,7 +134,7 @@ function BrgyAddInventory() {
         </div>
       </div>
 
-      <div className="brgy-add-inventory__field brgy-add-inventory__textarea">
+      <div className="brgy-add-inventory__field brgy-add-inventory__textarea ">
         <label>Description</label>
         <textarea
           rows="3"
