@@ -24,6 +24,7 @@ function BrgyInventory() {
       <BTNtoTop />
       <OverallPreview />
 
+
       <div className="brgy-inventory-container">
         <div className="brgy-inventory-row">
           <Link to="/brgy-inventory/items" className="brgy-inventory-box wide">

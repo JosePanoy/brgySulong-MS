@@ -11,6 +11,7 @@ import InfoButton from "../../../assets/img/search.png";
 import BrgyAddInventory from "./brgy-add-inventory";
 import ConfirmSaveComponent from "./confirm-save-component";
 import SuccessErrorMessage from "./success-errorr-message";
+import BrgyInventorySearch from "./brgy-inventory-search";
 
 function BrgyInventoryItems() {
   const [inventoryItems, setInventoryItems] = useState([]);
@@ -87,6 +88,7 @@ function BrgyInventoryItems() {
       <AdminSideNav />
       <AdminSlideNav />
       <BTNtoTop />
+      <BrgyInventorySearch />
 
       <div className="brgy-inventory-items__container">
         <h2 className="brgy-inventory-items__title">Brgy Inventory Items</h2>
