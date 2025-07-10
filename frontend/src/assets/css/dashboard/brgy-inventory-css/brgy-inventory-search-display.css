@@ -1,0 +1,243 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.563);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-window {
+background: #fff;
+border-radius: 12px;
+max-width: 900px;
+width: 100%;
+max-height: 90vh;
+overflow-y: auto;
+position: relative;
+padding: 24px 32px;
+box-sizing: border-box;
+margin: 0 10px;
+}
+
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.brgyinventorydisplay-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.brgyinventorydisplay-left {
+  flex: 1 1 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.brgyinventorydisplay-image-container {
+  position: relative;
+}
+
+.brgyinventorydisplay-image {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 20%;
+  border: 5px solid #ddd;
+}
+
+.brgyinventorydisplay-note {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.brgyinventorydisplay-right {
+  flex: 2 1 400px;
+}
+
+.brgyinventorydisplay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.brgyinventorydisplay-itemname {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brgyinventorydisplay-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.brgyinventorydisplay-edit {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: none;
+  background: #f2f2f2;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.brgyinventorydisplay-gear {
+  width: 22px;
+  height: 22px;
+}
+
+.brgyinventorydisplay-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 12px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: default;
+}
+
+.brgyinventorydisplay-stats span {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  cursor: default;
+}
+
+.brgyinventorydisplay-stats span span {
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: 400;
+  cursor: default;
+}
+
+.brgyinventorydisplay-field {
+  margin: 4px 0;
+  font-size: 1rem;
+  cursor: default;
+  font-weight: 600;
+}
+
+.brgyinventorydisplay-description-text {
+  margin-top: 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-line;
+  color: #333;
+  cursor: default;
+}
+
+@media (max-width: 720px) {
+  .modal-window {
+    max-width: 90%;
+    padding: 24px 24px;
+  }
+
+  .brgyinventorydisplay-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .brgyinventorydisplay-left,
+  .brgyinventorydisplay-right {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-window {
+    max-width: 95%;
+    padding: 16px 12px;
+  }
+
+  .brgyinventorydisplay-image {
+    width: 140px;
+    height: 140px;
+  }
+
+  .brgyinventorydisplay-note {
+    font-size: 0.7rem;
+  }
+
+  .brgyinventorydisplay-itemname {
+    font-size: 1.2rem;
+  }
+
+  .brgyinventorydisplay-edit {
+    padding: 5px 12px;
+    font-size: 0.9rem;
+  }
+
+  .brgyinventorydisplay-description-text {
+    font-size: 0.85rem;
+  }
+
+  .brgyinventorydisplay-header {
+    white-space: nowrap;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 380px) {
+  .modal-window {
+    max-width: 98%;
+    padding: 14px 10px;
+  }
+
+  .brgyinventorydisplay-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .brgyinventorydisplay-itemname {
+    font-size: 1.1rem;
+  }
+
+  .brgyinventorydisplay-edit {
+    font-size: 0.85rem;
+  }
+
+  .brgyinventorydisplay-gear {
+    width: 20px;
+    height: 20px;
+  }
+
+  .brgyinventorydisplay-description-text {
+    font-size: 0.8rem;
+  }
+
+  .brgyinventorydisplay-header {
+    white-space: nowrap;
+    justify-content: space-between;
+  }
+}

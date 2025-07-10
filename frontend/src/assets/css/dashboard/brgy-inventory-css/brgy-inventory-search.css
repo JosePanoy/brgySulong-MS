@@ -1,0 +1,133 @@
+.brgyinventorysearch-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 10px 0 -20px;
+}
+
+.brgyinventorysearch-box {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 5px 16px;
+}
+
+.input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.brgyinventorysearch-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  background-color: transparent;
+}
+
+.brgyinventorysearch-icon-left,
+.brgyinventorysearch-icon-right {
+  width: 25px;
+  height: 25px;
+}
+
+.brgyinventorysearch-icon-left {
+  margin-right: 10px;
+}
+
+.brgyinventorysearch-icon-right {
+  margin-left: 10px;
+}
+
+.brgyinventorysearch-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 12px 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 8px 16px;
+  list-style: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  z-index: 10;
+  margin-top: 10px;
+}
+
+.brgyinventorysearch-suggestions li {
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+  cursor: default;
+}
+
+.brgyinventorysearch-suggestions li:last-child {
+  border-bottom: none;
+  padding-top: 8px;
+  color: #666;
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .brgyinventorysearch-box {
+    padding: 8px 12px;
+  }
+
+  .brgyinventorysearch-input {
+    font-size: 14.5px;
+    padding: 7px 10px;
+  }
+
+  .brgyinventorysearch-icon-left,
+  .brgyinventorysearch-icon-right {
+    width: 20px;
+    height: 20px;
+  }
+
+  .brgyinventorysearch-suggestions {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    max-height: 180px;
+    margin-top: 8px;
+  }
+
+  .brgyinventorysearch-suggestions li {
+    padding: 5px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .brgyinventorysearch-box {
+    padding: 6px 8px;
+  }
+
+  .brgyinventorysearch-input {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  .brgyinventorysearch-icon-left,
+  .brgyinventorysearch-icon-right {
+    width: 16px;
+    height: 16px;
+  }
+
+  .brgyinventorysearch-suggestions {
+    font-size: 0.7rem;
+    padding: 5px 10px;
+    max-height: 150px;
+    margin-top: 6px;
+  }
+
+  .brgyinventorysearch-suggestions li {
+    padding: 4px 0;
+  }
+}
