@@ -41,8 +41,9 @@ Route::prefix('events')->group(function () {
 // Brgy Inventory routes
 Route::prefix('inventory')->group(function () {
     Route::get('/', [BrgyInventoryController::class, 'index']);
-    Route::get('stock-count', [BrgyInventoryController::class, 'stockCount']); 
+    Route::get('stock-count', [BrgyInventoryController::class, 'stockCount']);
     Route::get('condition-counts', [BrgyInventoryController::class, 'conditionCounts']);
+    Route::get('search', [BrgyInventoryController::class, 'search']);
     Route::get('{id}', [BrgyInventoryController::class, 'show']);
     Route::post('/', [BrgyInventoryController::class, 'store']);
     Route::put('{id}', [BrgyInventoryController::class, 'update']);

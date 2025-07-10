@@ -171,4 +171,20 @@ class BrgyInventoryController extends Controller
             'Needs Repair' => $counts->get('Needs Repair', 0),
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('query', '');
+
+        $results = BrgyInventory::when($searchTerm, function ($q) use ($searchTerm) {
+            $q->where(function ($query) use ($searchTerm) {
+                $query->where('item_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+            });
+        })
+            ->limit(5)
+            ->get();
+
+        return response()->json($results);
+    }
 }
